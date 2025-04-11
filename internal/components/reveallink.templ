@@ -1,0 +1,19 @@
+package components
+
+import (
+        m "github.com/gavink97/gav-ink/internal/middleware"
+       )
+
+templ RevealLink(text string) {
+<reveal-link>
+@revealLinkSuspense(text)
+
+<div id="reveal-link">{text}</div>
+
+<script src="/public/effects/reveallink.js" type="module" nonce={ m.GetNonce(ctx) }></script>
+</reveal-link>
+}
+
+templ revealLinkSuspense(text string) {
+<div id="placeholder">{text}</div>
+}

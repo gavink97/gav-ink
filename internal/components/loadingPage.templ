@@ -1,0 +1,45 @@
+package components
+
+import (
+        m "github.com/gavink97/gav-ink/internal/middleware"
+)
+
+var loadHandle = templ.NewOnceHandle()
+
+templ LoadingPage() {
+<div id="loader-wrapper">
+    @loader()
+</div>
+
+// make this occur on the first time only
+// add hidden + overflow hidden to body
+// make loader clickthru while transitioning
+// make loader dynamic to length of time it takes to load the content
+@loadHandle.Once() {
+<script type="text/javascript" nonce={ m.GetNonce(ctx) }>
+    window.onload = (event) => {
+        load()
+    };
+
+    function load() {
+        const loader = document.getElementById('loader-wrapper');
+        loader.style.transition = '0.8s';
+        loader.style.opacity = 0;
+
+        setTimeout(function () {
+            document.body.style.overflow = 'auto';
+            loader.style.display = 'none';
+        }, 800);
+    };
+</script>
+}
+}
+
+// make load animation + website info
+templ loader() {
+<div id="loader">
+    <p>
+        Loading...
+    </p>
+</div>
+}

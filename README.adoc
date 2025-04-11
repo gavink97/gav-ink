@@ -1,0 +1,31 @@
+= Gav.ink
+ifdef::env-github[]
+Gavin Kondrath <78187175+gavink97@users.noreply.github.com>
+v1.0, 2024-04-12
+:homepage: https://gav.ink
+endif::[]
+:toc:
+:icons: font
+
+== Development guidelines
+    - Minimal use of external libraries
+    - Tooling for a complete development experience
+    - Hand rolled components
+    - No front end frameworks to minimize heavy javascript transfers
+
+== What is this?
+
+This repo is the development / production version of my website.
+
+== Development
+To start the development server and build all static assets
+- run `make dev`
+
+== Precommit
+
+Install precommit hooks
+
+```
+pre-commit install
+pre-commit install --hook-type commit-msg
+```

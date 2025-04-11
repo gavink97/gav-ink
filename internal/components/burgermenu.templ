@@ -1,0 +1,40 @@
+package components
+
+import m "github.com/gavink97/gav-ink/internal/middleware"
+
+templ BurgerMenu() {
+	<burger-menu>
+		@burgerMenuIconSuspense()
+		<div id="burger-menu-icon"></div>
+		<script src="/public/svgs/burgermenuicon.js" type="module" nonce={ m.GetNonce(ctx) }></script>
+	</burger-menu>
+}
+
+templ burgerMenuIconSuspense() {
+	<div id="placeholder">
+		<svg width="36" height="36" xmlns="http://www.w3.org/2000/svg">
+			<line x1="0" y1="11" x2="36" y2="11"></line>
+			<line x1="0" y1="18" x2="36" y2="18"></line>
+			<line x1="0" y1="25" x2="36" y2="25"></line>
+		</svg>
+	</div>
+}
+
+// make on click animation / page exit animation
+templ BurgerModal() {
+	<burger-modal id="burger-modal">
+		<div class="modal-content">
+			<a href="/" aria-label="home" class="modal-item">Home</a>
+			<a href="/#sustainability" aria-label="sustainability" class="modal-item">Sustainability</a>
+			<a href="/#services" aria-label="services" class="modal-item">Services</a>
+			<a href="/#tech" aria-label="technology" class="modal-item">Technology</a>
+			<a href="/#story" aria-label="studio story" class="modal-item">Studio Story</a>
+			<a href="/#studies" aria-label="insights" class="modal-item">Insights</a>
+			<a href="/contact" aria-label="contact us" class="modal-item">Lets build something together</a>
+			// socials
+			<a href="https://github.com/gavink97" aria-label="github" class="modal-item-social">Github</a>
+			<a href="https://www.instagram.com/gavin_kondrath/" aria-label="instagram" class="modal-item-social">Instagram</a>
+			<a href="https://www.linkedin.com/in/gavin-kondrath/" aria-label="linkedin" class="modal-item-social">LinkedIn</a>
+		</div>
+	</burger-modal>
+}

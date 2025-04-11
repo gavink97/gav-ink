@@ -1,0 +1,69 @@
+package views
+
+import c "github.com/gavink97/gav-ink/internal/components"
+
+templ About() {
+    //<section class="half-section">
+        @studioStory()
+        @corebeliefs()
+    //</section>
+}
+
+templ studioStory() {
+    <section aria-label="our story" class="p-4 section-scroll" id="story">
+        <h2 class="text-5xl md:text-7xl font-bold pb-4 text-center md:text-left">Studio Story</h2>
+        <p class="text-base md:text-2xl">
+            We’re Gav.ink – an independent full service design and development studio rooted in Jakarta and Austin, driven by a
+            belief that technology should serve humanity and the Earth. We are a remote first team building tech solutions at planet
+            scale.
+        </p>
+    </section>
+    }
+
+// use the sustainable web manifesto
+// https://www.sustainablewebmanifesto.com/
+templ corebeliefs() {
+<section aria-label="core beliefs" class="p-4 section-scroll pb-6" id="core-beliefs">
+<h2 class="text-3xl md:text-5xl font-bold pb-4 text-center md:text-left">Core Beliefs</h2>
+<p class="text-base md:text-2xl">
+    Sustainability: We prioritize energy-efficient, dependency free code; and tools that stand the test of time.
+    <br>
+    Authenticity: We endeavor to craft honest, human-centered experiences. No cookie-cutter solutions.
+    <br>
+    Humility: We’re here to learn, collaborate, and grow – not to lecture.
+    <br>
+    Open Source: We believe Open Source is the backbone of modern society and aspire to contribute towards a brighter future.
+    <br>
+    Activism: We amplify causes that align with our values.
+</p>
+</section>
+}
+
+templ Team() {
+<section aria-label="our team" class="p-4 pt-8 md:pt-0">
+    <h2 id="team" class="text-4xl md:text-5xl section-scroll text-center md:text-left pb-8 md:pb-0">Team</h2>
+    <ol class="flex-col columns-2">
+        <li>
+            <div class="text-xl flex-1">
+                <img src={c.Image("buledepok.webp")}>
+                <h2 class="font-bold">Gavin Kondrath</h2>
+                <h3 class="italic  text-neutral-700">Tech Wizard</h3>
+                // https://web.dev/articles/image-cdns#types
+                <p>
+
+                </p>
+            </div>
+        </li>
+        <li>
+            <div>
+                <h2 class="text-xl">Aviranisha</h2>
+                <h3 class="text-xl font-bold text-neutral-700">Social Media Star</h3>
+                <p>
+
+                </p>
+            </div>
+        </li>
+    </ol>
+
+</section>
+}

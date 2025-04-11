@@ -1,0 +1,29 @@
+.content-title {
+	font-family: token("font.family.title");
+	font-weight: 600;
+	font-size: token("text-size.9xl.size");
+	line-height: token("text-size.9xl.line-height");
+
+	width: 100%;
+	text-align: start;
+	padding-left: 1rem;
+}
+
+.content-body {
+	font-family: token("font.family.ui");
+	font-size: token("text-size.xl.size");
+	line-height: token("text-size.xl.line-height");
+
+	width: 100%;
+	text-align: start;
+	padding: 1rem;
+
+	p {
+		padding-bottom: 1rem;
+	}
+}
+
+.content-post {
+	justify-content: start;
+	padding-top: 8rem;
+}

@@ -1,0 +1,15 @@
+= Gavink
+Gavin Kondrath <gavin@gav.ink>
+1.0, 2025-03-23
+
+:id: 3
+:keywords: Web App, UX / UI Design, OpenGL
+:url-website: https://gav.ink/studies/gavink
+
+Don't worry about gumberoos or splintercats.
+Something far more fearsome plagues the days, nights, and inbetweens.
+Wolpertingers.
+
+== Origins
+
+Wolpertingers are {url-website}[ravenous beasts].

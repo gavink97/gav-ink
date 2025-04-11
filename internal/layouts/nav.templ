@@ -1,0 +1,102 @@
+package layouts
+
+import (
+    c "github.com/gavink97/gav-ink/internal/components"
+m "github.com/gavink97/gav-ink/internal/middleware"
+)
+
+templ Nav() {
+<nav id="nav" aria-label="navigation">
+        @Logo()
+        @Menu()
+        @ContactUs()
+        @c.BurgerMenu()
+</nav>
+}
+
+// make logo animate
+templ Logo() {
+<logo aria-label="gavink">
+    // make it where onhover the text shows a smiley face
+    // <p>gavink</p>
+    <a href="/" aria-label="home">
+        <img src="/public/images/gavink.svg" alt="gavink logo">
+    </a>
+</logo>
+}
+
+templ Menu() {
+<nav-menu>
+    <a href="/" aria-label="home" class="nav-menu-item">
+        <p class="nav-menu-item-text primary-text">
+            home
+        </p>
+    </a>
+
+    @dropDownServices()
+
+    <!--
+    <a href="/studies" class="nav-menu-item">
+        <p class="nav-menu-item-text">
+            case studies
+        </p>
+    </a>
+                -->
+
+    <a href="/#tech" aria-label="technology" class="nav-menu-item">
+        <p class="nav-menu-item-text primary-text">
+            tech
+        </p>
+    </a>
+
+    <a href="/#story" aria-label="studio story" class="nav-menu-item">
+        <p class="nav-menu-item-text primary-text">
+            studio
+        </p>
+    </a>
+</nav-menu>
+}
+
+templ ContactUs() {
+<a href="#prefooter"
+    aria-label="mailing list"
+    class="contact-us-button">
+    <p class="nav-menu-item-text">
+        contact us
+    </p>
+</a>
+}
+
+templ dropDownServices() {
+<drop-down-services>
+    <a href="/#services" aria-label="services" class="nav-menu-item" id="services-menu">
+        <p class="nav-menu-item-text primary-text">
+            services
+        </p>
+        @c.DropDownMenuIcon()
+        @dropDownItems()
+    </a>
+</drop-down-services>
+
+<script src="/public/components/navbar.js" type="module" nonce={ m.GetNonce(ctx) }></script>
+}
+
+templ dropDownItems() {
+<div id="dropdownmenu">
+    <a href="/#ux" aria-label="ux design" class="drop-down-item">
+        <p class="nav-menu-item-text drop-down-text-offset primary-text">
+            design
+        </p>
+    </a>
+    <a href="/#software" aria-label="software development" class="drop-down-item">
+        <p class="nav-menu-item-text drop-down-text-offset primary-text">
+            software
+        </p>
+    </a>
+    <a href="/#webapp" aria-label="web app development" class="drop-down-item">
+        <p class="nav-menu-item-text drop-down-text-offset primary-text">
+            web
+        </p>
+    </a>
+</div>
+}

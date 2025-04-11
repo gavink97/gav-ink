@@ -1,0 +1,28 @@
+package layouts
+
+import (
+    c "github.com/gavink97/gav-ink/internal/components"
+    "os"
+)
+
+templ Layout(contents templ.Component, title string) {
+@Head(title)
+
+if os.Getenv("env") == "prod" {
+    @c.LoadingPage()
+}
+
+<body>
+    @Nav()
+    <main class="content" aria-label={title}>
+
+if os.Getenv("env") == "prod" {
+    @c.PageTransition(contents)
+} else {
+    @contents
+    }
+    </main>
+
+    @FooterWrapper(Footer())
+</body>
+}

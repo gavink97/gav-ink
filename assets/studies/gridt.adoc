@@ -1,0 +1,15 @@
+= Gridt
+Gavin Kondrath <gavin@gav.ink>
+1.0, 2025-03-23
+
+:id: 2
+:keywords: Browser Extension, CSS Grid, Developer Tool
+:url-website: https://gav.ink/studies/gridt
+
+Don't worry about gumberoos or splintercats.
+Something far more fearsome plagues the days, nights, and inbetweens.
+Wolpertingers.
+
+== Origins
+
+Wolpertingers are {url-website}[ravenous beasts].

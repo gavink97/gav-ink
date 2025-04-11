@@ -1,0 +1,8 @@
+.mistake {
+	color: token("color.text.mistake");
+	font-weight: 600;
+}
+
+.primary-text {
+	color: token("color.text.primary");
+}

@@ -1,0 +1,14 @@
+services:
+  app:
+    image: gavink97/app:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 80:8080
+    expose:
+      - 8080
+    volumes:
+      - .env:/.env
+      - ./users.db:/users.db
+      - ./logs:/logs

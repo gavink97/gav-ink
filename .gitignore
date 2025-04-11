@@ -1,0 +1,21 @@
+node_modules
+bin
+.tmp
+.DS_Store*
+package-lock.json
+*_templ.go
+.env
+*.afdesign
+go.sum
+*.db
+logs
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+images
+modals
+dist
+backup model
+tmp
+.npmrc

@@ -1,0 +1,17 @@
+package views
+
+import (
+	c "github.com/gavink97/gav-ink/internal/components"
+	"github.com/gavink97/gav-ink/internal/globals"
+)
+
+templ CaseStudies() {
+    <section aria-label="our insights" class="p-4 section-scroll" id="studies">
+        <h2 class="text-5xl md:text-7xl font-bold pb-4 text-center md:text-left">Our insights</h2>
+        <p class="text-base md:text-2xl">
+            While each project has its own set of technical/design challenges, we believe every obstacle is an opportunity
+            to innovate with intention, collaborate with humility, and leave a lighter footprint on the planet.
+        </p>
+        @c.CaseStudiesPanel(globals.Posts)
+    </section>
+    }

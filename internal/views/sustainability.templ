@@ -1,0 +1,103 @@
+package views
+
+templ sustainability() {
+    <h2 id="sustainability" class="text-4xl md:text-6xl font-bold p-4 text-center md:text-left section-scroll">Sustainability</h2>
+    @whatSustainable()
+    @virtualLCA()
+    @whySustainable()
+    }
+
+templ whatSustainable() {
+    <section class="p-4" aria-label="what is sustainable development?">
+        <h3 class="text-2xl md:text-4xl pb-4 text-center md:text-left">What is Sustainable Software Development?</h3>
+        <p class="text-base md:text-2xl pb-4">
+        Sustainable Development is development that meets the needs of the present without compromising the ability of future
+        generations to meet their own needs. In Software Engineering terms, Sustainable Development is a systems thinking
+        approach to development that focuses on how an application and its parts affect the environment over time.
+        </p>
+
+        <p class="text-base md:text-2xl">
+        We design all our applications with these principles in mind and hope to inspire our collaborators / stakeholders to
+        consider the virtual life cycle assessment when designing software.
+        </p>
+    </section>
+    }
+
+templ virtualLCA() {
+    <section class="p-4 pt-8" aria-label="life cycle assessment of software">
+        <h3 class="text-2xl md:text-4xl pb-4 text-center md:text-left">What is the Life Cycle Assessment of a software product?</h3>
+
+        // defining LCA
+        <p class="text-base md:text-2xl pb-4">
+        A Life Cycle Assessment (LCA), is the methodology for assessing the environmental impact associated with all the stages
+        of a commercial product, process, or service. This takes into account the materials used to produce it, manufacturing,
+           packaging, distribution, usage, & disposal.
+        </p>
+
+        // applying LCAs to digital products
+        <p class="text-base md:text-2xl">
+            With a digital product like a web application for example, it primarily uses energy in three key parts of its life
+            cycle:
+        </p>
+        <ul class="text-base md:text-2xl pl-6 pb-4" style="list-style-type: circle; line-height: 180%;">
+            <li>The creation, testing, launch, and maintenance of applications.</li>
+
+            <li>The hosting and serving of applications.</li>
+
+            <li>The download and interaction of users with applications.</li>
+        </ul>
+
+        // virtual LCAs
+        <p class="text-base md:text-2xl">
+            Therefore a Virtual LCA would look something like this:
+        </p>
+
+        <ul class="text-base md:text-2xl pl-6" style="list-style-type: circle; line-height: 180%;">
+            <li>Materials: Software and visual assets</li>
+
+            <li>Manufacturing: Design and development</li>
+
+            <li>Packaging: Uploaded to the internet</li>
+
+            <li>Distribution: Downloaded through network</li>
+
+            <li>Usage: Interaction, UX, completing tasks</li>
+
+            <li>Disposal: Data erased from client</li>
+        </ul>
+    </section>
+    }
+
+templ whySustainable() {
+    <section class="p-4 pt-8" aria-label="why sustainable development is important">
+        <h3 class="text-2xl md:text-4xl pb-4 text-center md:text-left">Why Sustainable Software Development is important for stakeholders and our planet</h3>
+        <p class="text-base md:text-2xl pb-4">
+        Did you know if the internet was a country it would be the 5th largest producer of GHG in the world? It turns out that
+        the digital medium isn’t as green as we think it is. The data centers that power the applications we enjoy produce tons
+        of emissions.
+        </p>
+
+        <p class="text-base md:text-2xl pb-4">
+        It’s important that we power our web applications with clean renewable energy and reduce energy use by building
+        efficient software. Doing this is not only good for our planet, it’s good for your users and your bottom line.
+        </p>
+
+        <p class="text-base md:text-2xl">
+        When sustainable development principles are embraced you:
+        </p>
+
+        <ul class="text-base md:text-2xl pl-6" style="list-style-type: circle; line-height: 180%;">
+            <li>Improve performance: via lean, fast loading pages</li>
+
+            <li>Improve usability: Clear navigation and messaging</li>
+
+            <li>Improve Search engine results: Easily crawled websites that drive traffic and deliver answers quickly</li>
+
+            <li>Improve accessibility: Relevant content delivered quickly across platforms and devices</li>
+
+            <li>Decreased environmental impact: Solutions powered by renewable energy</li>
+
+            <li>Cost Savings: Via efficient applications that send less data to users</li>
+        </ul>
+    </section>
+    }

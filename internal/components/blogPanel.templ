@@ -1,0 +1,27 @@
+package components
+
+import "github.com/gavink97/gav-ink/internal/types"
+
+templ CaseStudiesPanel(posts []*types.Post) {
+	<panel id="case-studies-panel">
+		for _, post := range posts {
+			@CaseStudiesCard(*post)
+		}
+	</panel>
+}
+
+templ CaseStudiesCard(post types.Post) {
+	<study-card class="study-card">
+		<a aria-label={ post.Title } href={ templ.SafeURL(post.Url) } class="w-[inherit]">
+			// image, title, tags, date
+			<h3 class="text-4xl pl-4">{ post.Title }</h3>
+			<div class="inline-flex w-[inherit]">
+				for _, tag := range post.Tags {
+					<p class="px-4 font-bold">{ tag }</p>
+					<p>•</p>
+				}
+				<p class="pl-4">{ post.LastModified.UTC().Format("January 02, 2006") }</p>
+			</div>
+		</a>
+	</study-card>
+}

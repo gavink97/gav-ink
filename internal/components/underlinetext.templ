@@ -1,0 +1,19 @@
+package components
+
+import m "github.com/gavink97/gav-ink/internal/middleware"
+
+templ UnderlineText(text string) {
+	<underline-text>
+		@underlineTextSuspense(text)
+		<div id="underline">
+			{ text }
+		</div>
+		<script src="/public/effects/underlinetext.js" type="module" nonce={ m.GetNonce(ctx) }></script>
+	</underline-text>
+}
+
+templ underlineTextSuspense(text string) {
+	<div id="placeholder" class="underline-suspense">
+		{ text }
+	</div>
+}

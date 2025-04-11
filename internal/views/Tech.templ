@@ -1,0 +1,86 @@
+package views
+
+templ Tech() {
+        <section aria-label="technology" class="p-4 pt-8 md:pt-0 section-scroll" id="tech">
+        <h2 class="text-5xl md:text-7xl font-bold pb-8 text-center md:text-left">Technologies</h2>
+        <h3 class="text-2xl md:text-5xl">Full Stack developers backed by the latest cloud technology</h3>
+            //intro
+            <p class="text-base md:text-xl">
+                While we pride ourselves on delivering exceptionally crafted websites to our clients, we are nothing without the
+                technologies we're utilizing. Though few people will know which javascript framework you've build your site with, and
+                fewer people the bundler you've used, we are keen on using technologies that are: performant (meaning it feels good to
+                use and saves you money to host) and will stand the tests of time (less rewrites and technical debt).
+            </p>
+
+        </section>
+
+        @performance()
+        @techstack()
+        @appointment()
+        @learnmore()
+        @trust()
+}
+
+templ performance() {
+        <section aria-label="performance" class="md:p-8 pt-8 md:pt-0">
+            <h3 class="text-xl md:text-4xl pb-4">Performance over Pride</h3>
+            <p class="text-base md:text-xl">
+                While we pride ourselves on delivering exceptionally crafted websites to our clients, we are nothing without the
+                technologies we're utilizing. Though few people will know which javascript framework you've build your site with, and
+                fewer people the bundler you've used, we are keen on using technologies that are: performant (meaning it feels good to
+                use and saves you money to host) and will stand the tests of time (less rewrites and technical debt).
+            </p>
+            // code perfomance charts
+            // https://dan.hersam.com/2015/02/25/go-vs-node-vs-php-vs-hhvm-and-wordpress-benchmarks/
+        </section>
+    }
+
+templ techstack() {
+        <section aria-label="tech stack" class="p-4 pt-8 md:pt-0">
+            <h3 class="text-xl md:text-4xl pb-4">Your own custom tech stack, that works anywhere across the web.</h3>
+            <ol class="flex-col columns-2 font-bold text-base md:text-xl">
+            <li>BYOC: Bring Your Own Cloud or Bare Metal</li>
+            <li>Hook into any Content Management System</li>
+            <li>Golang in the backend</li>
+            <li>Modern JavaScript to drive client based interactions</li>
+            <li>Databases</li>
+            <li>Ecommerce + Payment Platforms</li>
+            </ol>
+        </section>
+    }
+
+templ appointment() {
+        <section aria-label="make an appoinment" class="p-4 pt-8 md:pt-0 text-center">
+        <h3 class="text-2xl md:text-5xl pb-4">Own a dusty React app or Wordpress site?</h3>
+            <p class="font-bold texl-lg md:text-2xl">
+                Get a free quote for your project
+            </p>
+        </section>
+    }
+
+templ learnmore() {
+        <section aria-label="learn more" class="p-4 pt-8 md:pt-0 flex space-x-5 text-lg md:text-2xl">
+            <h4>Learn how we build fantastic applications using these technologies</h4>
+            <h4>A dedicated team of developers for your project</h4>
+        </section>
+    }
+
+templ trust() {
+        <section aria-label="our values" class="p-4 pt-8 md:pt-0 text-base md:text-xl">
+            <h3 class="text-xl md:text-4xl pb-4">Our Values</h3>
+            <p>
+            // https://opensourcepledge.com/
+                A Strong commitment to open source (including this website)
+            </p>
+
+            <p>
+               Write it once and done (maintainance free codebases)
+            </p>
+
+            <p>
+                Your code in safe hands
+            </p>
+
+            <a href="#core-beliefs">Learn more about our values</a>
+        </section>
+    }

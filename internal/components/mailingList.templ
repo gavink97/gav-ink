@@ -1,0 +1,82 @@
+package components
+
+import m "github.com/gavink97/gav-ink/internal/middleware"
+
+templ SubscribeForm() {
+	<div>
+		<form
+			hx-post="/subscribe"
+			hx-trigger="submit"
+			hx-swap="innerHTML"
+			hx-target="#subscribe-toast"
+		>
+			<div class="flex">
+				<label for="email"></label>
+				<input
+					type="email"
+					name="email"
+					id="email"
+					placeholder="name@company.com"
+					required=""
+					autocomplete="email"
+					aria-label="email address"
+				/>
+				<button type="submit" id="subscribe-submit" aria-label="subscribe to our mailing list">
+					@submissionButtonSVG()
+				</button>
+			</div>
+			<div id="subscribe-toast"></div>
+		</form>
+	</div>
+}
+
+templ SubscribeError() {
+	<p>An internal server error occured, please try again later.</p>
+}
+
+templ SubscribeExists() {
+	<p>You are already subscribed.</p>
+}
+
+templ SubscribeSuccess() {
+	<p>Please check your email address for confirmation.</p>
+}
+
+templ submissionButtonSVG() {
+	<svg
+		width="40"
+		height="40"
+		viewBox="0 0 40 40"
+		version="1.1"
+		xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink"
+		xml:space="preserve"
+		xmlns:serif="http://www.serif.com/"
+		style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
+		id="submission-button"
+	>
+		<g transform="matrix(0.28698,0,0,0.287356,-110.002,-127.414)">
+			<circle cx="453" cy="513" r="58"></circle>
+		</g>
+		<g transform="matrix(0.311578,0,0,0.464841,-118.652,-222.647)">
+			<path
+				d="M410,525.37L410,518.63L458.174,518.63L445.443,510.532L453.275,505L480,522L453.275,539L445.443,533.468L458.174,525.37L410,525.37Z"
+				style="fill:white;"
+			></path>
+		</g>
+	</svg>
+	<script type="text/javascript" nonce={ m.GetNonce(ctx) }>
+    function scaleSubmissionIcon() {
+        const root = document.querySelector("html");
+        const button = document.getElementById('subscribe-submit');
+        const svg = document.getElementById('submission-button');
+        const scale = parseFloat(getComputedStyle(root).fontSize) / 16;
+
+        svg.style.scale = String(scale);
+        button.style.width = `${40 * scale}px`;
+    }
+
+    window.addEventListener('resize', scaleSubmissionIcon)
+    document.addEventListener('DOMContentLoaded', scaleSubmissionIcon)
+</script>
+}

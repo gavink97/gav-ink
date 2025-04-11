@@ -1,0 +1,32 @@
+home-scene {
+	/* home-scene breaks without display block*/
+	display: block;
+	height: 100%;
+	width: 100%;
+}
+
+#scroll-progress {
+	position: sticky;
+	top: 5rem;
+	left: 2rem;
+	z-index: 60;
+}
+
+#three-home-scene {
+	display: block;
+	position: sticky;
+	top: 0;
+	overflow-y: auto;
+	height: 100%;
+	width: 100%;
+}
+
+#three-home-space {
+	overflow-y: auto;
+	width: 100%;
+
+	/* acts as space for three-home-scene */
+	/* height: 10000px; */
+	height: 100vh;
+	background-color: token("color.background.primary");
+}

@@ -1,0 +1,15 @@
+package components
+
+import m "github.com/gavink97/gav-ink/internal/middleware"
+
+templ ScrollBar() {
+	<scroll-bar>
+		@scrollBarSuspense()
+		<div id="motion-scroll"></div>
+		<script src="/public/components/scrollbar.js" type="module" nonce={ m.GetNonce(ctx) }></script>
+	</scroll-bar>
+}
+
+templ scrollBarSuspense() {
+	<div id="placeholder"></div>
+}

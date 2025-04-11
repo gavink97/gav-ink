@@ -1,0 +1,40 @@
+package scenes
+
+import (
+    c "github.com/gavink97/gav-ink/internal/components"
+    "os"
+	"strconv"
+	"log/slog"
+)
+
+func getModelSize() string {
+    var modelPath string
+
+        if os.Getenv("env") == "prod" {
+            modelPath = "dist/model/macbook.drc"
+        } else {
+            modelPath = "dist/model/macbook.glb"
+        }
+
+    modelPath = "dist/model/macbook.drc"
+
+    model, err := os.Stat(modelPath)
+        if err != nil {
+            slog.Error(err.Error())
+                return ""
+        }
+
+    return(strconv.FormatInt(model.Size(), 10))
+}
+
+templ HomeScene() {
+<home-scene>
+    <div id="suspense">Loading Progress 0.0%</div>
+    <span id="scroll-progress" progress=""></span>
+
+    @c.ScrollBar()
+
+    <div id="three-home-scene" environment-data={string(os.Getenv("env"))} modal-size={getModelSize()}></div>
+    <div id="three-home-space"></div>
+</home-scene>
+}

@@ -1,0 +1,50 @@
+{
+  "name": "gav-ink",
+  "author": "Gavin Kondrath",
+  "email": "78187175+gavink97@users.noreply.github.com",
+  "homepage": "https://gav.ink",
+  "github": "https://github.com/gavink97/gav-ink",
+  "version": "1.0.0",
+  "description": "gav.ink website",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "@axe-core/playwright": "^4.10.1",
+    "@biomejs/biome": "^1.9.4",
+    "@commitlint/cli": "^19.6.1",
+    "@commitlint/config-conventional": "^19.6.0",
+    "@playwright/test": "^1.49.1",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^22.10.5",
+    "@types/three": "^0.175.0",
+    "axe-core": "^4.10.2",
+    "opal-compiler": "^3.0.0",
+    "tsx": "^4.19.3",
+    "vitest": "^3.0.9"
+  },
+  "dependencies": {
+    "@csstools/postcss-design-tokens": "^4.0.4",
+    "@tailwindcss/postcss": "^4.0.15",
+    "asciidoctor": "^3.0.4",
+    "cssnano": "^7.0.6",
+    "esbuild": "^0.25.1",
+    "esbuild-plugin-glsl": "^1.4.0",
+    "lenis": "^1.2.3",
+    "motion": "^12.4.0",
+    "postcss": "^8.5.3",
+    "postcss-autoreset": "^3.1.0",
+    "postcss-import": "^16.1.0",
+    "postcss-initial": "^4.0.1",
+    "postcss-nesting": "^13.0.1",
+    "postcss-preset-env": "^10.1.5",
+    "sharp": "^0.34.0",
+    "tailwindcss": "^4.0.15",
+    "three": "^0.175.0"
+  },
+  "browserslist": [
+    "defaults and fully supports es6-module",
+    "maintained node versions"
+  ]
+}
