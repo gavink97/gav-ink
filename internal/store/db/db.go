@@ -24,7 +24,7 @@ func open(dbName string) (*gorm.DB, error) {
 func MustOpen(dbName string) *gorm.DB {
 
 	if dbName == "" {
-		dbName = "users.db"
+		dbName = "data/users.db"
 	}
 
 	db, err := open(dbName)

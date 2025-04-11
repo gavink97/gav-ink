@@ -10,5 +10,5 @@ services:
       - 8080
     volumes:
       - .env:/.env
-      - ./users.db:/users.db
+      - ./data:/data
       - ./logs:/logs

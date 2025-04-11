@@ -35,11 +35,11 @@ test:
 
 .PHONY: build-docker-image
 build-docker-image:
-	docker-compose -f docker-compose.build.yml up -d --build
+	docker compose -f docker-compose.build.yml up -d --build
 
 .PHONY: prod
 prod:
-	docker-compose -f docker-compose.yml up -d --build
+	docker compose -f docker-compose.yml up -d --build
 
 .PHONY: update
 update:

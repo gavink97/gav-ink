@@ -215,6 +215,10 @@ async function runsharp() {
         fs.mkdirSync(outputDir, { recursive: true });
     };
 
+    if (!fs.existsSync(inputDir)) {
+        return
+    }
+
     const images = fs.readdirSync(inputDir)
 
     for (const image of images) {
