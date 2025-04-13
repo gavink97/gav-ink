@@ -154,6 +154,7 @@
 	flex-direction: column;
 	width: 100%;
 	padding-top: 1.5rem;
+	overflow: hidden;
 
 	font-size: token("text-size.xl.size");
 	line-height: token("text-size.xl.line-height");

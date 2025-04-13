@@ -37,9 +37,20 @@ templ Head(title string) {
                 html.style.setProperty('--vh', String(clientHeight / 100));
             }
 
-            setVH()
-            window.addEventListener('resize', setVH);
-            document.addEventListener('DOMContentLoaded', setVH);
+            function setVW() {
+                const clientWidth = window.innerWidth
+                html.style.setProperty('--vw', String(clientWidth / 100));
+            }
+
+            function client() {
+                setVH()
+                setVW()
+            }
+
+            client()
+
+            window.addEventListener('resize', client);
+            document.addEventListener('DOMContentLoaded', client);
             })()
             </script>
 

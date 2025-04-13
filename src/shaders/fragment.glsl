@@ -1,18 +1,17 @@
 precision highp float;
 
-uniform float u_time;
+uniform float uTime;
 uniform vec2 u_screen_size;
 
-varying vec3 pos;
+varying vec3 vPosition;
+varying vec3 vNormal;
+varying vec2 vUv;
+varying float vDisplacemnt;
 
 void main() {
-    //vec2 position = gl_FragCoord.xy / u_screen_size;
-    vec2 newPos = fract(vec2(pos.x, pos.y) * 10.);
-    //gl_FragColor = vec4(newPos, 1., 1.);
-
-    vec4 c1 = vec4(newPos, 0.9, 1.);
-    vec4 c2 = vec4(newPos, 0.7, 1.);
-    vec4 c = mix(c1, c2, pos.x/12.);
+    //vec3 viewDirection = normalize(cameraPosition - vPosition);
+    //float fresnel = 1. - dot(viewDirection, circle);
+    vec4 c = vec4(vec3(0.35294, 0.49804, 0.32941), 1.);
     gl_FragColor = c;
     //gl_FragColor = vec4(position, 1., 1.);
 }

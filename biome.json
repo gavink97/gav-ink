@@ -16,7 +16,8 @@
         "enabled": true,
         "formatWithErrors": true,
         "ignore": [
-            "**/*.min.js"
+            "**/*.min.js",
+            "assets/*.js"
         ],
         "attributePosition": "auto",
         "indentStyle": "tab",

@@ -1,13 +1,5 @@
-precision highp float;
-
 uniform float uTime;
-
-varying vec3 vPosition;
-varying vec3 vNormal;
-varying vec2 vUv;
 varying float vDisplacement;
-
-#define PI 3.141592653589793238462643383279502884197
 
 //
 // Description : Array and textureless GLSL 2D/3D/4D simplex
@@ -136,24 +128,4 @@ float fit(float unscaled, float min, float max, float minAllowed, float maxAllow
 
 float wave(vec3 position) {
     return fit(smoothMod(position.y * 6., 1., 1.5), 0.35, 0.6, 0., 1.);
-}
-
-void main() {
-    vec3 coords = normal;
-    coords.y += uTime;
-    vec3 noisePattern = vec3(snoise(coords));
-    float pattern = wave(noisePattern);
-
-    vDisplacemnt = pattern;
-    vPosition = position;
-    vNormal = normal;
-    vUv = uv;
-
-    float displacement = pattern / 3.;
-
-    vec3 newPosition = position + normal * displacement;
-
-    vec4 modelViewPosition = modelViewMatrix * vec4( newPosition, 1.);
-    vec4 projectedPosition = projectionMatrix * modelViewPosition;
-    gl_Position = projectedPosition;
 }

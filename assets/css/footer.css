@@ -162,6 +162,7 @@ footer-links {
 	}
 }
 
+/* use grid instead of padding to fix space */
 footer-socials-contact {
 	grid-row: 4 / span 6;
 	grid-column: 2;
@@ -170,7 +171,8 @@ footer-socials-contact {
 	grid-template-columns: 1fr;
 	gap: 1.25rem;
 
-	place-content: end;
+	/* place-content: end; */
+	place-content: start;
 	align-self: end;
 	overflow: hidden;
 

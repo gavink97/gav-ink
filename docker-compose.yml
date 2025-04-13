@@ -1,14 +1,52 @@
 services:
   app:
     image: gavink97/app:latest
+    container_name: app
+    restart: always
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - 80:8080
     expose:
       - 8080
     volumes:
-      - .env:/.env
+      - ./.env:/.env
       - ./data:/data
       - ./logs:/logs
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app.rule=Host(`dev.gav.ink`)"
+      - "traefik.http.routers.app.entrypoints=websecure"
+      - "traefik.http.routers.app.tls.certresolver=myresolver"
+
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    restart: always
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entryPoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=gavin@gav.ink"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - 443:443
+      - 8080:8080
+    volumes:
+      - ./letsencrypt:/letsencrypt
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  #dozzle:
+  #  container_name: dozzle
+  #  image: amir20/dozzle:latest
+  #  restart: always
+  #  volumes:
+  #    - /var/run/docker.sock:/var/run/docker.sock:ro
+  #  expose:
+  #    - 8080
+  #  labels:
+  #    - "traefik.enable=true"
+  #    - "traefik.http.routers.dozzle.rule=Host(`dozzle.gav.ink`)"
+  #    - "traefik.http.routers.dozzle.entrypoints=websecure"
+  #    - "traefik.http.routers.dozzle.tls.certresolver=myresolver"

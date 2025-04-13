@@ -16,6 +16,8 @@ if (!suspense) {
 	throw new Error('Could not find element with id placeholder');
 }
 
+let pressed = false;
+
 burgerIcon(content);
 
 setTimeout(() => {
@@ -74,15 +76,14 @@ function burgerIcon(content: HTMLDivElement): void {
 
 	animate(content, { rotateX: 0 }, { duration: 0 });
 
+	// disabled because need to create a real animation
 	hover(content, () => {
-		animate(content, { rotateX: 180 }, { duration: DURATION });
+		//animate(content, { rotateX: 180 }, { duration: DURATION });
 
 		return () => {
 			animate(content, { rotateX: 0 }, { duration: DURATION });
 		};
 	});
-
-	let pressed = false;
 
 	press(button, () => {
 		if (pressed) {
@@ -130,11 +131,37 @@ function openBurgerModal(): void {
 				document.body.appendChild(content);
 			}
 		})
+		.then(() => {
+			disableScroll();
+			handleLinks();
+		})
 		.catch((err) => {
 			console.error('Error fetching modal:', err);
 		});
 
-	disableScroll();
+	function handleLinks(): void {
+		const modalitems = document.querySelectorAll('.modal-item');
+
+		for (const modal of modalitems) {
+			const link = modal.getAttribute('href');
+
+			if (!link.startsWith('/#')) {
+				return;
+			}
+
+			// ensure there is no flash before assign is complete
+			press(modal, () => {
+				window.location.assign(modal.getAttribute('href'));
+
+				if (window.location.pathname === '/') {
+					closeBurgerModal();
+					pressed = false;
+				}
+
+				return;
+			});
+		}
+	}
 }
 
 function closeBurgerModal(): void {

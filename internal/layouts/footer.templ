@@ -2,141 +2,163 @@ package layouts
 
 import (
 	c "github.com/gavink97/gav-ink/internal/components"
-    m "github.com/gavink97/gav-ink/internal/middleware"
+	m "github.com/gavink97/gav-ink/internal/middleware"
 )
 
 templ preFooter() {
-<pre-footer aria-label="prefooter" id="prefooter" class="content">
-        <p>Let's get in touch</p>
-</pre-footer>
-    }
+	<pre-footer aria-label="prefooter" id="prefooter" class="content">
+		<p>Let's get in touch</p>
+	</pre-footer>
+}
 
 templ Links() {
-<footer-links aria-label="website links">
-    <ol>
-        <li>
-            <a href="/" aria-label="home">@c.StaggerText("Home")</a>
-        </li>
-
-        <li>
-            <a href="/#sustainability" aria-label="sustainability">@c.StaggerText("Sustainability")</a>
-        </li>
-
-        <li>
-            <a href="/#ux" aria-label="ux design">@c.StaggerText("Design")</a>
-        </li>
-
-        <li>
-            <a href="/#software" aria-label="software development">@c.StaggerText("Software")</a>
-        </li>
-
-        <li>
-            <a href="/#webapp" aria-label="web app development">@c.StaggerText("Web")</a>
-        </li>
-
-        <li>
-            <a href="/#tech" aria-label="technology">@c.StaggerText("Technology")</a>
-        </li>
-
-        <li>
-            <a href="/#story" aria-label="studio story">@c.StaggerText("Studio Story")</a>
-        </li>
-
-        <li>
-            <a href="/#projects" aria-label="open source projects">@c.StaggerText("Open Source")</a>
-        </li>
-
-        <li>
-            <a href="/#studies" aria-label="our insights">@c.StaggerText("Case Studies")</a>
-        </li>
-    </ol>
-</footer-links>
+	<footer-links aria-label="website links">
+		<ol>
+			<li>
+				<a href="/#" aria-label="home">
+					@c.StaggerText("Home")
+				</a>
+			</li>
+			<li>
+				<a href="/#sustainability" aria-label="sustainability">
+					@c.StaggerText("Sustainability")
+				</a>
+			</li>
+			<li>
+				<a href="/#ux" aria-label="ux design">
+					@c.StaggerText("Design")
+				</a>
+			</li>
+			<li>
+				<a href="/#software" aria-label="software development">
+					@c.StaggerText("Software")
+				</a>
+			</li>
+			<li>
+				<a href="/#webapp" aria-label="web app development">
+					@c.StaggerText("Web")
+				</a>
+			</li>
+			<li>
+				<a href="/#tech" aria-label="technology">
+					@c.StaggerText("Technology")
+				</a>
+			</li>
+			<li>
+				<a href="/#story" aria-label="studio story">
+					@c.StaggerText("Studio Story")
+				</a>
+			</li>
+			<li>
+				<a href="/#projects" aria-label="open source projects">
+					@c.StaggerText("Open Source")
+				</a>
+			</li>
+			<li>
+				<a href="/#studies" aria-label="our insights">
+					@c.StaggerText("Case Studies")
+				</a>
+			</li>
+		</ol>
+	</footer-links>
 }
 
 templ Socials() {
-<footer-socials aria-label="social media">
-        <ol>
-            <li>
-                <a href="https://github.com/gavink97" aria-label="github">@c.RevealLink("GitHub")</a>
-            </li>
-            <li>
-                <a href="https://www.instagram.com/gavin_kondrath/" aria-label="instagram">@c.RevealLink("Instagram")</a>
-            </li>
-            <li>
-                <a href="https://www.linkedin.com/in/gavin-kondrath/" aria-label="linkedin">@c.RevealLink("LinkedIn")</a>
-            </li>
-        </ol>
-</footer-socials>
+	<footer-socials aria-label="social media">
+		<ol>
+			<li>
+				<a href="https://github.com/gavink97" aria-label="github">
+					@c.RevealLink("GitHub")
+				</a>
+			</li>
+			<li>
+				<a href="https://www.instagram.com/gavin_kondrath/" aria-label="instagram">
+					@c.RevealLink("Instagram")
+				</a>
+			</li>
+			<li>
+				<a href="https://www.linkedin.com/in/gavin-kondrath/" aria-label="linkedin">
+					@c.RevealLink("LinkedIn")
+				</a>
+			</li>
+		</ol>
+	</footer-socials>
 }
 
 templ Emails() {
-<footer-contact aria-label="contact emails">
-        <ol>
-            <li>
-                <p>General Inquires</p>
-                <a href="mailto:hello@gav.ink" aria-label="general inquires email">@c.UnderlineText("hello@gav.ink")</a>
-            </li>
-
-            <li>
-                <p>New Business</p>
-                <a href="mailto:gavin@gav.ink" aria-label="new business email">@c.UnderlineText("gavin@gav.ink")</a>
-            </li>
-        </ol>
-</footer-contact>
+	<footer-contact aria-label="contact emails">
+		<ol>
+			<li>
+				<p>General Inquires</p>
+				<a href="mailto:hello@gav.ink" aria-label="general inquires email">
+					@c.UnderlineText("hello@gav.ink")
+				</a>
+			</li>
+			<li>
+				<p>New Business</p>
+				<a href="mailto:gavin@gav.ink" aria-label="new business email">
+					@c.UnderlineText("gavin@gav.ink")
+				</a>
+			</li>
+		</ol>
+	</footer-contact>
 }
 
 // add form animations
 templ NewLetter() {
-<newsletter aria-label="mailing list">
-        <p id="newsletter-title">
-            Subscribe to <br /> our newsletter
-        </p>
-        @c.SubscribeForm()
-</newsletter>
+	<newsletter aria-label="mailing list">
+		<p id="newsletter-title">
+			Subscribe to
+			<br/>
+			our newsletter
+		</p>
+		@c.SubscribeForm()
+	</newsletter>
 }
 
 templ copyright() {
-<footer-copyright>
-    <p>© 2025</p>
-    <a href="/" aria-label="home">@c.UnderlineText("gavink")</a>
-</footer-copyright>
+	<footer-copyright>
+		<p>© 2025</p>
+		<a href="/" aria-label="home">
+			@c.UnderlineText("gavink")
+		</a>
+	</footer-copyright>
 }
 
 templ madeWith() {
-<footer-message>
-    <p><span>☕</span>99.5% organic coffee 0.5% microplastic</p>
-</footer-message>
+	<footer-message>
+		<p><span>☕</span>99.5% organic coffee 0.5% microplastic</p>
+	</footer-message>
 }
 
 templ Footer() {
-            <footer id="footer" aria-label="footer">
-                <footer-middle>
-                    @Links()
-                    <footer-socials-contact>
-                        @Socials()
-                        @Emails()
-                    </footer-socials-contact>
-                    @NewLetter()
-                </footer-middle>
-
-                <footer-bottom>
-                    @copyright()
-                    // blog link
-                    @madeWith()
-                </footer-bottom>
-            </footer>
+	<footer id="footer" aria-label="footer">
+		<footer-middle>
+			@Links()
+			<footer-socials-contact>
+				@Socials()
+				@Emails()
+			</footer-socials-contact>
+			@NewLetter()
+		</footer-middle>
+		<footer-bottom>
+			@copyright()
+			// blog link
+			@madeWith()
+		</footer-bottom>
+	</footer>
 }
 
 templ FooterWrapper(footer templ.Component) {
-<section aria-label="footer">
-@preFooter()
-<footer-wrapper>
-    <footer-position>
-        <footer-view>
-            @footer
-        </footer-view>
-    </footer-position>
-</footer-wrapper>
-</section>
-<script src="/public/components/footer.js" type="module" nonce={ m.GetNonce(ctx) }></script>
+	<section aria-label="footer">
+		@preFooter()
+		<footer-wrapper>
+			<footer-position>
+				<footer-view>
+					@footer
+				</footer-view>
+			</footer-position>
+		</footer-wrapper>
+	</section>
+	<script src="/public/components/footer.js" type="module" nonce={ m.GetNonce(ctx) }></script>
 }
