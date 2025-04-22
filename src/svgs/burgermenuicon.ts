@@ -86,6 +86,9 @@ function burgerIcon(content: HTMLDivElement): void {
 	});
 
 	press(button, () => {
+		document.getElementById('home').style.display = 'unset';
+		document.getElementById('swap').innerHTML = '';
+
 		if (pressed) {
 			closeBurgerModal();
 			pressed = false;

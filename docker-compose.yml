@@ -8,12 +8,15 @@ services:
       dockerfile: Dockerfile
     expose:
       - 8080
+    environment:
+      TZ: ${TZ}
     volumes:
       - ./.env:/.env
       - ./data:/data
       - ./logs:/logs
     labels:
       - "traefik.enable=true"
+
       - "traefik.http.routers.app.rule=Host(`dev.gav.ink`)"
       - "traefik.http.routers.app.entrypoints=websecure"
       - "traefik.http.routers.app.tls.certresolver=myresolver"
@@ -22,31 +25,57 @@ services:
     image: traefik:latest
     container_name: traefik
     restart: always
+    environment:
+      TZ: ${TZ}
     command:
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
+
+      - "--entryPoints.web.address=:80"
       - "--entryPoints.websecure.address=:443"
+
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+      - "--entrypoints.web.http.redirections.entryPoint.permanent=true"
+
       - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
       - "--certificatesresolvers.myresolver.acme.email=gavin@gav.ink"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
     ports:
+      - 80:80
       - 443:443
       - 8080:8080
     volumes:
       - ./letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
-  #dozzle:
-  #  container_name: dozzle
-  #  image: amir20/dozzle:latest
-  #  restart: always
-  #  volumes:
-  #    - /var/run/docker.sock:/var/run/docker.sock:ro
-  #  expose:
-  #    - 8080
-  #  labels:
-  #    - "traefik.enable=true"
-  #    - "traefik.http.routers.dozzle.rule=Host(`dozzle.gav.ink`)"
-  #    - "traefik.http.routers.dozzle.entrypoints=websecure"
-  #    - "traefik.http.routers.dozzle.tls.certresolver=myresolver"
+  dozzle:
+    image: amir20/dozzle:latest
+    container_name: dozzle
+    restart: always
+    expose:
+      - 8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - dozzle:/data
+    environment:
+      TZ: ${TZ}
+      DOZZLE_NO_ANALYTICS: "true"
+      DOZZLE_AUTH_PROVIDER: "simple"
+    secrets:
+      - source: users
+        target: /data/users.yml
+    labels:
+      - "traefik.enable=true"
+
+      - "traefik.http.routers.dozzle.rule=Host(`dozzle.gav.ink`)"
+      - "traefik.http.routers.dozzle.entrypoints=websecure"
+      - "traefik.http.routers.dozzle.tls.certresolver=myresolver"
+
+secrets:
+  users:
+    file: ./data/users.yml
+
+volumes:
+  dozzle:

@@ -7,6 +7,7 @@ import (
 	"io"
 	"log/slog"
 	"net/http"
+	"strconv"
 
 	"github.com/gavink97/gav-ink/internal/components"
 	"github.com/gavink97/gav-ink/internal/layouts"
@@ -106,6 +107,30 @@ func getContact(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
+	}
+
+	component := r.URL.Query().Get("component")
+	if component != "" {
+		cbool, err := strconv.ParseBool(component)
+		if err != nil {
+			c := views.Contact2()
+			err := layouts.Layout(c, "Contact Us").Render(r.Context(), w)
+			if err != nil {
+				http.Error(w, "Error rendering template", http.StatusInternalServerError)
+				return
+			}
+			return
+		}
+
+		if cbool {
+			err := views.Contact2().Render(r.Context(), w)
+			if err != nil {
+				http.Error(w, "Error rendering template", http.StatusInternalServerError)
+				return
+			}
+
+			return
+		}
 	}
 
 	c := views.Contact2()

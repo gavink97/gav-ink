@@ -7,39 +7,64 @@ import (
 var loadHandle = templ.NewOnceHandle()
 
 templ LoadingPage() {
-<div id="loader-wrapper">
-    @loader()
-</div>
+    @Loader()
 
-// make this occur on the first time only
 // add hidden + overflow hidden to body
 // make loader clickthru while transitioning
 // make loader dynamic to length of time it takes to load the content
 @loadHandle.Once() {
 <script type="text/javascript" nonce={ m.GetNonce(ctx) }>
-    window.onload = (event) => {
-        load()
-    };
 
     function load() {
         const loader = document.getElementById('loader-wrapper');
         loader.style.transition = '0.8s';
-        loader.style.opacity = 0;
+        loader.style.opacity = '0';
 
-        setTimeout(function () {
+        setTimeout(() => {
             document.body.style.overflow = 'auto';
             loader.style.display = 'none';
         }, 800);
+    }
+
+
+    document.onreadystatechange = function () {
+        if (document.readyState === "complete") {
+            load()
+        }
     };
 </script>
 }
 }
 
 // make load animation + website info
-templ loader() {
-<div id="loader">
-    <p>
-        Loading...
-    </p>
+// show an error message if this takes longer than 15 seconds
+templ Loader() {
+<div id="loader-wrapper">
+    <div id="loader" class="full-section-grid">
+
+            <div style="grid-row: 1 / span 2; grid-column: 1 / span 2;">
+                //@spinner()
+            </div>
+
+            <h1 class="text-9xl self-end" style="grid-row: 3; grid-column: 1 / span 2;">gavink</h1>
+            <h2 class="text-6xl" style="grid-row: 4; grid-column: 1 / span 2;">Crafting Digital Experiences with Purpose & Sustainability</h2>
+            <h2 class="text-6xl text-end self-end" style="grid-row: 5; grid-column: 2; animation-name: fadeOut; animation-duration: 4s; animation-timing-function: ease; animation-iteration-count: infinite; animation-direction: alternate;">loading...</h2>
+    </div>
+
 </div>
 }
+
+templ spinner() {
+ <svg width="100%" height="100" xmlns="http://www.w3.org/2000/svg">
+    <path d="M150 5 L75 200 L225 200 Z" style="fill:none;stroke:green;stroke-width:3">
+    <animateTransform
+      attributeName="transform"
+      begin="0s"
+      dur="4s"
+      type="rotate"
+      from="0 85 85"
+      to="360 85 85"
+      repeatCount="indefinite" />
+  </path>
+</svg>
+    }

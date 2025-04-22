@@ -26,7 +26,7 @@ export default function PageTransition(): void {
 	setTimeout(() => {
 		content.style.display = 'block';
 		suspense.style.display = 'none';
-	}, 10);
+	}, 100);
 }
 
 PageTransition();

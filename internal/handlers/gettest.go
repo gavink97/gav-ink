@@ -3,8 +3,8 @@ package handlers
 import (
 	"net/http"
 
+	"github.com/gavink97/gav-ink/internal/components"
 	"github.com/gavink97/gav-ink/internal/layouts"
-	"github.com/gavink97/gav-ink/internal/views"
 )
 
 type TestHandler struct{}
@@ -20,13 +20,7 @@ func (h *TestHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = layouts.Nav().Render(r.Context(), w)
-	if err != nil {
-		http.Error(w, "Error rendering template", http.StatusInternalServerError)
-		return
-	}
-
-	err = views.Contact2().Render(r.Context(), w)
+	err = components.Loader().Render(r.Context(), w)
 	if err != nil {
 		http.Error(w, "Error rendering template", http.StatusInternalServerError)
 		return

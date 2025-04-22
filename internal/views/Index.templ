@@ -1,39 +1,49 @@
 package views
 
 import (
-        "github.com/gavink97/gav-ink/internal/scenes"
-        m "github.com/gavink97/gav-ink/internal/middleware"
 	gh "github.com/gavink97/gav-ink/internal/github"
+	m "github.com/gavink97/gav-ink/internal/middleware"
+	"github.com/gavink97/gav-ink/internal/scenes"
 )
 
 templ Index() {
-    //@scenes.HomeScene()
-    @scenes.SphereScene()
-    @sustainability()
-    @Services2()
-    @Tech()
-    @About()
-    @OpenSource([]gh.Repository{})
-    @CaseStudies()
-    <script src="/public/scenes/hero/index.js" type="module" nonce={ m.GetNonce(ctx) }></script>
+	<section id="swap"></section>
+	<section id="home" aria-label="home">
+		//@scenes.HomeScene()
+		@scenes.SphereScene()
+		@sustainability()
+		@Services2()
+		@Tech()
+		@About()
+		@OpenSource([]gh.Repository{})
+		@CaseStudies()
+	</section>
+	<script src="/public/scenes/hero/index.js" type="module" nonce={ m.GetNonce(ctx) }></script>
+	<script>
+        document.body.addEventListener('htmx:afterSwap', () => {
+            if (document.getElementById('swap').childElementCount > 0) {
+                document.getElementById("home").style.display = "none";
+            }
+        });
+    </script>
 }
 
 templ IndexNoGL() {
-        @hero()
-        @sustainability()
-        @Services2()
-        @Tech()
-        @About()
-        @OpenSource([]gh.Repository{})
-        @CaseStudies()
+	@hero()
+	@sustainability()
+	@Services2()
+	@Tech()
+	@About()
+	@OpenSource([]gh.Repository{})
+	@CaseStudies()
 }
 
 templ hero() {
-        <section class="full-section text-center primary-text" aria-label="hero">
-            <h1 class="text-3xl md:text-8xl font-bold">Crafting Digital</h1>
-            <h1 class="text-3xl md:text-8xl font-bold">Experiences</h1>
-            <h2 class="text-2xl md:text-6xl">with Purpose</h2>
-            <h1 class="text-3xl md:text-8xl font-bold">&</h1>
-            <h2 class="text-2xl md:text-6xl">Sustainability</h2>
-        </section>
-    }
+	<section class="full-section text-center primary-text" aria-label="hero">
+		<h1 class="text-3xl md:text-8xl font-bold">Crafting Digital</h1>
+		<h1 class="text-3xl md:text-8xl font-bold">Experiences</h1>
+		<h2 class="text-2xl md:text-6xl">with Purpose</h2>
+		<h1 class="text-3xl md:text-8xl font-bold">&</h1>
+		<h2 class="text-2xl md:text-6xl">Sustainability</h2>
+	</section>
+}

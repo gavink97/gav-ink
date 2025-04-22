@@ -23,6 +23,13 @@ templ Head(title string) {
 
             <!-- Preload the LCP image with a high fetchpriority so it starts loading with the stylesheet. -->
             <link rel="preload" fetchpriority="high" as="image" href="/public/images/gavink.svg" type="image/svg">
+            <link rel="preload" href="/public/scenes/hero/index.js" as="script">
+
+            <link rel="prefetch" href="/contact" as="document">
+
+            <link rel="prefetch" href="/studies/gavink" as="document">
+            <link rel="prefetch" href="/studies/rpst" as="document">
+            <link rel="prefetch" href="/studies/gridt" as="document">
 
 			<script src="/public/htmx.min.js" nonce={ m.GetNonce(ctx) }></script>
 			<script src="/public/effects/smoothscroll.js" nonce={ m.GetNonce(ctx) }></script>
@@ -53,6 +60,22 @@ templ Head(title string) {
             document.addEventListener('DOMContentLoaded', client);
             })()
             </script>
+
+            /* initialize service worker
+            <script type="text/javascript" nonce={ m.GetNonce(ctx) }>
+                (() => {
+                 if (navigator.serviceWorker) {
+                    window.addEventListener('load', () => {
+                        navigator.serviceWorker
+                            .register('/public/components/serviceworker.js')
+                            .then(reg => console.log('Service Worker Registered'))
+                            .catch(swErr => console.log(
+                                `Service Worker Installation Error: ${swErr}}`));
+                    });
+                 }
+                 })()
+            </script>
+            */
 
             //<link rel="preload" href="/public/effects/pagetransition.js" as="script" nonce={ m.GetNonce(ctx) }/>
 		</head>

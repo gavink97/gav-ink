@@ -1,270 +1,252 @@
 package views
 
 templ Services() {
-    <section aria-label="services" class="p-4 pt-8" id="services">
-        <h2 class="text-4xl md:text-6xl font-bold pb-8 text-center md:text-left">Solutions Designed with Intention</h2>
-        <div class="p-2">
-
-        <h3 class="text-2xl md:text-4xl pb-8">Custom software development solutions to grow your business</h3>
-        <p class="text-base md:text-2xl">
-            Away with prepackaged software that creates bloat and doesn't server your businesses needs. We develop
-            performant web,
-            mobile, and custom software that's tailored to capture all of your unique requirements that can scale to
-            your
-            businesses needs. <a href="/tech" class="font-bold">Learn more about the technologies we use</a>
-        </p>
-
-        </div>
-    </section>
-
-    @UXServices()
-    @SoftwareServices()
-    @WebAppServices()
+	<section aria-label="services" class="p-4 pt-8" id="services">
+		<h2 class="text-4xl md:text-6xl font-bold pb-8 text-center md:text-left">Solutions Designed with Intention</h2>
+		<div class="p-2">
+			<h3 class="text-2xl md:text-4xl pb-8">Custom software development solutions to grow your business</h3>
+			<p class="text-base md:text-2xl">
+				Away with prepackaged software that creates bloat and doesn't server your businesses needs. We develop
+				performant web,
+				mobile, and custom software that's tailored to capture all of your unique requirements that can scale to
+				your
+				businesses needs. <a href="/tech" class="font-bold">Learn more about the technologies we use</a>
+			</p>
+		</div>
+	</section>
+	@UXServices()
+	@SoftwareServices()
+	@WebAppServices()
 }
 
 templ Services2() {
-    <section aria-label="services" class="p-4 pt-8" id="services">
-        <h2 class="text-4xl md:text-6xl font-bold pb-8 text-center md:text-left">Our Services</h2>
-    @spitch()
-    @ux()
-    @software()
-    @webapp()
-    @ourProcess()
-    @why()
+	<section aria-label="services" class="p-4 pt-8" id="services">
+		<h2 class="text-4xl md:text-6xl font-bold pb-8 text-center md:text-left">Our Services</h2>
+		@spitch()
+		@ux()
+		@software()
+		@webapp()
+		@ourProcess()
+		@why()
+	</section>
+}
 
-    </section>
-    }
+templ cta(text string) {
+	<p
+		class="cta-link"
+		aria-label="contact us"
+		hx-get="/contact?component=true"
+		hx-swap="innerHTML"
+		hx-target="#swap"
+		hx-on:click="
+            const options = {
+                immediate: true
+            }
+
+            window.lenis.scrollTo(0, options);
+        "
+	>
+		{ text }
+	</p>
+}
 
 templ spitch() {
-    <section aria-label="our commitment to sustainability">
-        <h3 class="text-2xl md:text-4xl pb-4 text-center md:text-left">Sustainable Digital Solutions Prioritizing People and Planet</h3>
-        <p class="text-base md:text-2xl pb-4">
-            At Gavink, we craft bespoke software that aligns with your business’ goals while reducing environmental harm. We
-            reject
-            bloated, one size fits all frameworks in favor of hand rolled, efficient tools, that are built with the Virtual
-            LCA in
-            consideration.
-        </p>
-
-        <p class="text-base md:text-2xl">
-            So whether you need a modern web application for your startup, a scalable backend service, or an accessible
-            design, we
-            stand committed to build the software your business needs with the environment and your users in mind.
-        </p>
-
-        <a href="/contact" aria-label="contact us" class="cta-link">
-            <p>
-                Let’s build technology that works for your business—and our planet
-            </p>
-        </a>
-    </section>
-    }
+	<section aria-label="our commitment to sustainability">
+		<h3 class="text-2xl md:text-4xl pb-4 text-center md:text-left">Sustainable Digital Solutions Prioritizing People and Planet</h3>
+		<p class="text-base md:text-2xl pb-4">
+			At Gavink, we craft bespoke software that aligns with your business’ goals while reducing environmental harm. We
+			reject
+			bloated, one size fits all frameworks in favor of hand rolled, efficient tools, that are built with the Virtual
+			LCA in
+			consideration.
+		</p>
+		<p class="text-base md:text-2xl">
+			So whether you need a modern web application for your startup, a scalable backend service, or an accessible
+			design, we
+			stand committed to build the software your business needs with the environment and your users in mind.
+		</p>
+		@cta("Let’s build technology that works for your business—and our planet")
+	</section>
+}
 
 templ ux() {
-    <section aria-label="ux design">
-    <h2 id="ux" class="service-section">Design with Humanity at the Heart</h2>
-
-        <p class="text-base md:text-2xl">
-            Interfaces should empower, not exhaust. We create intuitive, accessible experiences that reflect your authenticity
-            and respect users’ time—and the planet’s resources.
-        </p>
-
-        <ol>
-            <li>
-                <strong>Inclusive by Default</strong>: ADA-compliant designs that welcome all users.
-            </li>
-
-            <li>
-                <strong>Visual Storytelling</strong>: Bold, purposeful aesthetics that communicate your mission.
-            </li>
-
-            <li>
-                <strong>Zero Bloat</strong>: Streamlined workflows that reduce digital friction (and energy waste)..
-            </li>
-        </ol>
-
-        <a href="/contact" aria-label="contact us" class="cta-link"><p>
-            Design experiences that respect people and resources
-        </p></a>
-        </section>
-    }
+	<section aria-label="ux design">
+		<h2 id="ux" class="service-section">Design with Humanity at the Heart</h2>
+		<p class="text-base md:text-2xl">
+			Interfaces should empower, not exhaust. We create intuitive, accessible experiences that reflect your authenticity
+			and respect users’ time—and the planet’s resources.
+		</p>
+		<ol>
+			<li>
+				<strong>Inclusive by Default</strong>: ADA-compliant designs that welcome all users.
+			</li>
+			<li>
+				<strong>Visual Storytelling</strong>: Bold, purposeful aesthetics that communicate your mission.
+			</li>
+			<li>
+				<strong>Zero Bloat</strong>: Streamlined workflows that reduce digital friction (and energy waste)..
+			</li>
+		</ol>
+		@cta("Design experiences that respect people and resources")
+	</section>
+}
 
 templ software() {
-    <section aria-label="software development">
-    <h2 id="software" class="service-section">Software That Cares: Built for Purpose, Designed for Impact</h2>
-
-        <p class="text-base md:text-2xl">
-            At Gav.ink, we craft bespoke software and design that aligns with your business goals and your values. We reject
-            bloated, one-size-fits-all solutions in favor of ethical, efficient tools built with open-source principles and a
-            commitment to sustainability. Whether you need a performant web app, scalable software, or inclusive design, we ensure
-            every pixel and line of code serves humanity—and the Earth.
-        </p>
-
-        <ol>
-            <li>
-                <strong>Sustainable Architecture</strong>: Energy-efficient frameworks and eco-conscious hosting (e.g., green cloud providers).
-            </li>
-
-            <li>
-                <strong>Open-Source First</strong>: Leverage transparent, community-driven tools for flexibility and longevity.
-            </li>
-        </ol>
-
-        <a href="/contact" aria-label="contact us" class="cta-link"><p>
-            Engineering solutions that matter
-        </p></a>
-        </section>
-    }
+	<section aria-label="software development">
+		<h2 id="software" class="service-section">Software That Cares: Built for Purpose, Designed for Impact</h2>
+		<p class="text-base md:text-2xl">
+			At Gav.ink, we craft bespoke software and design that aligns with your business goals and your values. We reject
+			bloated, one-size-fits-all solutions in favor of ethical, efficient tools built with open-source principles and a
+			commitment to sustainability. Whether you need a performant web app, scalable software, or inclusive design, we ensure
+			every pixel and line of code serves humanity—and the Earth.
+		</p>
+		<ol>
+			<li>
+				<strong>Sustainable Architecture</strong>: Energy-efficient frameworks and eco-conscious hosting (e.g., green cloud providers).
+			</li>
+			<li>
+				<strong>Open-Source First</strong>: Leverage transparent, community-driven tools for flexibility and longevity.
+			</li>
+		</ol>
+		@cta("Engineering solutions that matter")
+	</section>
+}
 
 templ webapp() {
-    <section aria-label="web app development">
-        <h2 id="webapp" class="service-section">Lightning-Fast Web Apps, Lighter Footprint</h2>
-
-        <p class="text-base md:text-2xl">
-            We build web applications that prioritize speed, scalability, and sustainability—without compromising on
-            performance.
-        </p>
-
-        <ol>
-            <li>
-                <strong>Green Tech Stack</strong>: Optimized for speed and low energy consumption.
-            </li>
-        </ol>
-
-        <a href="/contact" aria-label="contact us" class="cta-link"><p>
-            Let’s build smarter, faster, and greener.
-        </p></a>
-        </section>
-    }
+	<section aria-label="web app development">
+		<h2 id="webapp" class="service-section">Lightning-Fast Web Apps, Lighter Footprint</h2>
+		<p class="text-base md:text-2xl">
+			We build web applications that prioritize speed, scalability, and sustainability—without compromising on
+			performance.
+		</p>
+		<ol>
+			<li>
+				<strong>Green Tech Stack</strong>: Optimized for speed and low energy consumption.
+			</li>
+		</ol>
+		@cta("Let’s build smarter, faster, and greener")
+	</section>
+}
 
 templ ourProcess() {
-    <section aria-label="our development process">
-        <h2 class="service-section">Collaborative by Nature</h2>
-
-        <ol>
-            <li>
-                <strong>Listen First</strong>: We start by understanding your mission, audience, and your values.
-            </li>
-
-            <li>
-                <strong>Build with Care</strong>: Agile development paired with carbon-aware workflows.
-            </li>
-
-            <li>
-                <strong>Iterate with Integrity</strong>: Launch faster, refine smarter, and leave room for evolution.
-            </li>
-        </ol>
-        </section>
-    }
+	<section aria-label="our development process">
+		<h2 class="service-section">Collaborative by Nature</h2>
+		<ol>
+			<li>
+				<strong>Listen First</strong>: We start by understanding your mission, audience, and your values.
+			</li>
+			<li>
+				<strong>Build with Care</strong>: Agile development paired with carbon-aware workflows.
+			</li>
+			<li>
+				<strong>Iterate with Integrity</strong>: Launch faster, refine smarter, and leave room for evolution.
+			</li>
+		</ol>
+	</section>
+}
 
 templ why() {
-    <section aria-label="why collaborate with us">
-        <h2 class="service-section">Why gavink?</h2>
-
-        <ol>
-            <li>
-                <strong>Small Studio, Big Impact</strong>: Based in Jakarta and Austin, we work globally but act locally
-            </li>
-        </ol>
-        </section>
-    }
+	<section aria-label="why collaborate with us">
+		<h2 class="service-section">Why gavink?</h2>
+		<ol>
+			<li>
+				<strong>Small Studio, Big Impact</strong>: Based in Jakarta and Austin, we work globally but act locally
+			</li>
+		</ol>
+	</section>
+}
 
 templ UXServices() {
-<section class="p-4 pb-6 pt-8">
-    <h2 id="ux" class="service-section">UX/UI Services</h2>
-    <div class="p-2">
-    <h2 class="text-xl md:text-4xl pb-4">Build exceptional apps, workflows and experiences your users will love</h2>
-    <h2 class="text-lg md:text-3xl">Optimise design efficiency with cross-functional teams and elevated practices</h2>
-    <p class="text-base md:text-xl p-2">
-        Outstanding design builds confidence in your systems and brand. Located in Sydney, Melbourne and Brisbane, our
-        large team of designers, UX experts and frontend developers bring a complete set of design skills to your
-        project.
-
-        Yes, we create apps with outstanding usability. And re-skin legacy systems with frictionless, modern UI. As
-        consultants
-        too, we create design systems, so your in-house team can enforce consistent experiences and branding. With a
-        shared
-        library of reusable assets to draw on, they can build and release apps faster at scale, keeping the interactive
-        and
-        visual design aspects of your brand unified across all of your platforms.
-    </p>
-    </div>
-</section>
+	<section class="p-4 pb-6 pt-8">
+		<h2 id="ux" class="service-section">UX/UI Services</h2>
+		<div class="p-2">
+			<h2 class="text-xl md:text-4xl pb-4">Build exceptional apps, workflows and experiences your users will love</h2>
+			<h2 class="text-lg md:text-3xl">Optimise design efficiency with cross-functional teams and elevated practices</h2>
+			<p class="text-base md:text-xl p-2">
+				Outstanding design builds confidence in your systems and brand. Located in Sydney, Melbourne and Brisbane, our
+				large team of designers, UX experts and frontend developers bring a complete set of design skills to your
+				project.
+				Yes, we create apps with outstanding usability. And re-skin legacy systems with frictionless, modern UI. As
+				consultants
+				too, we create design systems, so your in-house team can enforce consistent experiences and branding. With a
+				shared
+				library of reusable assets to draw on, they can build and release apps faster at scale, keeping the interactive
+				and
+				visual design aspects of your brand unified across all of your platforms.
+			</p>
+		</div>
+	</section>
 }
 
 templ SoftwareServices() {
-<section class="p-4 pb-6 pt-8">
-    <h2 id="software" class="service-section">Software Development</h2>
-    <div class="p-2">
-    <h2 class="text-xl md:text-4xl pb-4">Custom Software Development services to grow your business</h2>
-    <p class="text-base md:text-xl">
-        Avoid packaged software that doesn't meet the needs of your business. We develop web, mobile and custom software
-        that's
-        tailor-made to capture all your unique and essential requirements — expertly built in scalable technologies such
-        as
-        .NET, SQL, React and Azure Cloud.
-    </p>
-    </div>
-</section>
-
-<section class="p-4 pb-8">
-    <h2 class="text-xl md:text-4xl pb-6">Create the perfect software solution for your business and its unique requirements</h2>
-    <h2 class="text-lg md:text-3xl pb-4">Software development without limits</h2>
-    <p class="text-base md:text-lg pb-4">
-        As custom specialists, we can design, develop and integrate anything digital you require for web, desktop or
-        mobile. We
-        create core business apps, new API’s, portals, booking engines, comparison platforms, reporting suites,
-        large-scale ERP
-        systems and more. No feature left behind.
-    </p>
-    @SalesPitch()
-</section>
+	<section class="p-4 pb-6 pt-8">
+		<h2 id="software" class="service-section">Software Development</h2>
+		<div class="p-2">
+			<h2 class="text-xl md:text-4xl pb-4">Custom Software Development services to grow your business</h2>
+			<p class="text-base md:text-xl">
+				Avoid packaged software that doesn't meet the needs of your business. We develop web, mobile and custom software
+				that's
+				tailor-made to capture all your unique and essential requirements — expertly built in scalable technologies such
+				as
+				.NET, SQL, React and Azure Cloud.
+			</p>
+		</div>
+	</section>
+	<section class="p-4 pb-8">
+		<h2 class="text-xl md:text-4xl pb-6">Create the perfect software solution for your business and its unique requirements</h2>
+		<h2 class="text-lg md:text-3xl pb-4">Software development without limits</h2>
+		<p class="text-base md:text-lg pb-4">
+			As custom specialists, we can design, develop and integrate anything digital you require for web, desktop or
+			mobile. We
+			create core business apps, new API’s, portals, booking engines, comparison platforms, reporting suites,
+			large-scale ERP
+			systems and more. No feature left behind.
+		</p>
+		@SalesPitch()
+	</section>
 }
 
 templ WebAppServices() {
-<section class="p-4 pb-6 pt-8">
-    <h2 id="webapp" class="service-section">Web App Development</h2>
-    <div class="p-2">
-
-    <h2 class="text-xl md:text-4xl pb-4">Best-in-Class Websites to grow your business faster.</h2>
-    <p class="text-base md:text-xl">
-        When innovation and performance matter, we build game-changing
-        websites in scalable technologies for clients with complex technical needs.
-    </p>
-
-    </div>
-</section>
-
-<section class="p-4 pb-8">
-    <h2 class="text-xl md:text-4xl pb-6">Breakthrough websites for clients who value scalability and growth</h2>
-    <h2 class="text-lg md:text-3xl pb-4">Custom websites and mainstream platforms</h2>
-    <p class="text-base md:text-lg pb-4">
-        With 20 years’ experience in web, Soda Digital specialises in custom websites for aspiring market leaders who
-        value
-        innovation and growth. We work in scalable enterprise technologies such as ASP.NET, Umbraco, Shopify Plus and
-        Kentico.
-        Our highly experienced team includes performance engineers, designers, developers, QA testers and system
-        architects.
-        From online workflows to eCommerce platforms, our blended capability ensures wildly successful web projects.
-    </p>
-    @SalesPitch()
-</section>
+	<section class="p-4 pb-6 pt-8">
+		<h2 id="webapp" class="service-section">Web App Development</h2>
+		<div class="p-2">
+			<h2 class="text-xl md:text-4xl pb-4">Best-in-Class Websites to grow your business faster.</h2>
+			<p class="text-base md:text-xl">
+				When innovation and performance matter, we build game-changing
+				websites in scalable technologies for clients with complex technical needs.
+			</p>
+		</div>
+	</section>
+	<section class="p-4 pb-8">
+		<h2 class="text-xl md:text-4xl pb-6">Breakthrough websites for clients who value scalability and growth</h2>
+		<h2 class="text-lg md:text-3xl pb-4">Custom websites and mainstream platforms</h2>
+		<p class="text-base md:text-lg pb-4">
+			With 20 years’ experience in web, Soda Digital specialises in custom websites for aspiring market leaders who
+			value
+			innovation and growth. We work in scalable enterprise technologies such as ASP.NET, Umbraco, Shopify Plus and
+			Kentico.
+			Our highly experienced team includes performance engineers, designers, developers, QA testers and system
+			architects.
+			From online workflows to eCommerce platforms, our blended capability ensures wildly successful web projects.
+		</p>
+		@SalesPitch()
+	</section>
 }
 
 templ SalesPitch() {
-    <section class="p-4">
-    <h3 class="text-xl md:text-3xl pb-4">Collaborative working style</h3>
-    <p class="text-base md:text-lg pb-4">
-        At Soda Digital, our working style is collaborative, friendly and fast. We ship custom websites with complex
-        integrations in two to four months for speedy ROI. Discover why we're one of the best.
-    </p>
-    <h2 class="text-xl md:text-3xl pb-4">Modern & scalable development</h2>
-    <p class="text-base md:text-lg pb-4">
-        Feel in control knowing your project is supported at every step by a dedicated project manager, agile
-        methodology and
-        rigorous quality assurance testing. Modern delivery methods, UX, DevOps and cloud are used to enrich the user
-        experience
-        and performance of your software solution. Get a free quote.
-    </p>
-    </section>
-    }
+	<section class="p-4">
+		<h3 class="text-xl md:text-3xl pb-4">Collaborative working style</h3>
+		<p class="text-base md:text-lg pb-4">
+			At Soda Digital, our working style is collaborative, friendly and fast. We ship custom websites with complex
+			integrations in two to four months for speedy ROI. Discover why we're one of the best.
+		</p>
+		<h2 class="text-xl md:text-3xl pb-4">Modern & scalable development</h2>
+		<p class="text-base md:text-lg pb-4">
+			Feel in control knowing your project is supported at every step by a dedicated project manager, agile
+			methodology and
+			rigorous quality assurance testing. Modern delivery methods, UX, DevOps and cloud are used to enrich the user
+			experience
+			and performance of your software solution. Get a free quote.
+		</p>
+	</section>
+}

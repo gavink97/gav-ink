@@ -74,8 +74,9 @@ export async function build() {
 		outdir: './dist',
 		bundle: true,
 		minify: minify,
-		splitting: true,
-		format: 'esm',
+		//splitting: true,
+		//format: 'esm',
+		format: 'iife',
 		target: ['ESNext'],
 		plugins: [
 			glsl({

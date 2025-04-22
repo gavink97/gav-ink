@@ -3,7 +3,6 @@ bin
 .tmp
 .DS_Store*
 package-lock.json
-*_templ.go
 .env
 *.afdesign
 *.db
@@ -17,3 +16,5 @@ dist
 backup model
 tmp
 .npmrc
+data
+*_templ.go

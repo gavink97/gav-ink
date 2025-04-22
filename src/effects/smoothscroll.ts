@@ -1,9 +1,18 @@
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
 
+declare global {
+	interface Window {
+		lenis: Lenis;
+	}
+}
+
 const lenis = new Lenis({
+	anchors: true,
 	wrapper: document.querySelector('html'),
 });
+
+window.lenis = lenis;
 
 function raf(time): void {
 	lenis.raf(time);

@@ -27,7 +27,10 @@ templ Logo() {
 
 templ Menu() {
 <nav-menu>
-    <a href="/#" aria-label="home" class="nav-menu-item">
+    <a href="/#" aria-label="home" class="nav-menu-item" hx-on:click="
+            document.getElementById('home').style.display = 'unset'
+            document.getElementById('swap').innerHTML = ''
+        ">
         <p class="nav-menu-item-text primary-text">
             home
         </p>
@@ -43,13 +46,19 @@ templ Menu() {
     </a>
                 -->
 
-    <a href="/#tech" aria-label="technology" class="nav-menu-item">
+    <a href="/#tech" aria-label="technology" class="nav-menu-item" hx-on:click="
+            document.getElementById('home').style.display = 'unset'
+            document.getElementById('swap').innerHTML = ''
+        ">
         <p class="nav-menu-item-text primary-text">
             tech
         </p>
     </a>
 
-    <a href="/#story" aria-label="studio story" class="nav-menu-item">
+    <a href="/#story" aria-label="studio story" class="nav-menu-item" hx-on:click="
+        document.getElementById('home').style.display = 'unset'
+        document.getElementById('swap').innerHTML = ''
+        ">
         <p class="nav-menu-item-text primary-text">
             studio
         </p>
@@ -69,7 +78,10 @@ templ ContactUs() {
 
 templ dropDownServices() {
 <drop-down-services>
-    <a href="/#services" aria-label="services" class="nav-menu-item" id="services-menu">
+    <a href="/#services" aria-label="services" class="nav-menu-item" id="services-menu" hx-on:click="
+            document.getElementById('home').style.display = 'unset'
+            document.getElementById('swap').innerHTML = ''
+        ">
         <p class="nav-menu-item-text primary-text">
             services
         </p>
@@ -83,17 +95,26 @@ templ dropDownServices() {
 
 templ dropDownItems() {
 <div id="dropdownmenu">
-    <a href="/#ux" aria-label="ux design" class="drop-down-item">
+    <a href="/#ux" aria-label="ux design" class="drop-down-item" hx-on:click="
+            document.getElementById('home').style.display = 'unset'
+            document.getElementById('swap').innerHTML = ''
+        ">
         <p class="nav-menu-item-text drop-down-text-offset primary-text">
             design
         </p>
     </a>
-    <a href="/#software" aria-label="software development" class="drop-down-item">
+    <a href="/#software" aria-label="software development" class="drop-down-item" hx-on:click="
+            document.getElementById('home').style.display = 'unset'
+            document.getElementById('swap').innerHTML = ''
+        ">
         <p class="nav-menu-item-text drop-down-text-offset primary-text">
             software
         </p>
     </a>
-    <a href="/#webapp" aria-label="web app development" class="drop-down-item">
+    <a href="/#webapp" aria-label="web app development" class="drop-down-item" hx-on:click="
+            document.getElementById('home').style.display = 'unset'
+            document.getElementById('swap').innerHTML = ''
+        ">
         <p class="nav-menu-item-text drop-down-text-offset primary-text">
             web
         </p>

@@ -79,7 +79,7 @@ func Limiter(next http.Handler) http.Handler {
 		return next
 	}
 
-	lmt := tollbooth.NewLimiter(1, &limiter.ExpirableOptions{DefaultExpirationTTL: time.Hour})
+	lmt := tollbooth.NewLimiter(2, &limiter.ExpirableOptions{DefaultExpirationTTL: time.Hour})
 
 	lmt.SetIPLookup(limiter.IPLookup{
 		Name:           "RemoteAddr",

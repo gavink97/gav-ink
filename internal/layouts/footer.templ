@@ -14,51 +14,78 @@ templ preFooter() {
 templ Links() {
 	<footer-links aria-label="website links">
 		<ol>
-			<li>
-				<a href="/#" aria-label="home">
-					@c.StaggerText("Home")
-				</a>
-			</li>
-			<li>
-				<a href="/#sustainability" aria-label="sustainability">
-					@c.StaggerText("Sustainability")
-				</a>
-			</li>
-			<li>
-				<a href="/#ux" aria-label="ux design">
-					@c.StaggerText("Design")
-				</a>
-			</li>
-			<li>
-				<a href="/#software" aria-label="software development">
-					@c.StaggerText("Software")
-				</a>
-			</li>
-			<li>
-				<a href="/#webapp" aria-label="web app development">
-					@c.StaggerText("Web")
-				</a>
-			</li>
-			<li>
-				<a href="/#tech" aria-label="technology">
-					@c.StaggerText("Technology")
-				</a>
-			</li>
-			<li>
-				<a href="/#story" aria-label="studio story">
-					@c.StaggerText("Studio Story")
-				</a>
-			</li>
-			<li>
-				<a href="/#projects" aria-label="open source projects">
-					@c.StaggerText("Open Source")
-				</a>
-			</li>
-			<li>
-				<a href="/#studies" aria-label="our insights">
-					@c.StaggerText("Case Studies")
-				</a>
-			</li>
+            <li>
+                <a href="/#" aria-label="home" hx-on:click="
+                        document.getElementById('home').style.display = 'unset'
+                        document.getElementById('swap').innerHTML = ''
+                    ">
+                    @c.StaggerText("Home")
+                </a>
+            </li>
+            <li>
+                <a href="/#sustainability" aria-label="sustainability" hx-on:click="
+                        document.getElementById('home').style.display = 'unset'
+                        document.getElementById('swap').innerHTML = ''
+                    ">
+                    @c.StaggerText("Sustainability")
+                </a>
+            </li>
+            <li>
+                <a href="/#ux" aria-label="ux design" hx-on:click="
+                        document.getElementById('home').style.display = 'unset'
+                        document.getElementById('swap').innerHTML = ''
+                    ">
+                    @c.StaggerText("Design")
+                </a>
+            </li>
+            <li>
+                <a href="/#software" aria-label="software development" hx-on:click="
+                        document.getElementById('home').style.display = 'unset'
+                        document.getElementById('swap').innerHTML = ''
+                    ">
+                    @c.StaggerText("Software")
+                </a>
+            </li>
+            <li>
+                <a href="/#webapp" aria-label="web app development" hx-on:click="
+                        document.getElementById('home').style.display = 'unset'
+                        document.getElementById('swap').innerHTML = ''
+                    ">
+                    @c.StaggerText("Web")
+                </a>
+            </li>
+            <li>
+                <a href="/#tech" aria-label="technology" hx-on:click="
+                        document.getElementById('home').style.display = 'unset'
+                        document.getElementById('swap').innerHTML = ''
+                    ">
+                    @c.StaggerText("Technology")
+                </a>
+            </li>
+            <li>
+                <a href="/#story" aria-label="studio story" hx-on:click="
+                        document.getElementById('home').style.display = 'unset'
+                        document.getElementById('swap').innerHTML = ''
+                    ">
+                    @c.StaggerText("Studio Story")
+                </a>
+            </li>
+            <li>
+                <a href="/#projects" aria-label="open source projects" hx-on:click="
+                        document.getElementById('home').style.display = 'unset'
+                        document.getElementById('swap').innerHTML = ''
+                    ">
+                    @c.StaggerText("Open Source")
+                </a>
+            </li>
+            <li>
+                <a href="/#studies" aria-label="our insights" hx-on:click="
+                        document.getElementById('home').style.display = 'unset'
+                        document.getElementById('swap').innerHTML = ''
+                    ">
+                    @c.StaggerText("Case Studies")
+                </a>
+            </li>
 		</ol>
 	</footer-links>
 }

@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"path"
+	"strconv"
 
 	"github.com/gavink97/gav-ink/internal/blog"
 	c "github.com/gavink97/gav-ink/internal/components"
@@ -35,36 +36,67 @@ func (h *StudyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var connect bool
+
 	for _, route := range routes {
 		rt := path.Join("/", studies, route.Name())
 
-		if r.URL.String() == rt {
+		if r.URL.Path == rt {
 			post, err := blog.GetPostByTitle(route.Name())
 			if err != nil {
 				slog.Error(fmt.Sprintf("An error occured: %s", err))
+				return
 			}
 
 			file := path.Join(dist, studies, route.Name(), "index.html")
 			html, err := os.ReadFile(file)
 			if err != nil {
 				slog.Error(fmt.Sprintf("An error occured: %v", err))
+				return
 			}
 
 			content := blog.Unsafe(string(html))
 
-			comp := c.ContentComponent(*post, content)
-			err = layouts.Layout(comp, post.Title).Render(r.Context(), w)
+			component := r.URL.Query().Get("component")
+			if component != "" {
+				cbool, err := strconv.ParseBool(component)
+				if err != nil {
+					c := c.ContentComponent(*post, content)
+					err = layouts.Layout(c, post.Title).Render(r.Context(), w)
+					if err != nil {
+						http.Error(w, "Error rendering template", http.StatusInternalServerError)
+						return
+					}
+
+					return
+				}
+
+				if cbool {
+					err := c.ContentComponent(*post, content).Render(r.Context(), w)
+					if err != nil {
+						http.Error(w, "Error rendering template", http.StatusInternalServerError)
+						return
+					}
+
+					return
+				}
+			}
+
+			c := c.ContentComponent(*post, content)
+			err = layouts.Layout(c, post.Title).Render(r.Context(), w)
 			if err != nil {
-				slog.Error(fmt.Sprintf("failed to convert markdown to HTML: %v", err))
+				http.Error(w, "Error rendering template", http.StatusInternalServerError)
 			}
 
 			return
 		}
 	}
 
-	c := views.NotFound()
-	err = layouts.Layout(c, "Not Found").Render(r.Context(), w)
-	if err != nil {
-		slog.Error(fmt.Sprintf("An error occured: %v", err))
+	if !connect {
+		c := views.NotFound()
+		err = layouts.Layout(c, "Not Found").Render(r.Context(), w)
+		if err != nil {
+			slog.Error(fmt.Sprintf("An error occured: %v", err))
+		}
 	}
 }

@@ -1,13 +1,15 @@
 import * as THREE from 'three';
-import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import _FS_MAIN from '../../shaders/fragment_main.glsl';
 import _FS_PARS from '../../shaders/fragment_pars.glsl';
 import _VS_MAIN from '../../shaders/vertex_main.glsl';
 import _VS_PARS from '../../shaders/vertex_pars.glsl';
 
+// caution: stats breaks footer
+//var stats = new Stats();
+//stats.showPanel( 0 )
+
 export function SphereScene(): void {
+	THREE.Cache.enabled = true;
 	const useHelpers = false;
 	const width = window.innerWidth;
 	const height = window.innerHeight;
@@ -36,8 +38,8 @@ export function SphereScene(): void {
 		renderer.setSize(width, height);
 	}
 
-	renderer.shadowMap.enabled = true;
-	renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+	renderer.shadowMap.enabled = false;
+	//renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 	renderer.outputColorSpace = THREE.SRGBColorSpace;
 	renderer.setPixelRatio(window.devicePixelRatio);
 	renderer.setAnimationLoop(animate);
@@ -58,7 +60,7 @@ export function SphereScene(): void {
 
 	const light = new THREE.DirectionalLight('#f9ffeb', 0.8);
 	light.position.set(80, 100, 10);
-	light.castShadow = true;
+	light.castShadow = false;
 
 	const ambientLight = new THREE.AmbientLight('#4F804F', 1.15);
 	scene.add(ambientLight, light);
@@ -76,10 +78,11 @@ export function SphereScene(): void {
 		},
 	};
 
-	let quality = 100;
+	let quality = 400;
 
-	if (env === 'prod') {
-		quality = 400;
+	if (env === 'dev') {
+		quality = 100;
+		//document.body.appendChild( stats.dom );
 	}
 
 	const geometry = new THREE.IcosahedronGeometry(1, quality);
@@ -121,17 +124,20 @@ export function SphereScene(): void {
 	const sphere = new THREE.Mesh(geometry, material);
 
 	sphere.position.set(0, 10, 0);
-	sphere.castShadow = true;
+	sphere.castShadow = false;
 	scene.add(sphere);
 
+	/*
 	const target = new THREE.WebGLRenderTarget(width, height, {
 		samples: 8,
 	});
-	const composer = new EffectComposer(renderer, target);
+
+    const composer = new EffectComposer(renderer, target);
 	const renderPass = new RenderPass(scene, camera);
 	composer.addPass(renderPass);
 
 	composer.addPass(new UnrealBloomPass(new THREE.Vector2(width, height), 0.7, 0.4, 0.4));
+    */
 
 	if (useHelpers) {
 		const gridHelper = new THREE.GridHelper(10, 10, 0xaec6cf, 0xaec6cf);
@@ -155,17 +161,19 @@ export function SphereScene(): void {
 
 		camera.updateProjectionMatrix();
 		renderer.setSize(width, height);
-		composer.setSize(width, height);
+		//composer.setSize(width, height);
 	}
 
 	window.addEventListener('resize', adjCanvas);
 	document.addEventListener('DOMContentLoaded', adjCanvas);
 
 	function animate(): void {
+		//stats.begin();
 		sphere.rotation.x += 0.001;
 		sphere.rotation.y += 0.001;
 		Uniforms.uTime.value = clock.getElapsedTime() / 40;
 
+		//stats.end();
 		render();
 	}
 
