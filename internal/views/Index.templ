@@ -19,7 +19,7 @@ templ Index() {
 		@CaseStudies()
 	</section>
 	<script src="/public/scenes/hero/index.js" type="module" nonce={ m.GetNonce(ctx) }></script>
-	<script>
+    <script type="text/javascript" nonce={ m.GetNonce(ctx) }>
         document.body.addEventListener('htmx:afterSwap', () => {
             if (document.getElementById('swap').childElementCount > 0) {
                 document.getElementById("home").style.display = "none";

@@ -185,3 +185,24 @@
 	font-size: token("text-size.2xl.size");
 	line-height: token("text-size.2xl.line-height");
 }
+
+.loading-screen-wait {
+	animation-name: fadeOut;
+	animation-duration: 4s;
+	animation-timing-function: ease;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+
+	align-self: start;
+	text-align: start;
+
+	grid-row: 5;
+	grid-column: 1;
+
+	@media (min-width: token("viewport.md")) {
+		align-self: end;
+		text-align: end;
+		grid-row: 5;
+		grid-column: 2;
+	}
+}

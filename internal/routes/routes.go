@@ -33,7 +33,7 @@ func newRouter() http.Handler {
 		m.RemoveTrailingSlashMiddleware,
 		m.Limiter,
 		m.TextHTMLMiddleware,
-		m.CSPMiddleware,
+		//m.CSPMiddleware,
 	)
 
 	if os.Getenv("env") == "dev" {

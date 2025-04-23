@@ -40,9 +40,9 @@ func CSPMiddleware(next http.Handler) http.Handler {
 				"font-src 'self' fonts.gstatic.com; ",
 			nonce)
 
-		if os.Getenv("env") == "prod" {
-			w.Header().Add("Content-Security-Policy", cspHeader)
-		}
+		//if os.Getenv("env") == "prod" {
+		w.Header().Add("Content-Security-Policy", cspHeader)
+		//}
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }
