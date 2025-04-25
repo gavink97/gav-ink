@@ -22,14 +22,17 @@ templ Head(title string) {
 			<link rel="stylesheet" href="/public/effects/smoothscroll.css" nonce={ m.GetNonce(ctx) }/>
 
             <!-- Preload the LCP image with a high fetchpriority so it starts loading with the stylesheet. -->
-            <link rel="preload" fetchpriority="high" as="image" href="/public/images/gavink.svg" type="image/svg">
-            <link rel="preload" href="/public/scenes/hero/index.js" as="script">
+            <link rel="preload" fetchpriority="high" as="image" href="/public/images/gavink.svg">
+            //<link rel="preload" href="/public/scenes/hero/index.js" as="script">
 
-            <link rel="prefetch" href="/contact" as="document">
+            <link rel="prefetch" href="/component/burger-modal">
+            <link rel="prefetch" href="/component/open-source-table">
 
-            <link rel="prefetch" href="/studies/gavink" as="document">
-            <link rel="prefetch" href="/studies/rpst" as="document">
-            <link rel="prefetch" href="/studies/gridt" as="document">
+            <link rel="prefetch" href="/contact?component=true">
+
+            <link rel="prefetch" href="/studies/gavink?component=true">
+            <link rel="prefetch" href="/studies/rpst?component=true">
+            <link rel="prefetch" href="/studies/gridt?component=true">
 
 			<script src="/public/htmx.min.js" nonce={ m.GetNonce(ctx) }></script>
 			<script src="/public/effects/smoothscroll.js" nonce={ m.GetNonce(ctx) }></script>

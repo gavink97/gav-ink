@@ -1,3 +1,4 @@
+import htmx from 'htmx.org';
 import { animate, hover, press } from 'motion';
 import token from '../../tokens.json';
 
@@ -86,9 +87,6 @@ function burgerIcon(content: HTMLDivElement): void {
 	});
 
 	press(button, () => {
-		document.getElementById('home').style.display = 'unset';
-		document.getElementById('swap').innerHTML = '';
-
 		if (pressed) {
 			closeBurgerModal();
 			pressed = false;
@@ -148,17 +146,32 @@ function openBurgerModal(): void {
 		for (const modal of modalitems) {
 			const link = modal.getAttribute('href');
 
-			if (!link.startsWith('/#')) {
+			if (!link.startsWith('/')) {
 				return;
 			}
 
 			// ensure there is no flash before assign is complete
 			press(modal, () => {
-				window.location.assign(modal.getAttribute('href'));
+				closeBurgerModal();
+				pressed = false;
 
-				if (window.location.pathname === '/') {
-					closeBurgerModal();
-					pressed = false;
+				const options = {
+					immediate: true,
+				};
+
+				if (link.startsWith('/#')) {
+					document.getElementById('home').style.display = 'unset';
+					document.getElementById('swap').innerHTML = '';
+
+					if (link === '/#') {
+						window.lenis.scrollTo(0, options);
+					} else {
+						window.lenis.scrollTo(link.substring(1), options);
+					}
+				} else {
+					// write handler for contact page here
+					htmx.ajax('GET', link, { target: '#swap', swap: 'innerHTML' });
+					window.lenis.scrollTo(0, options);
 				}
 
 				return;
