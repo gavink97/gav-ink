@@ -1,15 +1,22 @@
 package routes
 
 import (
+	"fmt"
+	"log/slog"
 	"net/http"
 	"os"
+	"strings"
+	"time"
 
+	"github.com/didip/tollbooth/v8"
+	"github.com/didip/tollbooth/v8/limiter"
 	h "github.com/gavink97/gav-ink/internal/handlers"
 	"github.com/gavink97/gav-ink/internal/hash/passwordhash"
 	m "github.com/gavink97/gav-ink/internal/middleware"
 	"github.com/gavink97/gav-ink/internal/store/db"
 	"github.com/gavink97/gav-ink/internal/store/dbstore"
 	"github.com/justinas/alice"
+	"github.com/patrickmn/go-cache"
 )
 
 func newRouter() http.Handler {
@@ -25,15 +32,64 @@ func newRouter() http.Handler {
 			PasswordHash: passwordhash,
 		})
 
+	cache := cache.New(10*time.Minute, 20*time.Minute)
+
+	lmt := tollbooth.NewLimiter(2, &limiter.ExpirableOptions{DefaultExpirationTTL: time.Hour})
+
+	lmt.SetIPLookup(limiter.IPLookup{
+		Name:           "RemoteAddr",
+		IndexFromRight: 0,
+	})
+
+	lmt.SetMessage("You have reached maximum request limit.")
+
+	lmt.SetMessageContentType("text/plain; charset=utf-8")
+
+	lmt.SetOnLimitReached(func(w http.ResponseWriter, r *http.Request) {
+		slog.Warn(fmt.Sprintf("A request was rejected by the server from remote address: %s", r.RemoteAddr))
+	})
+
+	middleware := m.NewMiddlewareHandler(m.MiddlewareParams{
+		Cache:   *cache,
+		Limiter: lmt,
+	})
+
 	publicFiles := http.FileServer(http.Dir("./dist"))
-	mux.Handle("/public/", http.StripPrefix("/public/", publicFiles))
+	mux.Handle("/public/", http.StripPrefix("/public/",
+		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if strings.Contains(r.Header.Get("Accept-Encoding"), "br") {
+				if strings.HasSuffix(r.URL.Path, ".js") {
+					r.URL.Path += ".br"
+					w.Header().Set("Content-Encoding", "br")
+					w.Header().Set("Content-Type", "application/javascript")
+				} else if strings.HasSuffix(r.URL.Path, ".css") {
+					r.URL.Path += ".br"
+					w.Header().Set("Content-Encoding", "br")
+					w.Header().Set("Content-Type", "text/css")
+				}
+			} else if strings.Contains(r.Header.Get("Accept-Encoding"), "gzip") {
+				if strings.HasSuffix(r.URL.Path, ".js") {
+					r.URL.Path += ".gz"
+					w.Header().Set("Content-Encoding", "gzip")
+					w.Header().Set("Content-Type", "application/javascript")
+				} else if strings.HasSuffix(r.URL.Path, ".css") {
+					r.URL.Path += ".gz"
+					w.Header().Set("Content-Encoding", "gzip")
+					w.Header().Set("Content-Type", "text/css")
+				}
+			}
+
+			w.Header().Set("Cache-Control", "public, max-age=31536000, immutable")
+			publicFiles.ServeHTTP(w, r)
+		})))
 
 	authChain := alice.New(
 		loggingMiddleware(),
-		m.RemoveTrailingSlashMiddleware,
-		m.Limiter,
-		m.TextHTMLMiddleware,
-		//m.CSPMiddleware,
+		middleware.RemoveTrailingSlash,
+		middleware.Caching,
+		middleware.Limiting,
+		middleware.ContentTypeHTML,
+		//middleware.CSP,
 	)
 
 	if os.Getenv("env") == "dev" {

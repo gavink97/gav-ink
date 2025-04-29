@@ -8,7 +8,9 @@ declare global {
 }
 
 const lenis = new Lenis({
-	anchors: true,
+	anchors: {
+		offset: -100,
+	},
 	wrapper: document.querySelector('html'),
 });
 

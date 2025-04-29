@@ -10,7 +10,7 @@ templ StaggerText(text string) {
 <stagger-text>
     @staggerTextSuspense(text)
     <div id="stagger">{text}</div>
-    <script src="/public/effects/staggertext.js" type="module" nonce={ m.GetNonce(ctx) }></script>
+    <script src="/public/effects/staggertext.js" type="module" nonce={ m.GetNonce(ctx) } defer></script>
 </stagger-text>
 }
 

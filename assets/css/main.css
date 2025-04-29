@@ -66,7 +66,7 @@ html {
 }
 
 body {
-	background-color: token("color.background.accent");
+	/*	background-color: token("color.background.accent"); */
 	font-family: token("font.family.title");
 }
 

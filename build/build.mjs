@@ -10,6 +10,8 @@ import postcss from 'postcss';
 import atImport from 'postcss-import';
 import postcssPresetEnv from 'postcss-preset-env';
 import sharp from 'sharp';
+import { pipeline } from 'node:stream/promises';
+import { constants, createBrotliCompress, createGzip } from 'node:zlib';
 const require = createRequire(import.meta.url);
 
 const isBuild = process.argv.includes('--build') || process.argv.includes('-b');
@@ -67,23 +69,25 @@ export async function build() {
 		minify = true;
 	}
 
-	const settings = {
-		//platform: 'node',
-		entryPoints: entryPoints,
-		chunkNames: 'chunks/[name]-[hash]',
-		outdir: './dist',
-		bundle: true,
-		minify: minify,
-		//splitting: true,
-		//format: 'esm',
-		format: 'iife',
-		target: ['ESNext'],
-		plugins: [
-			glsl({
-				minify: minify,
-			}),
-		],
-	};
+    const settings = {
+        //platform: 'node',
+        entryPoints: entryPoints,
+        chunkNames: 'chunks/[name]-[hash]',
+        outdir: './dist',
+        bundle: true,
+        minify: minify,
+        //metafile: true,
+        //splitting: true,
+        //format: 'esm',
+        format: 'iife',
+        treeShaking: true,
+        target: ['ESNext'],
+        plugins: [
+            glsl({
+                minify: minify,
+            }),
+        ],
+    };
 
 	const css = fs.readFileSync(cssInput, 'utf8');
 
@@ -129,16 +133,50 @@ export async function build() {
 	}
 }
 
+async function compress() {
+	const files = fs.readdirSync(distDir, { withFileTypes: true, recursive: true });
+
+    const gZip = async (file, options) => {
+        await pipeline(
+            fs.createReadStream(file),
+            createGzip(options),
+            fs.createWriteStream(`${file}.gz`)
+        )
+    }
+
+    const brotli = async (file, options) => {
+        await pipeline(
+            fs.createReadStream(file),
+            createBrotliCompress(options),
+            fs.createWriteStream(`${file}.br`)
+        )
+    }
+
+    await Promise.all(
+        files
+            .filter(file => file.isFile())
+            .filter(file => file.name.endsWith('css') || file.name.endsWith('js'))
+            .map(async (file) => {
+                const fileName = path.join(file.parentPath, file.name)
+                await gZip(fileName, { level: constants.Z_BEST_COMPRESSION });
+                await brotli(fileName, {});
+            })
+    );
+}
+
 function main() {
 	if (isBuild) {
-		build()
+        build()
 			.catch((err) => {
 				console.error('An error occurred in the build process:', err);
 				process.exit(1);
 			})
 			.finally(() => {
+				console.log('Compressing Files');
+                compress().finally(() => {
 				console.log('Build Complete');
 				process.exit(0);
+                })
 			});
 	} else {
 		build().catch((err) => {
@@ -149,7 +187,13 @@ function main() {
 }
 
 function getassets() {
-	const assets = ['htmx.min.js', 'gav.svg', 'gav.png', 'robots.txt'];
+	const assets = [
+        'htmx.min.js',
+        'htmx.preload.js',
+        'gav.svg',
+        'gav.png',
+        'robots.txt'
+    ];
 
 	for (const asset of assets) {
 		if (fs.existsSync(`${distDir}/${asset}`)) {

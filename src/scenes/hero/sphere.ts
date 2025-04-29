@@ -1,15 +1,16 @@
+import Stats from 'stats.js';
 import * as THREE from 'three';
 import _FS_MAIN from '../../shaders/fragment_main.glsl';
 import _FS_PARS from '../../shaders/fragment_pars.glsl';
 import _VS_MAIN from '../../shaders/vertex_main.glsl';
 import _VS_PARS from '../../shaders/vertex_pars.glsl';
 
-// caution: stats breaks footer
-//var stats = new Stats();
-//stats.showPanel( 0 )
-
 export function SphereScene(): void {
 	THREE.Cache.enabled = true;
+
+	const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+	//console.log(isMobile, navigator.userAgent)
+
 	const useHelpers = false;
 	const width = window.innerWidth;
 	const height = window.innerHeight;
@@ -27,9 +28,10 @@ export function SphereScene(): void {
 	const aspect = width / height;
 
 	const renderer = new THREE.WebGLRenderer({
-		antialias: true,
+		antialias: !isMobile,
 		alpha: true,
 		powerPreference: 'high-performance',
+		precision: isMobile ? 'mediump' : 'highp',
 	});
 
 	if (aspect < 1) {
@@ -78,11 +80,17 @@ export function SphereScene(): void {
 		},
 	};
 
-	let quality = 400;
+	let quality = isMobile ? 200 : 400;
 
+	env = 'prod';
 	if (env === 'dev') {
 		quality = 100;
-		//document.body.appendChild( stats.dom );
+
+		// caution: stats breaks footer
+		// biome-ignore lint: this requires var
+		var stats = new Stats();
+		stats.showPanel(0);
+		document.body.appendChild(stats.dom);
 	}
 
 	const geometry = new THREE.IcosahedronGeometry(1, quality);
@@ -168,12 +176,18 @@ export function SphereScene(): void {
 	document.addEventListener('DOMContentLoaded', adjCanvas);
 
 	function animate(): void {
-		//stats.begin();
+		if (env === 'dev') {
+			stats.begin();
+		}
+
 		sphere.rotation.x += 0.001;
 		sphere.rotation.y += 0.001;
 		Uniforms.uTime.value = clock.getElapsedTime() / 40;
 
-		//stats.end();
+		if (env === 'dev') {
+			stats.end();
+		}
+
 		render();
 	}
 

@@ -1,23 +1,19 @@
 package components
 
-import (
-    m "github.com/gavink97/gav-ink/internal/middleware"
-)
+import m "github.com/gavink97/gav-ink/internal/middleware"
 
 templ DropDownMenuIcon() {
-<drop-down-menu-icon>
-    @dropDownMenuIconSuspense()
-
-    <div id="drop-down-menu-icon"></div>
-
-    <script src="/public/svgs/dropdownicon.js" type="module" nonce={ m.GetNonce(ctx) }></script>
-</drop-down-menu-icon>
+	<drop-down-menu-icon>
+		@dropDownMenuIconSuspense()
+		<div id="drop-down-menu-icon"></div>
+		<script src="/public/svgs/dropdownicon.js" type="module" nonce={ m.GetNonce(ctx) } defer></script>
+	</drop-down-menu-icon>
 }
 
 templ dropDownMenuIconSuspense() {
-<drop-down-menu-icon-placeholder id="placeholder">
-    <svg height="10" width="15" xmlns="http://www.w3.org/2000/svg">
-        <path d="M3 3 L8 7 L13 3"/>
-    </svg>
-</drop-down-menu-icon-placeholder>
+	<drop-down-menu-icon-placeholder id="placeholder">
+		<svg height="10" width="15" xmlns="http://www.w3.org/2000/svg">
+			<path d="M3 3 L8 7 L13 3"></path>
+		</svg>
+	</drop-down-menu-icon-placeholder>
 }

@@ -33,13 +33,13 @@ test:
 	&& make gotest \
 	&& npx playwright test tests --pass-with-no-tests --reporter=dot
 
-.PHONY: build-docker-image
-build-docker-image:
-	docker compose -f docker-compose.build.yml up -d --build
+.PHONY: docker
+docker:
+	docker buildx bake -f docker-compose.build.yml --push
 
 .PHONY: prod
 prod:
-	docker compose -f docker-compose.yml up -d --build
+	COMPOSE_BAKE=true docker compose --file docker-compose.yml up -d --build
 
 .PHONY: update
 update:

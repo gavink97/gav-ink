@@ -1,11 +1,8 @@
 services:
   app:
-    image: gavink97/app:latest
+    image: gavink97/gav.ink:latest
     container_name: app
     restart: always
-    build:
-      context: .
-      dockerfile: Dockerfile
     expose:
       - 8080
     environment:
@@ -72,6 +69,19 @@ services:
       - "traefik.http.routers.dozzle.rule=Host(`dozzle.gav.ink`)"
       - "traefik.http.routers.dozzle.entrypoints=websecure"
       - "traefik.http.routers.dozzle.tls.certresolver=myresolver"
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: always
+    environment:
+      TZ: ${TZ}
+      REPO_USER: ${DOCKER_USERNAME}
+      REPO_PASS: ${DOCKER_ACCESS_TOKEN}
+    volumes:
+      - $HOME/.docker/config.json:/config.json:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    command: --interval 30
 
 secrets:
   users:

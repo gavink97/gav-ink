@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"bytes"
 	"context"
 	"crypto/rand"
 	"encoding/hex"
@@ -9,12 +10,29 @@ import (
 	"net/http"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/a-h/templ"
 	"github.com/didip/tollbooth/v8"
 	"github.com/didip/tollbooth/v8/limiter"
+	"github.com/patrickmn/go-cache"
 )
+
+type Middleware struct {
+	Cache   cache.Cache
+	Limiter *limiter.Limiter
+}
+
+type MiddlewareParams struct {
+	Cache   cache.Cache
+	Limiter *limiter.Limiter
+}
+
+func NewMiddlewareHandler(params MiddlewareParams) *Middleware {
+	return &Middleware{
+		Cache:   params.Cache,
+		Limiter: params.Limiter,
+	}
+}
 
 func generateRandomString(length int) string {
 	bytes := make([]byte, length)
@@ -25,7 +43,7 @@ func generateRandomString(length int) string {
 	return hex.EncodeToString(bytes)
 }
 
-func CSPMiddleware(next http.Handler) http.Handler {
+func (m *Middleware) CSP(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		nonce := generateRandomString(24)
 		ctx := templ.WithNonce(r.Context(), nonce)
@@ -47,7 +65,7 @@ func CSPMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-func TextHTMLMiddleware(next http.Handler) http.Handler {
+func (m *Middleware) ContentTypeHTML(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 		next.ServeHTTP(w, r)
@@ -57,14 +75,16 @@ func TextHTMLMiddleware(next http.Handler) http.Handler {
 func GetNonce(ctx context.Context) string {
 	nonce := templ.GetNonce(ctx)
 
-	if nonce == "" {
-		slog.Warn("Nonce not set")
-	}
+	/*
+		if nonce == "" {
+			slog.Warn("Nonce not set")
+		}
+	*/
 
 	return nonce
 }
 
-func RemoveTrailingSlashMiddleware(next http.Handler) http.Handler {
+func (m *Middleware) RemoveTrailingSlash(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path != "/" && strings.HasSuffix(r.URL.Path, "/") {
 			http.Redirect(w, r, strings.TrimSuffix(r.URL.Path, "/"), http.StatusMovedPermanently)
@@ -74,25 +94,78 @@ func RemoveTrailingSlashMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-func Limiter(next http.Handler) http.Handler {
+func (m *Middleware) Limiting(next http.Handler) http.Handler {
 	if os.Getenv("env") == "dev" {
 		return next
 	}
 
-	lmt := tollbooth.NewLimiter(2, &limiter.ExpirableOptions{DefaultExpirationTTL: time.Hour})
+	return tollbooth.LimitFuncHandler(m.Limiter, next.ServeHTTP)
+}
 
-	lmt.SetIPLookup(limiter.IPLookup{
-		Name:           "RemoteAddr",
-		IndexFromRight: 0,
+type cachedResponseWriter struct {
+	originalWriter http.ResponseWriter
+	statusCode     int
+	body           *bytes.Buffer
+	headers        http.Header
+}
+
+func newCachedResponseWriter(w http.ResponseWriter) *cachedResponseWriter {
+	return &cachedResponseWriter{
+		originalWriter: w,
+		body:           bytes.NewBuffer(nil),
+		headers:        make(http.Header),
+		statusCode:     http.StatusOK,
+	}
+}
+
+func (crw *cachedResponseWriter) Header() http.Header {
+	return crw.headers
+}
+
+func (crw *cachedResponseWriter) Write(b []byte) (int, error) {
+	return crw.body.Write(b)
+}
+
+func (crw *cachedResponseWriter) WriteHeader(statusCode int) {
+	crw.statusCode = statusCode
+}
+
+func (m *Middleware) Caching(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			next.ServeHTTP(w, r)
+			return
+		}
+
+		cacheKey := fmt.Sprint("v1-", r.URL.String())
+
+		cached, found := m.Cache.Get(cacheKey)
+		if found {
+			w.Header().Set("Cache-Status", "HIT")
+			w.Header().Set("Content-Type", "text/html; charset=utf-8")
+			_, err := w.Write(cached.([]byte))
+			if err != nil {
+				slog.Error("An error occured when rendering cache")
+				return
+			}
+
+			return
+		}
+
+		crw := newCachedResponseWriter(w)
+		next.ServeHTTP(crw, r)
+
+		//fmt.Println(crw.statusCode)
+		if crw.statusCode == http.StatusOK {
+			responseBytes := crw.body.Bytes()
+			m.Cache.Set(cacheKey, responseBytes, cache.DefaultExpiration)
+			w.Header().Set("Cache-Status", "MISS")
+			w.Header().Set("Cache-Control", "public, max-age=3600")
+			_, err := w.Write(responseBytes)
+			if err != nil {
+				slog.Error("An error occured when rendering response")
+				return
+			}
+		}
 	})
-
-	lmt.SetMessage("You have reached maximum request limit.")
-
-	lmt.SetMessageContentType("text/plain; charset=utf-8")
-
-	lmt.SetOnLimitReached(func(w http.ResponseWriter, r *http.Request) {
-		slog.Warn(fmt.Sprintf("A request was rejected by the server from remote address: %s", r.RemoteAddr))
-	})
-
-	return tollbooth.LimitFuncHandler(lmt, next.ServeHTTP)
 }

@@ -10,7 +10,7 @@ templ Layout(contents templ.Component, title string) {
 	if os.Getenv("env") == "prod" {
 		@c.LoadingPage()
 	}
-	<body>
+	<body hx-ext="preload">
 		@Nav()
 		<main class="content" aria-label={ title }>
 			@contents

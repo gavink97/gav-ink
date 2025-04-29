@@ -20,6 +20,7 @@ templ CaseStudiesCard(post types.Post) {
         aria-label={ post.Title }
         class="w-[inherit]"
         hx-get={ fmt.Sprint(post.Url, "?component=true") }
+        preload="preload:init"
         hx-swap="innerHTML show:top"
         hx-target="#swap"
         hx-on:click="

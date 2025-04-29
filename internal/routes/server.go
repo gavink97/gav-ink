@@ -31,6 +31,27 @@ func Serve() {
 	killSig := make(chan os.Signal, 1)
 	signal.Notify(killSig, os.Interrupt, syscall.SIGTERM)
 
+	/*
+		certFile := "localhost.crt"
+		keyFile := "localhost.key"
+
+		router := newRouter()
+
+		srv := &http3.Server{
+			Addr:     addr,
+			Handler:  router,
+			TLSConfig:  http3.ConfigureTLSConfig(&tls.Config{
+
+			}),
+			QUICConfig: &quic.Config{
+							Tracer: qlog.DefaultConnectionTracer,
+						},
+		}
+
+		go func() {
+			err := srv.ListenAndServeTLS(certFile, keyFile)
+	*/
+
 	srv := &http.Server{
 		Addr:     addr,
 		Handler:  router,

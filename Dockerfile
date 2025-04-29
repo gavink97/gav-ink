@@ -1,4 +1,5 @@
-ARG VERSION="0.1-beta"
+ARG VERSION="0.0.1"
+ARG DATE="2025-04-25"
 ARG NODE_VERSION=23-alpine
 ARG GO_VERSION=1.24-alpine
 
@@ -60,6 +61,8 @@ RUN : \
 
 #FROM gcr.io/distroless/base-debian12 AS deploy
 FROM alpine AS deploy
+ARG VERSION
+ARG DATE
 WORKDIR /
 
 COPY --from=build /gav-ink ./gav-ink
@@ -86,4 +89,4 @@ LABEL vendor=gavink \
       ink.gav.is-beta=True\
       ink.gav.is-production=True \
       ink.gav.version=$VERSION \
-      ink.gav.release-date="2025-04-05"
+      ink.gav.release-date=$DATE

@@ -1,6 +1,6 @@
 services:
   app:
-    image: gavink97/app:latest
+    image: gavink97/gav.ink:latest
     build:
       context: .
       dockerfile: Dockerfile
@@ -8,10 +8,3 @@ services:
         platforms:
           - linux/amd64
           - linux/arm64
-    ports:
-      - 80:8080
-    expose:
-      - 8080
-    volumes:
-      - .env:/.env
-      - ./users.db:/users.db

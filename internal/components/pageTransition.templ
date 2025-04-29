@@ -6,7 +6,7 @@ templ PageTransition(contents templ.Component) {
 	<page-transition>
 		<div id="placeholder" class="page-transition-suspense"></div>
 		<div id="page-transition"></div>
-		<script src="/public/effects/pagetransition.js" type="module" nonce={ m.GetNonce(ctx) }></script>
+		<script src="/public/effects/pagetransition.js" type="module" nonce={ m.GetNonce(ctx) } defer></script>
 		<div id="content">
 			@contents
 		</div>

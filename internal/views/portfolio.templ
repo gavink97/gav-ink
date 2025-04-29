@@ -15,7 +15,7 @@ templ OpenSource(stats []gh.Repository) {
 		</p>
 		@PortfolioTable(stats)
 	</section>
-	<script src="/public/components/table.js" type="module" nonce={ m.GetNonce(ctx) }></script>
+	<script src="/public/components/table.js" type="module" nonce={ m.GetNonce(ctx) } defer></script>
 }
 
 // portfolio table on hover should display an image of the project

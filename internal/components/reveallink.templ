@@ -10,7 +10,7 @@ templ RevealLink(text string) {
 
 <div id="reveal-link">{text}</div>
 
-<script src="/public/effects/reveallink.js" type="module" nonce={ m.GetNonce(ctx) }></script>
+<script src="/public/effects/reveallink.js" type="module" nonce={ m.GetNonce(ctx) } defer></script>
 </reveal-link>
 }
 

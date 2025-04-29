@@ -45,6 +45,7 @@ func loggingMiddleware() func(http.Handler) http.Handler {
 
 	return func(next http.Handler) http.Handler {
 		fn := func(w http.ResponseWriter, r *http.Request) {
+			//fmt.Printf("Connection: %s\n", r.Header.Get("Connection"))
 			defer func() {
 				if err := recover(); err != nil {
 					w.WriteHeader(http.StatusInternalServerError)

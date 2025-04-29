@@ -55,25 +55,34 @@ templ Menu() {
         </p>
     </a>
 
-    <a href="/#story" aria-label="studio story" class="nav-menu-item" hx-on:click="
+    <div aria-label="studio story" class="nav-menu-item" hx-on:click="
         document.getElementById('home').style.display = 'unset'
         document.getElementById('swap').innerHTML = ''
+
+	    window.lenis.scrollTo(story, {
+                offset: -90
+            })
         ">
         <p class="nav-menu-item-text primary-text">
             studio
         </p>
-    </a>
+    </div>
 </nav-menu>
 }
 
 templ ContactUs() {
-<a href="#prefooter"
+<div
     aria-label="mailing list"
-    class="contact-us-button">
+    class="contact-us-button"
+    hx-on:click="
+	    window.lenis.scrollTo(prefooter, {
+                offset: 110
+            })
+    ">
     <p class="nav-menu-item-text">
         contact us
     </p>
-</a>
+</div>
 }
 
 templ dropDownServices() {
@@ -90,7 +99,7 @@ templ dropDownServices() {
     </a>
 </drop-down-services>
 
-<script src="/public/components/navbar.js" type="module" nonce={ m.GetNonce(ctx) }></script>
+<script src="/public/components/navbar.js" type="module" nonce={ m.GetNonce(ctx) } defer></script>
 }
 
 templ dropDownItems() {

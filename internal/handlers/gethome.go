@@ -1,8 +1,11 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
+	"os"
 	"strconv"
+	"time"
 
 	"github.com/a-h/templ"
 	"github.com/gavink97/gav-ink/internal/layouts"
@@ -16,6 +19,13 @@ func NewHomeHandler() *HomeHandler {
 }
 
 func (h *HomeHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	if os.Getenv("env") == "dev" {
+		start := time.Now()
+		defer func() {
+			fmt.Printf("Handler took: %v\n", time.Since(start))
+		}()
+	}
+
 	if r.Method != http.MethodGet {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return

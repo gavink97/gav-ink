@@ -36,6 +36,7 @@ templ cta(text string) {
 		class="cta-link"
 		aria-label="contact us"
 		hx-get="/contact?component=true"
+		preload
 		hx-swap="innerHTML"
 		hx-target="#swap"
 		hx-on:click="

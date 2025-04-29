@@ -10,7 +10,7 @@ templ LoadingPage() {
 	// make loader clickthru while transitioning
 	// make loader dynamic to length of time it takes to load the content
 	@loadHandle.Once() {
-		<script type="text/javascript" nonce={ m.GetNonce(ctx) }>
+		<script type="text/javascript" nonce={ m.GetNonce(ctx) } defer>
 
     function load() {
         const loader = document.getElementById('loader-wrapper');

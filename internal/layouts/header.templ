@@ -1,8 +1,6 @@
 package layouts
 
-import (
-	m "github.com/gavink97/gav-ink/internal/middleware"
-)
+import m "github.com/gavink97/gav-ink/internal/middleware"
 
 templ Head(title string) {
 	<!DOCTYPE html>
@@ -11,33 +9,19 @@ templ Head(title string) {
 			<title>{ title }</title>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
 			<link rel="icon" type="image/png" href="/public/gav.png"/>
 			<link rel="icon" type="image/svg" href="/public/gav.svg"/>
-            // <link rel="preconnect" href="https://fonts.googleapis.com" nonce={ middleware.GetNonce(ctx) }>
+			// <link rel="preconnect" href="https://fonts.googleapis.com" nonce={ middleware.GetNonce(ctx) }>
 			// <link rel="preconnect" href="https://fonts.gstatic.com" nonce={ middleware.GetNonce(ctx) } crossorigin>
 			// <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet" nonce={ middleware.GetNonce(ctx)}>
-
 			<link rel="stylesheet" href="/public/css/main.css" nonce={ m.GetNonce(ctx) }/>
 			<link rel="stylesheet" href="/public/effects/smoothscroll.css" nonce={ m.GetNonce(ctx) }/>
-
-            <!-- Preload the LCP image with a high fetchpriority so it starts loading with the stylesheet. -->
-            <link rel="preload" fetchpriority="high" as="image" href="/public/images/gavink.svg">
-            //<link rel="preload" href="/public/scenes/hero/index.js" as="script">
-
-            <link rel="prefetch" href="/component/burger-modal">
-            <link rel="prefetch" href="/component/open-source-table">
-
-            <link rel="prefetch" href="/contact?component=true">
-
-            <link rel="prefetch" href="/studies/gavink?component=true">
-            <link rel="prefetch" href="/studies/rpst?component=true">
-            <link rel="prefetch" href="/studies/gridt?component=true">
-
-			<script src="/public/htmx.min.js" nonce={ m.GetNonce(ctx) }></script>
-			<script src="/public/effects/smoothscroll.js" nonce={ m.GetNonce(ctx) }></script>
-
-            <script type="text/javascript" nonce={ m.GetNonce(ctx) }>
+			<!-- Preload the LCP image with a high fetchpriority so it starts loading with the stylesheet. -->
+			<link rel="preload" fetchpriority="high" as="image" href="/public/images/gavink.svg"/>
+			<script src="/public/htmx.min.js" nonce={ m.GetNonce(ctx) } defer></script>
+			<script src="/public/htmx.preload.js" nonce={ m.GetNonce(ctx) } defer></script>
+			<script src="/public/effects/smoothscroll.js" nonce={ m.GetNonce(ctx) } defer></script>
+			<script type="text/javascript" nonce={ m.GetNonce(ctx) } defer>
             (() => {
             const html = document.querySelector('html')
             if (!html) return;
@@ -63,8 +47,7 @@ templ Head(title string) {
             document.addEventListener('DOMContentLoaded', client);
             })()
             </script>
-
-            /* initialize service worker
+			/* initialize service worker
             <script type="text/javascript" nonce={ m.GetNonce(ctx) }>
                 (() => {
                  if (navigator.serviceWorker) {
@@ -79,8 +62,7 @@ templ Head(title string) {
                  })()
             </script>
             */
-
-            //<link rel="preload" href="/public/effects/pagetransition.js" as="script" nonce={ m.GetNonce(ctx) }/>
+			//<link rel="preload" href="/public/effects/pagetransition.js" as="script" nonce={ m.GetNonce(ctx) }/>
 		</head>
 	</html>
 }
