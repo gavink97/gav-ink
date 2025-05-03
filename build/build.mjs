@@ -12,6 +12,7 @@ import postcssPresetEnv from 'postcss-preset-env';
 import sharp from 'sharp';
 import { pipeline } from 'node:stream/promises';
 import { constants, createBrotliCompress, createGzip } from 'node:zlib';
+import pkg from '../package.json' with { type: "json" }
 const require = createRequire(import.meta.url);
 
 const isBuild = process.argv.includes('--build') || process.argv.includes('-b');
@@ -20,14 +21,13 @@ const reBuild = process.argv.includes('--rebuild') || process.argv.includes('-r'
 const assetsDir = 'assets';
 const distDir = 'dist';
 
+const VERSION = pkg.version
+
 export async function build() {
 	getassets();
 
 	await convertAsciiDocs();
 	await runsharp();
-
-	const cssInput = `${assetsDir}/css/main.css`;
-	const cssOutput = `${distDir}/css/main.css`;
 
 	if (!fs.existsSync(path.join(distDir, 'css'))) {
 		fs.mkdirSync(path.join(distDir, 'css'), { recursive: true });
@@ -72,6 +72,7 @@ export async function build() {
     const settings = {
         //platform: 'node',
         entryPoints: entryPoints,
+        entryNames: `[dir]/[name].${VERSION}`,
         chunkNames: 'chunks/[name]-[hash]',
         outdir: './dist',
         bundle: true,
@@ -89,6 +90,8 @@ export async function build() {
         ],
     };
 
+	const cssInput = `${assetsDir}/css/main.css`;
+	const cssOutput = `${distDir}/css/main.${VERSION}.css`;
 	const css = fs.readFileSync(cssInput, 'utf8');
 
 	await postcss(postcssPlugins)
@@ -196,12 +199,21 @@ function getassets() {
     ];
 
 	for (const asset of assets) {
-		if (fs.existsSync(`${distDir}/${asset}`)) {
+        let assetName = ""
+
+        if (asset.endsWith("js") || asset.endsWith("css")) {
+           const splits = asset.split('.')
+            assetName = splits[0].concat(".", VERSION, ".", splits.slice(1).join("."))
+        } else {
+            assetName = asset
+        }
+
+		if (fs.existsSync(`${distDir}/${assetName}`)) {
 			console.log(`Skipping ${asset}`);
 			continue;
 		}
 
-		fs.cp(`${assetsDir}/${asset}`, `${distDir}/${asset}`, (err) => {
+		fs.cp(`${assetsDir}/${asset}`, `${distDir}/${assetName}`, (err) => {
 			if (err) {
 				throw err;
 			}

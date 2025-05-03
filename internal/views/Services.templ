@@ -32,7 +32,8 @@ templ Services2() {
 }
 
 templ cta(text string) {
-	<p
+	<a
+        href="/#swap"
 		class="cta-link"
 		aria-label="contact us"
 		hx-get="/contact?component=true"
@@ -44,11 +45,12 @@ templ cta(text string) {
                 immediate: true
             }
 
+            document.getElementById('swap').setAttribute('swap-active', 'true')
             window.lenis.scrollTo(0, options);
         "
 	>
 		{ text }
-	</p>
+	</a>
 }
 
 templ spitch() {

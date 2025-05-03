@@ -18,23 +18,26 @@ import (
 )
 
 type Middleware struct {
-	Cache   cache.Cache
-	Limiter *limiter.Limiter
+	Cache        cache.Cache
+	CacheVersion string
+	Limiter      *limiter.Limiter
 }
 
 type MiddlewareParams struct {
-	Cache   cache.Cache
-	Limiter *limiter.Limiter
+	Cache        cache.Cache
+	CacheVersion string
+	Limiter      *limiter.Limiter
 }
 
 func NewMiddlewareHandler(params MiddlewareParams) *Middleware {
 	return &Middleware{
-		Cache:   params.Cache,
-		Limiter: params.Limiter,
+		Cache:        params.Cache,
+		CacheVersion: params.CacheVersion,
+		Limiter:      params.Limiter,
 	}
 }
 
-func generateRandomString(length int) string {
+func GenerateRandomString(length int) string {
 	bytes := make([]byte, length)
 	_, err := rand.Read(bytes)
 	if err != nil {
@@ -45,7 +48,7 @@ func generateRandomString(length int) string {
 
 func (m *Middleware) CSP(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		nonce := generateRandomString(24)
+		nonce := GenerateRandomString(24)
 		ctx := templ.WithNonce(r.Context(), nonce)
 		cspHeader := fmt.Sprintf(
 			"default-src 'none'; "+
@@ -137,7 +140,7 @@ func (m *Middleware) Caching(next http.Handler) http.Handler {
 			return
 		}
 
-		cacheKey := fmt.Sprint("v1-", r.URL.String())
+		cacheKey := fmt.Sprintf("%s-%s", m.CacheVersion, r.URL.String())
 
 		cached, found := m.Cache.Get(cacheKey)
 		if found {
@@ -160,7 +163,7 @@ func (m *Middleware) Caching(next http.Handler) http.Handler {
 			responseBytes := crw.body.Bytes()
 			m.Cache.Set(cacheKey, responseBytes, cache.DefaultExpiration)
 			w.Header().Set("Cache-Status", "MISS")
-			w.Header().Set("Cache-Control", "public, max-age=3600")
+			w.Header().Set("Cache-Control", "public, max-age=600")
 			_, err := w.Write(responseBytes)
 			if err != nil {
 				slog.Error("An error occured when rendering response")

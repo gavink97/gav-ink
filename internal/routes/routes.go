@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"encoding/json"
 	"fmt"
 	"log/slog"
 	"net/http"
@@ -12,6 +13,7 @@ import (
 	"github.com/didip/tollbooth/v8/limiter"
 	h "github.com/gavink97/gav-ink/internal/handlers"
 	"github.com/gavink97/gav-ink/internal/hash/passwordhash"
+	"github.com/gavink97/gav-ink/internal/middleware"
 	m "github.com/gavink97/gav-ink/internal/middleware"
 	"github.com/gavink97/gav-ink/internal/store/db"
 	"github.com/gavink97/gav-ink/internal/store/dbstore"
@@ -50,9 +52,23 @@ func newRouter() http.Handler {
 	})
 
 	middleware := m.NewMiddlewareHandler(m.MiddlewareParams{
-		Cache:   *cache,
-		Limiter: lmt,
+		Cache:        *cache,
+		CacheVersion: middleware.GenerateRandomString(12),
+		Limiter:      lmt,
 	})
+
+	pkg, err := os.ReadFile("./package.json")
+	if err != nil {
+		slog.Error(err.Error())
+	}
+
+	var payload map[string]string
+	err = json.Unmarshal(pkg, &payload)
+	if err != nil {
+		slog.Error(err.Error())
+	}
+
+	verString := payload["version"]
 
 	publicFiles := http.FileServer(http.Dir("./dist"))
 	mux.Handle("/public/", http.StripPrefix("/public/",
@@ -79,7 +95,14 @@ func newRouter() http.Handler {
 				}
 			}
 
-			w.Header().Set("Cache-Control", "public, max-age=31536000, immutable")
+			for _, suffix := range []string{".gz", ".br"} {
+				if strings.HasSuffix(r.URL.Path, suffix) {
+					splts := strings.SplitAfter(r.URL.Path, ".")
+					r.URL.Path = fmt.Sprintf("%s%s.%v", splts[0], verString, strings.Join(splts[1:], ""))
+				}
+			}
+
+			w.Header().Set("Cache-Control", "public, max-age=604800, immutable")
 			publicFiles.ServeHTTP(w, r)
 		})))
 

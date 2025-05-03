@@ -97,6 +97,7 @@ function burgerIcon(content: HTMLDivElement): void {
 	});
 
 	// only add the handler once
+	// ensure this works
 	const resizeHandler = (): void => {
 		const width = document.documentElement.clientWidth;
 		const modal = document.getElementById('burger-modal');
@@ -150,28 +151,43 @@ function openBurgerModal(): void {
 				return;
 			}
 
-			// ensure there is no flash before assign is complete
 			press(modal, () => {
 				closeBurgerModal();
 				pressed = false;
 
+				const lenis = window.lenis;
+
 				const options = {
 					immediate: true,
+					offset: -100,
 				};
 
 				if (link.startsWith('/#')) {
 					document.getElementById('home').style.display = 'unset';
 					document.getElementById('swap').innerHTML = '';
 
+					const active = document.getElementById('swap').getAttribute('swap-active');
+					const state = active === 'true';
+
+					document.getElementById('swap').setAttribute('swap-active', 'false');
+
 					if (link === '/#') {
-						window.lenis.scrollTo(0, options);
+						lenis.scrollTo(0, options);
 					} else {
-						window.lenis.scrollTo(link.substring(1), options);
+						if (state) {
+							lenis.scrollTo(0, options);
+						}
+
+						const ele = document.getElementById(link.substring(2));
+						ele.scrollIntoView();
+
+						//lenis.scrollTo(link.substring(1), options);
 					}
 				} else {
 					// write handler for contact page here
+					document.getElementById('swap').setAttribute('swap-active', 'true');
 					htmx.ajax('GET', link, { target: '#swap', swap: 'innerHTML' });
-					window.lenis.scrollTo(0, options);
+					lenis.scrollTo(0, options);
 				}
 
 				return;

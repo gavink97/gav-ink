@@ -82,7 +82,6 @@ export function SphereScene(): void {
 
 	let quality = isMobile ? 200 : 400;
 
-	env = 'prod';
 	if (env === 'dev') {
 		quality = 100;
 
@@ -90,7 +89,7 @@ export function SphereScene(): void {
 		// biome-ignore lint: this requires var
 		var stats = new Stats();
 		stats.showPanel(0);
-		document.body.appendChild(stats.dom);
+		//document.body.appendChild(stats.dom);
 	}
 
 	const geometry = new THREE.IcosahedronGeometry(1, quality);

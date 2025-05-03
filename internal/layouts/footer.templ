@@ -19,6 +19,7 @@ templ preFooter() {
                         }
 
                         window.lenis.scrollTo(0, options);
+                        document.getElementById('swap').setAttribute('swap-active', 'true')
                     "
 		>
 			Let's get in touch
@@ -36,6 +37,17 @@ templ Links() {
 					hx-on:click="
                         document.getElementById('home').style.display = 'unset'
                         document.getElementById('swap').innerHTML = ''
+                        const active = document.getElementById('swap').getAttribute('swap-active')
+
+                        const state = (active === 'true')
+
+                        const options = {
+                            immediate: state,
+                            offset: -100
+                        }
+
+                        document.getElementById('swap').setAttribute('swap-active', 'false')
+                        window.lenis.scrollTo(0, options)
                     "
 				>
 					@c.StaggerText("Home")
@@ -48,6 +60,22 @@ templ Links() {
 					hx-on:click="
                         document.getElementById('home').style.display = 'unset'
                         document.getElementById('swap').innerHTML = ''
+                        const active = document.getElementById('swap').getAttribute('swap-active')
+
+                        const state = (active === 'true')
+
+			            const options = {
+				            immediate: state,
+                            offset: -100
+			            }
+
+                        document.getElementById('swap').setAttribute('swap-active', 'false')
+
+                        if (state) {
+			                window.lenis.scrollTo(0, options)
+                        }
+
+                        window.lenis.scrollTo('#sustainability', options)
                     "
 				>
 					@c.StaggerText("Sustainability")
@@ -60,6 +88,22 @@ templ Links() {
 					hx-on:click="
                         document.getElementById('home').style.display = 'unset'
                         document.getElementById('swap').innerHTML = ''
+                        const active = document.getElementById('swap').getAttribute('swap-active')
+
+                        const state = (active === 'true')
+
+			            const options = {
+				            immediate: state,
+                            offset: -100
+			            }
+
+                        document.getElementById('swap').setAttribute('swap-active', 'false')
+
+                        if (state) {
+			                window.lenis.scrollTo(0, options)
+                        }
+
+                        window.lenis.scrollTo('#ux', options)
                     "
 				>
 					@c.StaggerText("Design")
@@ -72,6 +116,22 @@ templ Links() {
 					hx-on:click="
                         document.getElementById('home').style.display = 'unset'
                         document.getElementById('swap').innerHTML = ''
+                        const active = document.getElementById('swap').getAttribute('swap-active')
+
+                        const state = (active === 'true')
+
+			            const options = {
+				            immediate: state,
+                            offset: -100
+			            }
+
+                        document.getElementById('swap').setAttribute('swap-active', 'false')
+
+                        if (state) {
+			                window.lenis.scrollTo(0, options)
+                        }
+
+			            window.lenis.scrollTo('#software', options)
                     "
 				>
 					@c.StaggerText("Software")
@@ -84,6 +144,22 @@ templ Links() {
 					hx-on:click="
                         document.getElementById('home').style.display = 'unset'
                         document.getElementById('swap').innerHTML = ''
+                        const active = document.getElementById('swap').getAttribute('swap-active')
+
+                        const state = (active === 'true')
+
+			            const options = {
+				            immediate: state,
+                            offset: -100
+			            }
+
+                        document.getElementById('swap').setAttribute('swap-active', 'false')
+
+                        if (state) {
+			                window.lenis.scrollTo(0, options)
+                        }
+
+			            window.lenis.scrollTo('#webapp', options)
                     "
 				>
 					@c.StaggerText("Web")
@@ -96,6 +172,22 @@ templ Links() {
 					hx-on:click="
                         document.getElementById('home').style.display = 'unset'
                         document.getElementById('swap').innerHTML = ''
+                        const active = document.getElementById('swap').getAttribute('swap-active')
+
+                        const state = (active === 'true')
+
+			            const options = {
+				            immediate: state,
+                            offset: -100
+			            }
+
+                        document.getElementById('swap').setAttribute('swap-active', 'false')
+
+                        if (state) {
+			                window.lenis.scrollTo(0, options)
+                        }
+
+			            window.lenis.scrollTo('#tech', options)
                     "
 				>
 					@c.StaggerText("Technology")
@@ -108,6 +200,22 @@ templ Links() {
 					hx-on:click="
                         document.getElementById('home').style.display = 'unset'
                         document.getElementById('swap').innerHTML = ''
+                        const active = document.getElementById('swap').getAttribute('swap-active')
+
+                        const state = (active === 'true')
+
+			            const options = {
+				            immediate: state,
+                            offset: -90
+			            }
+
+                        document.getElementById('swap').setAttribute('swap-active', 'false')
+
+                        if (state) {
+			                window.lenis.scrollTo(0, options)
+                        }
+
+			            window.lenis.scrollTo('#story', options)
                     "
 				>
 					@c.StaggerText("Studio Story")
@@ -120,6 +228,22 @@ templ Links() {
 					hx-on:click="
                         document.getElementById('home').style.display = 'unset'
                         document.getElementById('swap').innerHTML = ''
+                        const active = document.getElementById('swap').getAttribute('swap-active')
+
+                        const state = (active === 'true')
+
+			            const options = {
+				            immediate: state,
+                            offset: -100
+			            }
+
+                        document.getElementById('swap').setAttribute('swap-active', 'false')
+
+                        if (state) {
+			                window.lenis.scrollTo(0, options)
+                        }
+
+			            window.lenis.scrollTo('#projects', options)
                     "
 				>
 					@c.StaggerText("Open Source")
@@ -132,6 +256,22 @@ templ Links() {
 					hx-on:click="
                         document.getElementById('home').style.display = 'unset'
                         document.getElementById('swap').innerHTML = ''
+                        const active = document.getElementById('swap').getAttribute('swap-active')
+
+                        const state = (active === 'true')
+
+                        const options = {
+                            immediate: state,
+                            offset: -100
+                        }
+
+                        document.getElementById('swap').setAttribute('swap-active', 'false')
+
+                        if (state) {
+			                window.lenis.scrollTo(0, options)
+                        }
+
+                        window.lenis.scrollTo('#studies', options)
                     "
 				>
 					@c.StaggerText("Case Studies")

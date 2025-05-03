@@ -1,23 +1,23 @@
 package components
 
 import (
-        "github.com/gavink97/gav-ink/internal/globals"
-        "github.com/gavink97/gav-ink/internal/types"
-       )
+	"github.com/gavink97/gav-ink/internal/globals"
+	"github.com/gavink97/gav-ink/internal/types"
+)
 
 templ ContentComponent(post types.Post, body templ.Component) {
-    <section class="full-section content-post">
-        <h1 class="content-title">{ post.Title }</h1>
-        <div class="flex self-start">
-            for _, tag := range post.Tags {
-                <p class="px-4">{ tag }</p>
-            }
-            <p>{ post.LastModified.UTC().Format("January 02, 2006") }</p>
-        </div>
-        <div class="content-body">
-            @body
-        </div>
-    </section>
-    <h3 class="text-4xl p-4">Read our other insights</h3>
-    @CaseStudiesPanel(globals.Posts)
+	<section class="full-section content-post">
+		<h1 class="content-title">{ post.Title }</h1>
+		<div class="flex self-start">
+			for _, tag := range post.Tags {
+				<p class="px-4 hidden md:block">{ tag }</p>
+			}
+			<p class="pl-4">{ post.LastModified.UTC().Format("January 02, 2006") }</p>
+		</div>
+		<div class="content-body">
+			@body
+		</div>
+	</section>
+	<h3 class="text-4xl p-4">Read our other insights</h3>
+	@CaseStudiesPanel(globals.Posts)
 }
