@@ -1,0 +1,22 @@
+services:
+  app:
+    image: gavink97/gav.ink:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      x-bake:
+        platforms:
+          #- linux/arm64
+          - linux/amd64
+    container_name: app
+    restart: always
+    expose:
+      - 8080
+    ports:
+      - 8080:8080
+    environment:
+      TZ: ${TZ}
+    volumes:
+      - ./.env:/.env
+      - ./data:/data
+      - ./logs:/logs

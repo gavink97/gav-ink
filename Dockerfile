@@ -27,13 +27,14 @@ WORKDIR /app
 RUN make build
 
 
-FROM golang:$GO_VERSION AS go
+FROM --platform=$BUILDPLATFORM golang:$GO_VERSION AS go
+ARG TARGETARCH
 WORKDIR /app
 COPY go.mod go.sum ./
 
 RUN : \
 && go mod download \
-&& apk add --no-cache make build-base \
+&& apk add --no-cache zig ca-certificates \
 && :
 
 
@@ -47,13 +48,30 @@ RUN ["templ", "generate"]
 
 
 FROM go AS build
+ARG TARGETARCH
 WORKDIR /app
 
 COPY --from=templ /app /app
 
-# need CGO for sql
 RUN : \
-&& CGO_ENABLED=1 GOOS=linux go build -o /gav-ink ./cmd/gav-ink/main.go \
+&& if [ "$TARGETARCH" = "arm64" ]; \
+    then \
+        CGO_ENABLED=1 \
+        GOOS=linux \
+        GOARCH=${TARGETARCH} \
+        CC="zig cc -target aarch64-linux-musl" \
+        go build -o /gav-ink ./cmd/gav-ink/main.go; \
+    elif [ "$TARGETARCH" = "amd64" ]; \
+        then \
+            CGO_ENABLED=1 \
+            GOOS=linux \
+            GOARCH=${TARGETARCH} \
+            CC="zig cc -target x86_64-linux-musl" \
+            CXX="zig c++ -target x86_64-linux-musl"\
+            go build -o /gav-ink ./cmd/gav-ink/main.go; \
+    else \
+        echo Invalid Target Architecture: $TARGETARCH; \
+fi \
 && chmod +x /gav-ink \
 # && adduser --disabled-password -u 10001 nonroot \
 && :
@@ -61,6 +79,7 @@ RUN : \
 
 #FROM gcr.io/distroless/base-debian12 AS deploy
 FROM alpine AS deploy
+#FROM scratch AS deploy
 ARG VERSION
 ARG DATE
 WORKDIR /
@@ -68,6 +87,7 @@ WORKDIR /
 COPY --from=build /gav-ink ./gav-ink
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/assets/studies ./assets/studies
+COPY --from=build /app/package.json ./package.json
 
 #COPY --link --from=build /etc/passwd /etc/passwd
 #COPY --chown=nonroot --from=build /app/bin/gav-ink .

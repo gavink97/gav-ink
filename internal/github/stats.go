@@ -72,7 +72,13 @@ func GetGithubRepo(name string) (Repository, error) {
 		return Repository{}, err
 	}
 
-	defer resp.Body.Close()
+	defer func() {
+		err := resp.Body.Close()
+
+		if err != nil {
+			slog.Error(err.Error())
+		}
+	}()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -115,7 +121,13 @@ func GetRepoCollaborators(name string) (bool, error) {
 		return false, err
 	}
 
-	defer resp.Body.Close()
+	defer func() {
+		err := resp.Body.Close()
+
+		if err != nil {
+			slog.Error(err.Error())
+		}
+	}()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -156,7 +168,13 @@ func GetGithubStats() ([]Repository, error) {
 		return []Repository{}, err
 	}
 
-	defer resp.Body.Close()
+	defer func() {
+		err := resp.Body.Close()
+
+		if err != nil {
+			slog.Error(err.Error())
+		}
+	}()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -179,7 +197,7 @@ func GetGithubStats() ([]Repository, error) {
 			continue
 		}
 
-		fork, err := GetGithubRepo(repo.GitHubResponse.FullName)
+		fork, err := GetGithubRepo(repo.FullName)
 		if err != nil {
 			slog.Error(err.Error())
 			return []Repository{}, err
@@ -207,16 +225,28 @@ func GetGithubStats() ([]Repository, error) {
 }
 
 func GenerateGithubStats() {
-	go func() {
-		for {
+	for {
+		c := make(chan []Repository)
+
+		go func() {
 			resp, err := GetGithubStats()
 			if err != nil {
-				slog.Error(err.Error())
+				slog.Error("failed to get GitHub stats", "error", err)
+				c <- nil
+				return
 			}
+			c <- resp
+		}()
 
-			Stats = resp
-			time.Sleep(6 * time.Hour)
-			slog.Debug("Updating Github Stats")
-		}
+		Stats = <-c
+		slog.Debug("Updated GitHub Stats")
+
+		time.Sleep(6 * time.Hour)
+	}
+}
+
+func OpenSourceStats() {
+	go func() {
+		GenerateGithubStats()
 	}()
 }

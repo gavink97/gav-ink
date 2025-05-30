@@ -43,7 +43,7 @@
                 "noSecrets": "error",
                 "noCommonJs": "error",
                 "useStrictMode": "error",
-                "noDescendingSpecificity": "warn",
+                "noDescendingSpecificity": "off",
                 "noMissingVarFunction": "error",
                 "noUnknownTypeSelector": "warn"
             }

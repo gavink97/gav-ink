@@ -60,7 +60,13 @@ func GenerateCredentials(scope string) (ZohoAuthResponse, error) {
 		return ZohoAuthResponse{}, err
 	}
 
-	defer resp.Body.Close()
+	defer func() {
+		err := resp.Body.Close()
+
+		if err != nil {
+			slog.Error(err.Error())
+		}
+	}()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {

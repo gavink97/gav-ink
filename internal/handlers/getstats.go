@@ -15,7 +15,6 @@ func (h *ComponentHandler) GetOpenSourceTable(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	// its possible that gh stats are nil so we should make a placeholder.
 	stats := gh.Stats
 
 	key := r.URL.Query().Get("primary")

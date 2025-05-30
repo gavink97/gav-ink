@@ -13,7 +13,6 @@ import (
 	"github.com/didip/tollbooth/v8/limiter"
 	h "github.com/gavink97/gav-ink/internal/handlers"
 	"github.com/gavink97/gav-ink/internal/hash/passwordhash"
-	"github.com/gavink97/gav-ink/internal/middleware"
 	m "github.com/gavink97/gav-ink/internal/middleware"
 	"github.com/gavink97/gav-ink/internal/store/db"
 	"github.com/gavink97/gav-ink/internal/store/dbstore"
@@ -53,7 +52,7 @@ func newRouter() http.Handler {
 
 	middleware := m.NewMiddlewareHandler(m.MiddlewareParams{
 		Cache:        *cache,
-		CacheVersion: middleware.GenerateRandomString(12),
+		CacheVersion: m.GenerateRandomString(12),
 		Limiter:      lmt,
 	})
 
@@ -62,7 +61,7 @@ func newRouter() http.Handler {
 		slog.Error(err.Error())
 	}
 
-	var payload map[string]string
+	var payload map[string]any
 	err = json.Unmarshal(pkg, &payload)
 	if err != nil {
 		slog.Error(err.Error())
@@ -107,6 +106,7 @@ func newRouter() http.Handler {
 		})))
 
 	authChain := alice.New(
+		middleware.Recovery,
 		loggingMiddleware(),
 		middleware.RemoveTrailingSlash,
 		middleware.Caching,

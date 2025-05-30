@@ -91,13 +91,12 @@ function burgerIcon(content: HTMLDivElement): void {
 			closeBurgerModal();
 			pressed = false;
 		} else {
-			openBurgerModal();
+			openBurgerModal(pressed);
 			pressed = true;
 		}
 	});
 
 	// only add the handler once
-	// ensure this works
 	const resizeHandler = (): void => {
 		const width = document.documentElement.clientWidth;
 		const modal = document.getElementById('burger-modal');
@@ -105,19 +104,16 @@ function burgerIcon(content: HTMLDivElement): void {
 			return;
 		}
 
-		// need to fix this as modal does not remove
-		if (width >= token.viewport.md.value) {
+		if (width >= Number.parseInt(token.viewport.md.value)) {
 			modal.remove();
 			pressed = false;
-			enableScroll();
 		}
 	};
 
 	window.addEventListener('resize', resizeHandler);
 }
 
-// this should be in a different file
-function openBurgerModal(): void {
+function openBurgerModal(pressed: boolean): void {
 	fetch('/component/burger-modal')
 		.then((res) => {
 			if (!res.ok) {
@@ -134,7 +130,7 @@ function openBurgerModal(): void {
 			}
 		})
 		.then(() => {
-			disableScroll();
+			opening();
 			handleLinks();
 		})
 		.catch((err) => {
@@ -153,7 +149,7 @@ function openBurgerModal(): void {
 
 			press(modal, () => {
 				closeBurgerModal();
-				pressed = false;
+				pressed === false;
 
 				const lenis = window.lenis;
 
@@ -166,25 +162,24 @@ function openBurgerModal(): void {
 					document.getElementById('home').style.display = 'unset';
 					document.getElementById('swap').innerHTML = '';
 
-					const active = document.getElementById('swap').getAttribute('swap-active');
-					const state = active === 'true';
-
+					const active = document.getElementById('swap').getAttribute('swap-active').toLowerCase() === 'true';
 					document.getElementById('swap').setAttribute('swap-active', 'false');
 
 					if (link === '/#') {
-						lenis.scrollTo(0, options);
-					} else {
-						if (state) {
+						if (active) {
 							lenis.scrollTo(0, options);
+						} else {
+							lenis.scrollTo(0);
 						}
-
-						const ele = document.getElementById(link.substring(2));
-						ele.scrollIntoView();
-
-						//lenis.scrollTo(link.substring(1), options);
+					} else {
+						if (active) {
+							lenis.scrollTo(link.substring(1), options);
+						} else {
+							const ele = document.getElementById(link.substring(2));
+							ele.scrollIntoView();
+						}
 					}
 				} else {
-					// write handler for contact page here
 					document.getElementById('swap').setAttribute('swap-active', 'true');
 					htmx.ajax('GET', link, { target: '#swap', swap: 'innerHTML' });
 					lenis.scrollTo(0, options);
@@ -194,38 +189,62 @@ function openBurgerModal(): void {
 			});
 		}
 	}
+
+	function opening(): void {
+		const modal = document.getElementById('burger-modal');
+		if (!modal) {
+			return;
+		}
+
+		const nav = document.getElementById('nav');
+		if (!nav) {
+			console.log('expected there to be a nav.');
+			return;
+		}
+
+		modal.classList.add('opening');
+		nav.classList.add('opening');
+	}
 }
 
-function closeBurgerModal(): void {
-	const modal = document.querySelector('#burger-modal');
+export function closeBurgerModal(): void {
+	const modal = document.getElementById('burger-modal');
 	if (!modal) {
 		console.log('expected there to be a modal to close');
 		return;
 	}
 
-	modal.remove();
-	enableScroll();
-}
-
-// add a duration based on opening and closing animation
-function disableScroll(): void {
 	const nav = document.getElementById('nav');
 	if (!nav) {
-		console.error('expected there to be a nav');
+		console.log('expected there to be a nav.');
 		return;
 	}
 
-	nav.style.backgroundColor = token.color.background.primary.value;
-	document.body.style.overflow = 'hidden';
-}
+	modal.classList.add('closing');
+	modal.style.touchAction = 'none !important';
 
-function enableScroll(): void {
-	const nav = document.getElementById('nav');
-	if (!nav) {
-		console.error('expected there to be a nav');
-		return;
-	}
+	nav.classList.add('closing');
 
-	nav.style.backgroundColor = 'transparent';
-	document.body.style.overflow = 'auto';
+	// call these early if closeBurgerModal is called early
+	modal.addEventListener(
+		'animationstart',
+		() => {
+			modal.classList.remove('opening');
+			nav.classList.remove('opening');
+		},
+		{ once: true },
+	);
+
+	modal.addEventListener(
+		'animationend',
+		() => {
+			modal.classList.remove('closing');
+			modal.style.touchAction = 'unset';
+
+			nav.classList.remove('closing');
+
+			modal.remove();
+		},
+		{ once: true },
+	);
 }

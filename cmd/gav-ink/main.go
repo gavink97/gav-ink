@@ -20,7 +20,7 @@ func main() {
 	}
 
 	zoho.RotatingAccessToken()
-	github.GenerateGithubStats()
+	github.OpenSourceStats()
 	blog.GetPosts()
 	routes.Serve()
 }

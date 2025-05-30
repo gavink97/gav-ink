@@ -1,6 +1,8 @@
 import * as fs from 'node:fs';
 import { createRequire } from 'node:module';
 import * as path from 'node:path';
+import { pipeline } from 'node:stream/promises';
+import { constants, createBrotliCompress, createGzip } from 'node:zlib';
 import postcssDesignTokens from '@csstools/postcss-design-tokens';
 import asciidoctor from 'asciidoctor';
 import cssnano from 'cssnano';
@@ -10,9 +12,7 @@ import postcss from 'postcss';
 import atImport from 'postcss-import';
 import postcssPresetEnv from 'postcss-preset-env';
 import sharp from 'sharp';
-import { pipeline } from 'node:stream/promises';
-import { constants, createBrotliCompress, createGzip } from 'node:zlib';
-import pkg from '../package.json' with { type: "json" }
+import pkg from '../package.json' with { type: 'json' };
 const require = createRequire(import.meta.url);
 
 const isBuild = process.argv.includes('--build') || process.argv.includes('-b');
@@ -21,7 +21,7 @@ const reBuild = process.argv.includes('--rebuild') || process.argv.includes('-r'
 const assetsDir = 'assets';
 const distDir = 'dist';
 
-const VERSION = pkg.version
+const VERSION = pkg.version;
 
 export async function build() {
 	getassets();
@@ -69,26 +69,26 @@ export async function build() {
 		minify = true;
 	}
 
-    const settings = {
-        //platform: 'node',
-        entryPoints: entryPoints,
-        entryNames: `[dir]/[name].${VERSION}`,
-        chunkNames: 'chunks/[name]-[hash]',
-        outdir: './dist',
-        bundle: true,
-        minify: minify,
-        //metafile: true,
-        //splitting: true,
-        //format: 'esm',
-        format: 'iife',
-        treeShaking: true,
-        target: ['ESNext'],
-        plugins: [
-            glsl({
-                minify: minify,
-            }),
-        ],
-    };
+	const settings = {
+		//platform: 'node',
+		entryPoints: entryPoints,
+		entryNames: `[dir]/[name].${VERSION}`,
+		chunkNames: 'chunks/[name]-[hash]',
+		outdir: './dist',
+		bundle: true,
+		minify: minify,
+		//metafile: true,
+		//splitting: true,
+		//format: 'esm',
+		format: 'iife',
+		treeShaking: true,
+		target: ['ESNext'],
+		plugins: [
+			glsl({
+				minify: minify,
+			}),
+		],
+	};
 
 	const cssInput = `${assetsDir}/css/main.css`;
 	const cssOutput = `${distDir}/css/main.${VERSION}.css`;
@@ -139,47 +139,39 @@ export async function build() {
 async function compress() {
 	const files = fs.readdirSync(distDir, { withFileTypes: true, recursive: true });
 
-    const gZip = async (file, options) => {
-        await pipeline(
-            fs.createReadStream(file),
-            createGzip(options),
-            fs.createWriteStream(`${file}.gz`)
-        )
-    }
+	const gZip = async (file, options) => {
+		await pipeline(fs.createReadStream(file), createGzip(options), fs.createWriteStream(`${file}.gz`));
+	};
 
-    const brotli = async (file, options) => {
-        await pipeline(
-            fs.createReadStream(file),
-            createBrotliCompress(options),
-            fs.createWriteStream(`${file}.br`)
-        )
-    }
+	const brotli = async (file, options) => {
+		await pipeline(fs.createReadStream(file), createBrotliCompress(options), fs.createWriteStream(`${file}.br`));
+	};
 
-    await Promise.all(
-        files
-            .filter(file => file.isFile())
-            .filter(file => file.name.endsWith('css') || file.name.endsWith('js'))
-            .map(async (file) => {
-                const fileName = path.join(file.parentPath, file.name)
-                await gZip(fileName, { level: constants.Z_BEST_COMPRESSION });
-                await brotli(fileName, {});
-            })
-    );
+	await Promise.all(
+		files
+			.filter((file) => file.isFile())
+			.filter((file) => file.name.endsWith('css') || file.name.endsWith('js'))
+			.map(async (file) => {
+				const fileName = path.join(file.parentPath, file.name);
+				await gZip(fileName, { level: constants.Z_BEST_COMPRESSION });
+				await brotli(fileName, {});
+			}),
+	);
 }
 
 function main() {
 	if (isBuild) {
-        build()
+		build()
 			.catch((err) => {
 				console.error('An error occurred in the build process:', err);
 				process.exit(1);
 			})
 			.finally(() => {
 				console.log('Compressing Files');
-                compress().finally(() => {
-				console.log('Build Complete');
-				process.exit(0);
-                })
+				compress().finally(() => {
+					console.log('Build Complete');
+					process.exit(0);
+				});
 			});
 	} else {
 		build().catch((err) => {
@@ -190,23 +182,17 @@ function main() {
 }
 
 function getassets() {
-	const assets = [
-        'htmx.min.js',
-        'htmx.preload.js',
-        'gav.svg',
-        'gav.png',
-        'robots.txt'
-    ];
+	const assets = ['htmx.min.js', 'htmx.preload.js', 'gav.svg', 'gav.png', 'robots.txt'];
 
 	for (const asset of assets) {
-        let assetName = ""
+		let assetName = '';
 
-        if (asset.endsWith("js") || asset.endsWith("css")) {
-           const splits = asset.split('.')
-            assetName = splits[0].concat(".", VERSION, ".", splits.slice(1).join("."))
-        } else {
-            assetName = asset
-        }
+		if (asset.endsWith('js') || asset.endsWith('css')) {
+			const splits = asset.split('.');
+			assetName = splits[0].concat('.', VERSION, '.', splits.slice(1).join('.'));
+		} else {
+			assetName = asset;
+		}
 
 		if (fs.existsSync(`${distDir}/${assetName}`)) {
 			console.log(`Skipping ${asset}`);

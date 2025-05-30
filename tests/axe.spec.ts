@@ -1,5 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
+import { delay } from './utils.ts';
 
 // reading for more information on accessibility testing
 // https://playwright.dev/docs/accessibility-testing
@@ -13,6 +14,7 @@ test.describe('home page', () => {
 	const url = ''.concat(host, port, '/');
 	test('axe-test', async ({ page }) => {
 		await page.goto(url);
+        await delay(3000)
 		const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
 		expect(accessibilityScanResults.violations).toEqual([]);
 	});
@@ -22,6 +24,7 @@ test.describe('home page no gl', () => {
 	const url = ''.concat(host, port, '/?nogl=true');
 	test('axe-test', async ({ page }) => {
 		await page.goto(url);
+        await delay(3000)
 		const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
 		expect(accessibilityScanResults.violations).toEqual([]);
 	});
@@ -31,6 +34,7 @@ test.describe('contact page', () => {
 	const url = ''.concat(host, port, '/contact');
 	test('axe-test', async ({ page }) => {
 		await page.goto(url);
+        await delay(3000)
 		const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
 		expect(accessibilityScanResults.violations).toEqual([]);
 	});
@@ -43,6 +47,7 @@ for (const study of ['gavink', 'gridt', 'rpst']) {
 	test.describe('insight page '.concat(study), () => {
 		test('axe-test', async ({ page }) => {
 			await page.goto(studylink);
+            await delay(3000)
 			const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
 			expect(accessibilityScanResults.violations).toEqual([]);
 		});
@@ -53,6 +58,7 @@ test.describe('404 page', () => {
 	const url = ''.concat(host, port, '/404');
 	test('axe-test', async ({ page }) => {
 		await page.goto(url);
+        await delay(3000)
 		const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
 		expect(accessibilityScanResults.violations).toEqual([]);
 	});

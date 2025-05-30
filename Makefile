@@ -11,6 +11,10 @@ dev:
 	go build -o .tmp/gav-ink ./cmd/gav-ink/main.go \
 	&& air
 
+.PHONY: stage
+stage:
+	env=prod make dev
+
 .PHONY: playwright
 playwright:
 	npx playwright test tests --pass-with-no-tests
@@ -37,6 +41,10 @@ test:
 docker:
 	docker buildx bake -f docker-compose.build.yml --push
 
+.PHONY: docker-test
+docker-test:
+	COMPOSE_BAKE=true docker compose -f docker-compose.test.yml up -d --build
+
 .PHONY: prod
 prod:
 	COMPOSE_BAKE=true docker compose --file docker-compose.yml up -d --build
@@ -53,6 +61,10 @@ android:
 .PHONY: biomecheck
 biomecheck:
 	biome check --write ./assets/css ./src
+
+.PHONY: biomecheck-unsafe
+biomecheck-unsafe:
+	biome check ./assets/css ./src --fix --unsafe
 
 .PHONY: rotate
 rotate:

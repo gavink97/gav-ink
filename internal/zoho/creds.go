@@ -21,6 +21,7 @@ type ZohoAuthResponse struct {
 	ExpiresIn   time.Duration `json:"expires_in"`
 }
 
+// make an elegeant way to handle a bad response from zoho
 func GenerateCredentials(scope string) (ZohoAuthResponse, error) {
 	accountServer := "https://accounts.zoho.com"
 	uri := fmt.Sprintf("%s/oauth/v2/token", accountServer)
@@ -58,7 +59,13 @@ func GenerateCredentials(scope string) (ZohoAuthResponse, error) {
 		return ZohoAuthResponse{}, err
 	}
 
-	defer resp.Body.Close()
+	defer func() {
+		err := resp.Body.Close()
+
+		if err != nil {
+			slog.Error(err.Error())
+		}
+	}()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {

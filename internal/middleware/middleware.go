@@ -9,11 +9,13 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"runtime/debug"
 	"strings"
 
 	"github.com/a-h/templ"
 	"github.com/didip/tollbooth/v8"
 	"github.com/didip/tollbooth/v8/limiter"
+	"github.com/gavink97/gav-ink/internal/github"
 	"github.com/patrickmn/go-cache"
 )
 
@@ -140,6 +142,12 @@ func (m *Middleware) Caching(next http.Handler) http.Handler {
 			return
 		}
 
+		if strings.Contains(r.URL.String(), "/component/open-source-table") && len(github.Stats) == 0 {
+			slog.Debug("skipping chacing because conditions are met")
+			next.ServeHTTP(w, r)
+			return
+		}
+
 		cacheKey := fmt.Sprintf("%s-%s", m.CacheVersion, r.URL.String())
 
 		cached, found := m.Cache.Get(cacheKey)
@@ -170,5 +178,23 @@ func (m *Middleware) Caching(next http.Handler) http.Handler {
 				return
 			}
 		}
+	})
+}
+
+func (m *Middleware) Recovery(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		defer func() {
+			if err := recover(); err != nil {
+
+				msg := "Caught Panic: %v, Stack Trace: %s"
+				slog.Error(msg, err, string(debug.Stack()))
+
+				er := http.StatusInternalServerError
+				http.Error(w, "Internal Server Error", er)
+			}
+		}()
+
+		next.ServeHTTP(w, r)
 	})
 }

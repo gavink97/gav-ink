@@ -87,7 +87,10 @@ func SetDefaultLogger() {
 	env, ok := os.LookupEnv("env")
 	if !ok {
 		env = "dev"
-		os.Setenv("env", env)
+		err := os.Setenv("env", env)
+		if err != nil {
+			fmt.Println(err.Error())
+		}
 	}
 
 	rotatingWriter := &RotatingWriter{}
@@ -119,7 +122,11 @@ func (w *RotatingWriter) Write(p []byte) (n int, err error) {
 
 	if today != w.currentDate {
 		if w.currentFile != nil {
-			w.currentFile.Close()
+			err = w.currentFile.Close()
+
+			if err != nil {
+				slog.Error(err.Error())
+			}
 		}
 
 		if err := os.MkdirAll("logs", os.ModePerm); err != nil && !os.IsExist(err) {
