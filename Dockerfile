@@ -3,7 +3,8 @@ ARG DATE="2025-04-25"
 ARG NODE_VERSION=23-alpine
 ARG GO_VERSION=1.24-alpine
 
-FROM node:$NODE_VERSION AS node
+FROM --platform=$BUILDPLATFORM node:$NODE_VERSION AS node
+ARG TARGETARCH
 WORKDIR /app
 
 COPY --link package.json ./
@@ -38,7 +39,8 @@ RUN : \
 && :
 
 
-FROM ghcr.io/a-h/templ:latest AS templ
+FROM --platform=$BUILDPLATFORM ghcr.io/a-h/templ:latest AS templ
+ARG TARGETARCH
 COPY --chown=65532:65532 . /app
 COPY --from=go /app /app
 COPY --from=prebuild --chown=65532:65532 /app /app
