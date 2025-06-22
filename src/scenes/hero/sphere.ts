@@ -154,6 +154,7 @@ export function SphereScene(): void {
 		scene.add(axesHelper);
 	}
 
+	// should simplify this to 100dvh to avoid issues on safari ios
 	function adjCanvas(): void {
 		const width = window.innerWidth;
 		const height = window.innerHeight;

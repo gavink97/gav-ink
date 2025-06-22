@@ -1,0 +1,194 @@
+package views
+
+import c "github.com/gavink97/gav-ink/internal/components"
+
+templ Services2() {
+	<section aria-label="services" class="p-4">
+		<h2 id="services" class="section-header">Our Services</h2>
+		@spitch()
+		@ux()
+		@software()
+		@webapp()
+		@ourProcess()
+		@why()
+	</section>
+}
+
+templ cta(text string) {
+	<p
+		class="cta-link"
+		aria-label="contact us"
+		hx-get="/contact?component=true"
+		preload
+		hx-swap="innerHTML swap:0.5s settle:0.5s"
+		hx-target="#swap"
+		hx-on:click={ c.SwapInStyle() }
+	>
+		{ text }
+	</p>
+}
+
+templ spitch() {
+	<section aria-label="our commitment to sustainability">
+		<h3 class="section-subheader">
+			Sustainable Digital Solutions Prioritizing People and Planet
+		</h3>
+		<p class="section-paragraph">
+			At Gavink, we craft bespoke software that aligns with your
+			business’ goals while reducing environmental harm. We reject
+			bloated, one size fits all frameworks in favor of hand rolled,
+			efficient tools, that are built with the Virtual LCA in
+			consideration.
+		</p>
+		<p class="section-paragraph">
+			So whether you need a modern web application for your startup, a
+			scalable backend service, or an accessible design, we stand
+			committed to build the software your business needs with the
+			environment and your users in mind.
+		</p>
+		@cta("Let’s build technology that works for your business—and our planet")
+	</section>
+}
+
+templ ux() {
+	<section aria-label="ux design">
+		<h2 id="ux" class="section-header">
+			UX / UI Design Services
+		</h2>
+		<h3 class="section-subheader">
+			Design with Humanity at the Heart
+		</h3>
+		<p class="section-paragraph">
+			Interfaces should empower, not exhaust. We create intuitive,
+			accessible experiences that reflect your authenticity and respect
+			users’ time—and the planet’s resources.
+		</p>
+		<ol class="section-paragraph">
+			<li>
+				<strong>
+					Inclusive by Default
+				</strong>:
+				ADA-compliant designs that welcome all users.
+			</li>
+			<li>
+				<strong>
+					Visual Storytelling
+				</strong>:
+				Bold, purposeful aesthetics that communicate your mission.
+			</li>
+			<li>
+				<strong>
+					Zero Bloat
+				</strong>:
+				Streamlined workflows that reduce digital friction (and energy
+				waste).
+			</li>
+		</ol>
+		@cta("Design experiences that respect people and resources")
+	</section>
+}
+
+templ software() {
+	<section aria-label="software development">
+		<h2 id="software" class="section-header">
+			Software Services
+		</h2>
+		<h2 class="section-subheader">
+			Software That Cares: Built for Purpose, Designed for Impact
+		</h2>
+		<p class="section-paragraph">
+			At Gav.ink, we craft bespoke software and design that aligns with
+			your business goals and your values. We reject bloated,
+			one-size-fits-all solutions in favor of ethical, efficient tools
+			built with open-source principles and a commitment to
+			sustainability. Whether you need a performant web app, scalable
+			software, or inclusive design, we ensure every pixel and line of
+			code serves humanity—and the Earth.
+		</p>
+		<ol class="section-paragraph">
+			<li>
+				<strong>
+					Sustainable Architecture
+				</strong>:
+				Energy-efficient frameworks and eco-conscious hosting (e.g.,
+				green cloud providers).
+			</li>
+			<li>
+				<strong>
+					Open-Source First
+				</strong>:
+				Leverage transparent, community-driven tools for flexibility
+				and longevity.
+			</li>
+		</ol>
+		@cta("Engineering solutions that matter")
+	</section>
+}
+
+templ webapp() {
+	<section aria-label="web app development">
+		<h2 id="webapp" class="section-header">
+			Web App Services
+		</h2>
+		<h2 class="section-subheader">
+			Lightning-Fast Web Apps, Lighter Footprint
+		</h2>
+		<p class="section-paragraph">
+			We build web applications that prioritize speed, scalability, and
+			sustainability—without compromising on performance.
+		</p>
+		<ol class="section-paragraph">
+			<li>
+				<strong>
+					Green Tech Stack
+				</strong>:
+				Optimized for speed and low energy consumption.
+			</li>
+		</ol>
+		@cta("Let’s build smarter, faster, and greener")
+	</section>
+}
+
+templ ourProcess() {
+	<section aria-label="our development process">
+		<h2 id="collab" class="section-header">
+			Collaborative by Nature
+		</h2>
+		<ol class="section-paragraph">
+			<li>
+				<strong>
+					Listen First
+				</strong>:
+				We start by understanding your mission, audience, and your values.
+			</li>
+			<li>
+				<strong>
+					Build with Care
+				</strong>:
+				Agile development paired with carbon-aware workflows.
+			</li>
+			<li>
+				<strong>
+					Iterate with Integrity
+				</strong>:
+				Launch faster, refine smarter, and leave room for evolution.
+			</li>
+		</ol>
+	</section>
+}
+
+templ why() {
+	<section aria-label="why collaborate with us">
+		<h2 id="why" class="section-header">
+			Why gavink?
+		</h2>
+		<ol class="section-paragraph">
+			<li>
+				<strong>
+					Small Studio, Big Impact
+				</strong>:
+				Based in Jakarta and Austin, we work globally but act locally.
+			</li>
+		</ol>
+	</section>
+}

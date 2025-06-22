@@ -7,23 +7,9 @@ import (
 
 templ preFooter() {
 	<pre-footer aria-label="prefooter" id="prefooter" class="content">
-		<p
-			aria-label="contact us"
-			hx-get="/contact?component=true"
-			preload="preload:init"
-			hx-swap="innerHTML"
-			hx-target="#swap"
-			hx-on:click="
-                        const options = {
-                            immediate: true
-                        }
-
-                        window.lenis.scrollTo(0, options);
-                        document.getElementById('swap').setAttribute('swap-active', 'true')
-                    "
-		>
-			Let's get in touch
-		</p>
+		<p>
+            Let's get in touch
+        </p>
 	</pre-footer>
 }
 
@@ -345,7 +331,9 @@ templ copyright() {
 
 templ madeWith() {
 	<footer-message>
-		<p><span>☕</span>99.5% organic coffee 0.5% microplastic</p>
+		<p><span>
+            <img src={c.Image("hot-beverage.webp")} id="coffee" alt="coffee cup">
+        </span>99.5% organic coffee 0.5% microplastic</p>
 	</footer-message>
 }
 

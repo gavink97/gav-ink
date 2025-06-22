@@ -369,12 +369,12 @@ footer-message {
 	span {
 		font-size: token("text-size.2xl.size");
 		position: relative;
-		bottom: 0.5rem;
+		bottom: 0.05rem;
 		right: calc((6 / 16) * 1rem);
 		max-height: inherit;
 
 		@media (min-width: token("viewport.md")) {
-			bottom: calc((7 / 16) * 1rem);
+			bottom: 0.01rem;
 		}
 
 		@media (min-width: token("viewport.lg")) {
@@ -410,8 +410,8 @@ img.emojione {
 
 #underline {
 	display: none;
-	width: max-content;
-	width: -webkit-max-content;
+	width: min-content;
+	width: -webkit-min-content;
 	max-width: 100%;
 }
 
@@ -421,4 +421,12 @@ img.emojione {
 	line-height: 1.4;
 	white-space: nowrap;
 	margin-bottom: calc((2 / 16) * 1rem);
+}
+
+#coffee {
+	width: 1.5rem;
+
+	@media (min-width: token("viewport.lg")) {
+		width: 2rem;
+	}
 }

@@ -7,16 +7,16 @@ import (
 )
 
 templ Index() {
-	<section id="swap" swap-active="false"></section>
+    <section id="swap" swap-active="false"></section>
 	<section id="home" aria-label="home">
 		//@scenes.HomeScene()
 		@scenes.SphereScene()
 		@sustainability()
 		@Services2()
 		@Tech()
+		@CaseStudies()
 		@About()
 		@OpenSource([]gh.Repository{})
-		@CaseStudies()
 	</section>
 	<script src="/public/scenes/hero/index.js" type="module" nonce={ m.GetNonce(ctx) } defer></script>
     <script type="text/javascript" nonce={ m.GetNonce(ctx) } defer>

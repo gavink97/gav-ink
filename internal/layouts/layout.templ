@@ -13,7 +13,7 @@ templ Layout(contents templ.Component, title string) {
 	<body hx-ext="preload">
 		@Nav()
 		<main class="content" aria-label={ title }>
-			@contents
+		    @contents
 		</main>
 		@FooterWrapper(Footer())
 	</body>

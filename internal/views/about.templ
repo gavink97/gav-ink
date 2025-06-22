@@ -1,0 +1,42 @@
+package views
+
+templ About() {
+	//<section class="half-section">
+	@studioStory()
+	@corebeliefs()
+	//</section>
+}
+
+templ studioStory() {
+	<section aria-label="our story" class="p-4 pt-8">
+		<h2 id="story" class="section-header">Studio Story</h2>
+		<p class="section-paragraph">
+			We’re Gav.ink – an independent full service design and development
+			studio rooted in Jakarta and Austin, driven by a belief that
+			technology should serve humanity and the Earth. We are a remote
+			first team building tech solutions at planet scale.
+		</p>
+	</section>
+}
+
+// use the sustainable web manifesto
+// https://www.sustainablewebmanifesto.com/
+templ corebeliefs() {
+	<section aria-label="core beliefs" class="p-4 section-scroll pb-6 pt-0" id="core-beliefs">
+		<h2 class="section-subheader">Core Beliefs</h2>
+		<p class="section-paragraph">
+			Sustainability: We prioritize energy-efficient, dependency free code; and
+			tools that stand the test of time.
+			<br/>
+			Authenticity: We endeavor to craft honest, human-centered experiences. No
+			cookie-cutter solutions.
+			<br/>
+			Humility: We’re here to learn, collaborate, and grow – not to lecture.
+			<br/>
+			Open Source: We believe Open Source is the backbone of modern society and
+			aspire to contribute towards a brighter future.
+			<br/>
+			Activism: We amplify causes that align with our values.
+		</p>
+	</section>
+}

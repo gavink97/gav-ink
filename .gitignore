@@ -18,3 +18,5 @@ tmp
 .npmrc
 data
 *_templ.go
+.devenv
+.devenv.*

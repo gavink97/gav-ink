@@ -28,5 +28,12 @@ home-scene {
 	/* acts as space for three-home-scene */
 	/* height: 10000px; */
 	height: 100vh;
+
 	background-color: token("color.background.primary");
+}
+
+@supports (height: 100dvh) {
+	#three-home-space {
+		height: 100dvh;
+	}
 }

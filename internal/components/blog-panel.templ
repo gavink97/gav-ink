@@ -5,6 +5,23 @@ import (
 "github.com/gavink97/gav-ink/internal/types"
 )
 
+script SwapInStyle() {
+    const options = {
+        immediate: true
+    }
+
+    document.getElementById('home').classList.add('htmx-swapping')
+    document.getElementById('swap').setAttribute('swap-active', 'true')
+
+    setTimeout(() => {
+        window.lenis.scrollTo(0, options);
+    }, 500)
+
+    setTimeout(() => {
+        document.getElementById('home').classList.remove('htmx-swapping')
+    }, 1000)
+}
+
 templ CaseStudiesPanel(posts []*types.Post) {
 	<panel id="case-studies-panel">
 		for _, post := range posts {
@@ -15,22 +32,14 @@ templ CaseStudiesPanel(posts []*types.Post) {
 
 templ CaseStudiesCard(post types.Post) {
 	<study-card class="study-card">
-
 		<div
-        aria-label={ post.Title }
-        class="w-[inherit]"
-        hx-get={ fmt.Sprint(post.Url, "?component=true") }
-        preload="preload:init"
-        hx-swap="innerHTML show:top"
-        hx-target="#swap"
-        hx-on:click="
-            const options = {
-                immediate: true
-            }
-
-            document.getElementById('swap').setAttribute('swap-active', 'true')
-            window.lenis.scrollTo(0, options);
-        "
+            aria-label={ post.Title }
+            class="w-[inherit]"
+            hx-get={ fmt.Sprint(post.Url, "?component=true") }
+            preload="preload:init"
+            hx-swap="innerHTML show:top swap:0.5s settle:0.5s"
+            hx-target="#swap"
+            hx-on:click={SwapInStyle()}
         >
 			// image, title, tags, date
 			<h3 class="text-4xl pl-4">{ post.Title }</h3>
