@@ -251,7 +251,7 @@ async function runsharp() {
 
 	for (const image of images) {
 		const inputImage = path.join(inputDir, image);
-		const o = image.toLowerCase().split('.')[0].concat('.webp');
+		const o = image.toLowerCase().split('.')[0].concat('.avif');
 		const outputImage = path.join(outputDir, o);
 
 		const skip = () => {
@@ -278,7 +278,7 @@ async function runsharp() {
 
 		if (fs.lstatSync(inputImage).isFile()) {
 			const imageExt = path.extname(image).toLowerCase();
-			const exts = ['.jpg', '.jpeg', '.png', 'webp'];
+			const exts = ['.jpg', '.jpeg', '.png', 'webp', 'avif'];
 
 			if (exts.includes(imageExt)) {
 				if (skip()) continue;
@@ -298,7 +298,7 @@ const minify = async (input, output) => {
 	image.metadata().then((metadata) =>
 		image
 			.resize(Math.round(metadata.width / 2))
-			.webp()
+			.avif()
 			.toFile(output),
 	);
 

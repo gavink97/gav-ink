@@ -1,8 +1,8 @@
-export type AnimationTimeline = {
+export interface AnimationTimeline {
 	start: number;
 	end: number;
 	func: (start: number, end: number) => void;
-};
+}
 
 export function PlayScrollAnimations(timeline: AnimationTimeline[], scrollPercent: number): void {
 	for (const animation of timeline) {

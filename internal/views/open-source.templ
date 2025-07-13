@@ -4,18 +4,24 @@ import (
 	"fmt"
 	gh "github.com/gavink97/gav-ink/internal/github"
 	m "github.com/gavink97/gav-ink/internal/middleware"
-    c "github.com/gavink97/gav-ink/internal/components"
+	c "github.com/gavink97/gav-ink/internal/components"
 )
 
 templ OpenSource(stats []gh.Repository) {
 	<section aria-label="open source projects" class="half-section primary-text justify-end p-4" id="projects">
-		<h3 class="section-subheader flex h-min">Open Source Projects & Contributions
-            <span>
-                <img src={c.Image("seedling.webp")} class="w-12 pl-2 relative bottom-2" alt="seedling emoji">
-            </span>
-        </h3>
+		<h3 class="section-subheader flex h-min">
+			Open Source Projects & Contributions
+			<span>
+				<img
+					src={ c.Image("seedling.avif") }
+					class="w-12 pl-2 relative bottom-2"
+					alt="seedling emoji"
+					loading="lazy"
+				/>
+			</span>
+		</h3>
 		<p class="section-paragraph">
-			Open Source is a core tenet of our approach. We're greatful that we can sit on the shoulders giants and aim to cultivate
+			Open Source is a core tenet of our approach. We're greatful that we can stand on the shoulders of giants and aim to cultivate
 			our own garden of open source projects. It is here where we believe true innovation occurs.
 		</p>
 		@PortfolioTable(stats)
@@ -30,11 +36,12 @@ templ row(index int, repo gh.Repository) {
 			<a class="row" href={ templ.SafeURL(repo.Parent.Url) } target="_blank">
 				<p class="col-1">{ repo.Parent.Name }<span>*</span></p>
 				<p class="col-2">{ fmt.Sprint(repo.TimeCreated.Local().Year()) }</p>
-				<p class="col-3">{ fmt.Sprintf("%d", repo.Parent.StargazersCount) }
-                    <span>
-                        <img src={c.Image("star.webp")} alt="star">
-                    </span>
-                </p>
+				<p class="col-3">
+					{ fmt.Sprintf("%d", repo.Parent.StargazersCount) }
+					<span>
+						<img src={ c.Image("star.avif") } alt="star" loading="lazy"/>
+					</span>
+				</p>
 			</a>
 		</li>
 	} else {
@@ -42,11 +49,12 @@ templ row(index int, repo gh.Repository) {
 			<a class="row" href={ templ.SafeURL(repo.Url) } target="_blank">
 				<p class="col-1">{ repo.Name }</p>
 				<p class="col-2">{ fmt.Sprint(repo.TimeCreated.Local().Year()) }</p>
-				<p class="col-3">{ fmt.Sprintf("%d", repo.StargazersCount) }
-                    <span>
-                        <img src={c.Image("star.webp")} alt="star">
-                    </span>
-                </p>
+				<p class="col-3">
+					{ fmt.Sprintf("%d", repo.StargazersCount) }
+					<span>
+						<img src={ c.Image("star.avif") } alt="star" loading="lazy"/>
+					</span>
+				</p>
 			</a>
 		</li>
 	}

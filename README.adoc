@@ -21,6 +21,8 @@ This repo is the development / production version of my website.
 To start the development server and build all static assets
 - run `make dev`
 
+if developing in nixos use `devenv shell` for playwright
+
 == Precommit
 
 Install precommit hooks
@@ -29,3 +31,13 @@ Install precommit hooks
 pre-commit install
 pre-commit install --hook-type commit-msg
 ```
+
+== Starting Prod
+
+Add info to .env
+Copy over data/users.yml
+
+
+=== Cloudflare DNS
+
+Use DNS only for services not proxy

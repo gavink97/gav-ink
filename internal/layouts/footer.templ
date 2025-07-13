@@ -8,8 +8,8 @@ import (
 templ preFooter() {
 	<pre-footer aria-label="prefooter" id="prefooter" class="content">
 		<p>
-            Let's get in touch
-        </p>
+			Let's get in touch
+		</p>
 	</pre-footer>
 }
 
@@ -331,9 +331,11 @@ templ copyright() {
 
 templ madeWith() {
 	<footer-message>
-		<p><span>
-            <img src={c.Image("hot-beverage.webp")} id="coffee" alt="coffee cup">
-        </span>99.5% organic coffee 0.5% microplastic</p>
+		<p>
+			<span>
+				<img src={ c.Image("hot-beverage.avif") } id="coffee" alt="coffee cup" loading="lazy"/>
+			</span>99.5% organic coffee 0.5% microplastic
+		</p>
 	</footer-message>
 }
 

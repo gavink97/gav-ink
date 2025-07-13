@@ -1,7 +1,7 @@
 services:
-  app:
+  gavink:
     image: gavink97/gav.ink:latest
-    container_name: app
+    container_name: gavink
     restart: always
     expose:
       - 8080
@@ -13,40 +13,43 @@ services:
       - ./logs:/logs
     labels:
       - "traefik.enable=true"
-
-      - "traefik.http.routers.app.rule=Host(`dev.gav.ink`)"
-      - "traefik.http.routers.app.entrypoints=websecure"
-      - "traefik.http.routers.app.tls.certresolver=myresolver"
-
+      - "traefik.http.routers.gavink.rule=Host(`dev.gav.ink`)"
+      - "traefik.http.routers.gavink.entrypoints=websecure"
+      - "traefik.http.routers.gavink.tls.certresolver=myresolver"
   traefik:
     image: traefik:latest
     container_name: traefik
     restart: always
     environment:
       TZ: ${TZ}
+    expose:
+      - 8080
     command:
-      - "--api.insecure=true"
+      - "--api.insecure=false"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
-
       - "--entryPoints.web.address=:80"
       - "--entryPoints.websecure.address=:443"
-
       - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
       - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
       - "--entrypoints.web.http.redirections.entryPoint.permanent=true"
-
       - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
       - "--certificatesresolvers.myresolver.acme.email=gavin@gav.ink"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.gav.ink`)"
+      - "traefik.http.routers.traefik.entrypoints=websecure"
+      - "traefik.http.routers.traefik.tls.certresolver=myresolver"
+      - "traefik.http.routers.traefik.service=api@internal"
+      #- "traefik.http.routers.traefik.middlewares=auth"
+      #- "traefik.http.middlewares.auth.basicauth.users="
     ports:
       - 80:80
       - 443:443
-      - 8080:8080
     volumes:
       - ./letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock:ro
-
   dozzle:
     image: amir20/dozzle:latest
     container_name: dozzle
@@ -65,11 +68,9 @@ services:
         target: /data/users.yml
     labels:
       - "traefik.enable=true"
-
       - "traefik.http.routers.dozzle.rule=Host(`dozzle.gav.ink`)"
       - "traefik.http.routers.dozzle.entrypoints=websecure"
       - "traefik.http.routers.dozzle.tls.certresolver=myresolver"
-
   watchtower:
     image: containrrr/watchtower
     container_name: watchtower
@@ -82,10 +83,8 @@ services:
       - $HOME/.docker/config.json:/config.json:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
     command: --interval 30
-
 secrets:
   users:
     file: ./data/users.yml
-
 volumes:
   dozzle:

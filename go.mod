@@ -3,7 +3,7 @@ module github.com/gavink97/gav-ink
 go 1.24.3
 
 require (
-	github.com/a-h/templ v0.3.898
+	github.com/a-h/templ v0.3.906
 	github.com/didip/tollbooth/v8 v8.0.1
 	github.com/gosimple/slug v1.15.0
 	github.com/joho/godotenv v1.5.1
