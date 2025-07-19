@@ -1,6 +1,4 @@
-package views
-
-import c "github.com/gavink97/gav-ink/internal/components"
+package views_nogl
 
 templ Services() {
 	<section aria-label="services" class="p-4">
@@ -15,17 +13,13 @@ templ Services() {
 }
 
 templ cta(text string) {
-	<p
+	<a
 		class="cta-link"
 		aria-label="contact us"
-		hx-get="/contact?component=true"
-		preload
-		hx-swap="innerHTML swap:0.5s settle:0.5s"
-		hx-target="#swap"
-		hx-on:click={ c.SwapInStyle() }
+		href="/contact"
 	>
 		{ text }
-	</p>
+	</a>
 }
 
 templ spitch() {

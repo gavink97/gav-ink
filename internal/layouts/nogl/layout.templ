@@ -1,12 +1,13 @@
-package layouts
+package layouts_nogl
 
 import (
 	c "github.com/gavink97/gav-ink/internal/components"
+	l "github.com/gavink97/gav-ink/internal/layouts"
 	"os"
 )
 
 templ Layout(contents templ.Component, title string) {
-	@Head(title)
+	@l.Head(title)
 	if os.Getenv("env") == "prod" {
 		@c.LoadingPage()
 	}
@@ -15,6 +16,6 @@ templ Layout(contents templ.Component, title string) {
 		<main class="content" aria-label={ title }>
 			@contents
 		</main>
-		@FooterWrapper(Footer())
+		@l.FooterWrapper(Footer())
 	</body>
 }

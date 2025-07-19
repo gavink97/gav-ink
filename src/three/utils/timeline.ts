@@ -1,17 +1,31 @@
+import { Easings } from './easing.ts';
+
 export interface AnimationTimeline {
 	start: number;
+	easing?: keyof typeof Easings;
 	end: number;
-	func: (start: number, end: number) => void;
+	func: (progress: number) => void;
 }
 
 export function PlayScrollAnimations(timeline: AnimationTimeline[], scrollPercent: number): void {
 	for (const animation of timeline) {
 		if (scrollPercent >= animation.start && scrollPercent < animation.end) {
-			animation.func(animation.start, animation.end);
+			const segmentProgress = (scrollPercent - animation.start) / (animation.end - animation.start);
+
+			let progress: number;
+
+			if (animation.easing) {
+				progress = Easings[animation.easing](segmentProgress);
+			} else {
+				progress = segmentProgress;
+			}
+
+			animation.func(progress);
 		}
 	}
 }
 
-export function StartOffset(scroll: number, start: number, duration: number): number {
-	return duration * ((scroll - start) / Math.abs(start / 100 - 1) / 100);
+export function StartOffset(current: number, start: number, end: number, duration: number): number {
+	const progress = Math.min(1, Math.max(0, (current - start) / (end - start)));
+	return duration * progress;
 }

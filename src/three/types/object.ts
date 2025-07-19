@@ -1,4 +1,4 @@
-import type { AnimationAction, AnimationMixer, Clock, Mesh, Vector3, WebGLRenderer } from 'three';
+import type { AnimationAction, AnimationMixer, Clock, Mesh, Vector3 } from 'three';
 import type { GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 interface ObjectThree {
@@ -27,7 +27,7 @@ export interface SceneParameters {
 
 export interface ObjectThreeParameters {
 	castShadow: boolean;
-	layer: number;
+	layer?: number;
 	sceneParameters: SceneParameters;
 	position: Vector3;
 }

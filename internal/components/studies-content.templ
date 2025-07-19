@@ -5,7 +5,7 @@ import (
 	"github.com/gavink97/gav-ink/internal/types"
 )
 
-templ ContentComponent(post types.Post, body templ.Component) {
+templ ContentComponent(body templ.Component, post types.Post, gl bool) {
 	<section class="full-section content-post">
 		<h1 class="content-title">{ post.Title }</h1>
 		<div class="flex self-start">
@@ -19,5 +19,5 @@ templ ContentComponent(post types.Post, body templ.Component) {
 		</div>
 	</section>
 	<h3 class="text-4xl p-4">Read our other insights</h3>
-	@CaseStudiesPanel(globals.Posts)
+	@CaseStudiesPanel(globals.Posts, gl)
 }

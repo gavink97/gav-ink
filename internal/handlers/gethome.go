@@ -7,9 +7,10 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/a-h/templ"
-	"github.com/gavink97/gav-ink/internal/layouts"
-	"github.com/gavink97/gav-ink/internal/views"
+	l "github.com/gavink97/gav-ink/internal/layouts"
+	l_nogl "github.com/gavink97/gav-ink/internal/layouts/nogl"
+	v "github.com/gavink97/gav-ink/internal/views"
+	v_nogl "github.com/gavink97/gav-ink/internal/views/nogl"
 )
 
 type HomeHandler struct{}
@@ -31,8 +32,6 @@ func (h *HomeHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var c templ.Component
-
 	gl := r.URL.Query().Get("nogl")
 	if gl != "" {
 		nogl, err := strconv.ParseBool(gl)
@@ -42,19 +41,29 @@ func (h *HomeHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if nogl {
-			c = views.IndexNoGL()
+			c := v_nogl.Index()
+			err := l_nogl.Layout(c, "gav.ink • where design meets innovation").Render(r.Context(), w)
+
+			if err != nil {
+				http.Error(w, "Error rendering template", http.StatusInternalServerError)
+				return
+			}
 		} else {
-			c = views.Index()
+			c := v.Index()
+			err := l.Layout(c, "gav.ink • where design meets innovation").Render(r.Context(), w)
+
+			if err != nil {
+				http.Error(w, "Error rendering template", http.StatusInternalServerError)
+				return
+			}
 		}
 	} else {
-		c = views.Index()
-	}
+		c := v.Index()
+		err := l.Layout(c, "gav.ink • where design meets innovation").Render(r.Context(), w)
 
-	//c = views.IndexNoGL()
-	err := layouts.Layout(c, "gav.ink • where design meets innovation").Render(r.Context(), w)
-
-	if err != nil {
-		http.Error(w, "Error rendering template", http.StatusInternalServerError)
-		return
+		if err != nil {
+			http.Error(w, "Error rendering template", http.StatusInternalServerError)
+			return
+		}
 	}
 }

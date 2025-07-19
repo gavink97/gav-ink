@@ -10,9 +10,8 @@ templ Index() {
 	<section id="swap" swap-active="false"></section>
 	<section id="home" aria-label="home">
 		@scenes.HomeScene()
-		//@scenes.SphereScene()
 		@sustainability()
-		@Services2()
+		@Services()
 		@Tech()
 		@CaseStudies()
 		@About()
@@ -25,24 +24,4 @@ templ Index() {
             }
         });
     </script>
-}
-
-templ IndexNoGL() {
-	@hero()
-	@sustainability()
-	@Services2()
-	@Tech()
-	@About()
-	@OpenSource([]gh.Repository{})
-	@CaseStudies()
-}
-
-templ hero() {
-	<section class="full-section text-center primary-text" aria-label="hero">
-		<h1 class="text-3xl md:text-8xl font-bold">Crafting Digital</h1>
-		<h1 class="text-3xl md:text-8xl font-bold">Experiences</h1>
-		<h2 class="text-2xl md:text-6xl">with Purpose</h2>
-		<h1 class="text-3xl md:text-8xl font-bold">&</h1>
-		<h2 class="text-2xl md:text-6xl">Sustainability</h2>
-	</section>
 }

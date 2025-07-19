@@ -32,7 +32,7 @@ function staggerEffect(content: HTMLDivElement): void {
 	content.innerText = '';
 
 	content.style.display = 'none';
-	content.style.lineHeight = '1.2';
+	content.style.lineHeight = '1.31';
 	content.style.position = 'relative';
 	content.style.overflow = 'hidden';
 	content.style.whiteSpace = 'nowrap';

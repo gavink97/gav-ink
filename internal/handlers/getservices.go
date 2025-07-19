@@ -15,7 +15,7 @@ func NewServicesHandler() *ServicesHandLer {
 }
 
 func (h *ServicesHandLer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	c := views.Services2()
+	c := views.Services()
 
 	err := layouts.Layout(c, "My website").Render(r.Context(), w)
 

@@ -320,7 +320,7 @@ templ NewLetter() {
 	</newsletter>
 }
 
-templ copyright() {
+templ Copyright() {
 	<footer-copyright>
 		<p>© 2025</p>
 		<a href="/" aria-label="home">
@@ -329,7 +329,7 @@ templ copyright() {
 	</footer-copyright>
 }
 
-templ madeWith() {
+templ MadeWith() {
 	<footer-message>
 		<p>
 			<span>
@@ -350,9 +350,9 @@ templ Footer() {
 			@NewLetter()
 		</footer-middle>
 		<footer-bottom>
-			@copyright()
+			@Copyright()
 			// blog link
-			@madeWith()
+			@MadeWith()
 		</footer-bottom>
 	</footer>
 }

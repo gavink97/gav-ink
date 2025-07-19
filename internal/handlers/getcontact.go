@@ -10,8 +10,8 @@ import (
 	"strconv"
 
 	"github.com/gavink97/gav-ink/internal/components"
-	"github.com/gavink97/gav-ink/internal/layouts"
-	"github.com/gavink97/gav-ink/internal/views"
+	l_nogl "github.com/gavink97/gav-ink/internal/layouts/nogl"
+	v "github.com/gavink97/gav-ink/internal/views"
 	z "github.com/gavink97/gav-ink/internal/zoho"
 )
 
@@ -119,8 +119,8 @@ func getContact(w http.ResponseWriter, r *http.Request) {
 	if component != "" {
 		cbool, err := strconv.ParseBool(component)
 		if err != nil {
-			c := views.Contact2()
-			err := layouts.Layout(c, "Contact Us").Render(r.Context(), w)
+			c := v.Contact2()
+			err := l_nogl.Layout(c, "Contact Us").Render(r.Context(), w)
 			if err != nil {
 				http.Error(w, "Error rendering template", http.StatusInternalServerError)
 				return
@@ -129,7 +129,7 @@ func getContact(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if cbool {
-			err := views.Contact2().Render(r.Context(), w)
+			err := v.Contact2().Render(r.Context(), w)
 			if err != nil {
 				http.Error(w, "Error rendering template", http.StatusInternalServerError)
 				return
@@ -139,8 +139,8 @@ func getContact(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	c := views.Contact2()
-	err := layouts.Layout(c, "Contact Us").Render(r.Context(), w)
+	c := v.Contact2()
+	err := l_nogl.Layout(c, "Contact Us").Render(r.Context(), w)
 	if err != nil {
 		http.Error(w, "Error rendering template", http.StatusInternalServerError)
 		return
@@ -176,7 +176,7 @@ func postContact(w http.ResponseWriter, r *http.Request) {
 
 	if len(missingFields) > 0 {
 		w.WriteHeader(http.StatusAccepted)
-		c := views.ContactUnsuccessful(missingFields[0])
+		c := v.ContactUnsuccessful(missingFields[0])
 		if err = c.Render(r.Context(), w); err != nil {
 			http.Error(w, "Failed to render content", http.StatusInternalServerError)
 		}
@@ -213,7 +213,7 @@ func postContact(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusAccepted)
-	c := views.ContactSuccess()
+	c := v.ContactSuccess()
 	if err = c.Render(r.Context(), w); err != nil {
 		http.Error(w, "Failed to render content", http.StatusInternalServerError)
 	}

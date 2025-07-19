@@ -10,8 +10,8 @@ import (
 
 	"github.com/gavink97/gav-ink/internal/blog"
 	c "github.com/gavink97/gav-ink/internal/components"
-	"github.com/gavink97/gav-ink/internal/layouts"
-	"github.com/gavink97/gav-ink/internal/views"
+	l_nogl "github.com/gavink97/gav-ink/internal/layouts/nogl"
+	v "github.com/gavink97/gav-ink/internal/views"
 )
 
 type StudyHandler struct{}
@@ -61,8 +61,8 @@ func (h *StudyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			if component != "" {
 				cbool, err := strconv.ParseBool(component)
 				if err != nil {
-					c := c.ContentComponent(*post, content)
-					err = layouts.Layout(c, post.Title).Render(r.Context(), w)
+					c := c.ContentComponent(content, *post, false)
+					err = l_nogl.Layout(c, post.Title).Render(r.Context(), w)
 					if err != nil {
 						http.Error(w, "Error rendering template", http.StatusInternalServerError)
 						return
@@ -72,7 +72,7 @@ func (h *StudyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				}
 
 				if cbool {
-					err := c.ContentComponent(*post, content).Render(r.Context(), w)
+					err := c.ContentComponent(content, *post, true).Render(r.Context(), w)
 					if err != nil {
 						http.Error(w, "Error rendering template", http.StatusInternalServerError)
 						return
@@ -82,8 +82,8 @@ func (h *StudyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 
-			c := c.ContentComponent(*post, content)
-			err = layouts.Layout(c, post.Title).Render(r.Context(), w)
+			c := c.ContentComponent(content, *post, false)
+			err = l_nogl.Layout(c, post.Title).Render(r.Context(), w)
 			if err != nil {
 				http.Error(w, "Error rendering template", http.StatusInternalServerError)
 			}
@@ -93,8 +93,8 @@ func (h *StudyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if !connect {
-		c := views.NotFound()
-		err = layouts.Layout(c, "Not Found").Render(r.Context(), w)
+		c := v.NotFound()
+		err = l_nogl.Layout(c, "Not Found").Render(r.Context(), w)
 		if err != nil {
 			slog.Error(fmt.Sprintf("An error occured: %v", err))
 		}

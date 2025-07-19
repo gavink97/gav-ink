@@ -6,6 +6,7 @@ import { PlayScrollAnimations, StartOffset, type AnimationTimeline } from '../..
 import { MacbookObject } from '../../objects/macbook.ts';
 import { adjCanvas, resizeRenderer } from '../../utils/resize.ts';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import token from '../../../../tokens.json';
 
 export async function Scene2() {
 	THREE.Cache.enabled = true;
@@ -65,12 +66,12 @@ export async function Scene2() {
 	const macbook_layer = 1;
 
 	const camera = new THREE.PerspectiveCamera(45, aspect, 0.1, 100);
-	camera.position.setY(10);
-	camera.up = new THREE.Vector3(0, 0, 0);
-	camera.lookAt(0, 10, 0);
+	const target = new THREE.Vector3(0, 10, 0);
+	camera.position.set(0, 11, 8);
+	//camera.up = new THREE.Vector3(0, 0, 0);
+	camera.lookAt(target);
 	camera.layers.enable(sphere_layer);
 	camera.layers.enable(macbook_layer);
-	//camera.position.setZ(10);
 
 	/*
 	if (camera.aspect < 1) {
@@ -79,14 +80,14 @@ export async function Scene2() {
 	} else {
 		camera.position.setZ(5);
 	}
-    */
 
 	if (camera.aspect < 1) {
 		const value = 60 / camera.aspect;
 		camera.position.setZ(value);
 	} else {
-		camera.position.setZ(25);
+		camera.position.setZ(15);
 	}
+    */
 
 	const sceneParams: SceneParameters = {
 		clock: clock,
@@ -101,7 +102,7 @@ export async function Scene2() {
 		castShadow: false,
 		layer: sphere_layer,
 		sceneParameters: sceneParams,
-		position: new THREE.Vector3(0, 10.4, -5),
+		position: new THREE.Vector3(0, 11.55, 3),
 		//position: new THREE.Vector3(0, 10, 55),
 	});
 
@@ -113,6 +114,15 @@ export async function Scene2() {
 		sceneParameters: sceneParams,
 		position: new THREE.Vector3(0, 0, 2),
 	});
+
+	macbook.action.time = 2;
+	macbook.mixer.update(0);
+
+	const macbookScreen = macbook.gltf.scene.getObjectByName('VQmfhbMzfNAuKAD');
+
+	console.log(macbookScreen);
+	macbookScreen.material.color.set(token.color.background.primary.value);
+	macbookScreen.material.metalness = 0;
 
 	scene.add(macbook.gltf.scene);
 
@@ -130,16 +140,27 @@ export async function Scene2() {
     */
 
 	timeline.push({
-		start: 0,
+		start: 15,
 		end: 100,
-		func: (start) => {
+		func: (progress) => {
 			const action = macbook.action;
 			const offset = 2;
 			const duration = action.getClip().duration - offset;
-			const toScale = StartOffset(scrollPercent, start, duration);
+			const reversedProgress = 1 - progress;
 
-			action.time = duration - toScale;
+			action.time = duration * reversedProgress;
 			macbook.mixer.update(0);
+		},
+	});
+
+	timeline.push({
+		start: 0,
+		end: 15,
+		easing: 'easeInOutSine',
+		func: (progress) => {
+			const startPos = new THREE.Vector3(0, 12.2, 8);
+			const newPos = new THREE.Vector3(0, 10, 60);
+			camera.position.lerpVectors(startPos, newPos, progress);
 		},
 	});
 
@@ -151,8 +172,11 @@ export async function Scene2() {
 		scene.add(axesHelper);
 
 		const controls = new OrbitControls(camera, renderer.domElement);
-		controls.target.set(0, 20, 0);
+		controls.target.set(target.x, target.y, target.z);
 		controls.update();
+
+		const cameraHelper = new THREE.CameraHelper(camera);
+		scene.add(cameraHelper);
 	}
 
 	let scrollPercent = 0;
@@ -184,7 +208,7 @@ export async function Scene2() {
 		progress.setAttribute('progress', scrollPercent.toFixed(0).toString());
 	});
 
-	window.scrollTo({ top: 0, behavior: 'smooth' });
+	window.scrollTo({ top: 0, behavior: 'instant' });
 
 	animate();
 

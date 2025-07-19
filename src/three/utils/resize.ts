@@ -7,16 +7,19 @@ export function adjCanvas(camera: PerspectiveCamera, renderer: WebGLRenderer): v
 	const aspect = width / height;
 
 	camera.aspect = aspect;
+	camera.position.set(0, 11, 8);
 
+	/*
 	if (camera.aspect < 1) {
 		const value = 60 / camera.aspect;
 		camera.position.setZ(value);
 	} else {
 		camera.position.setZ(60);
 	}
+    */
 
-	camera.updateProjectionMatrix();
 	renderer.setSize(width, height);
+	camera.updateProjectionMatrix();
 	//composer.setSize(width, height);
 }
 

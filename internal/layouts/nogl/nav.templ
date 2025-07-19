@@ -1,0 +1,171 @@
+package layouts_nogl
+
+import (
+	l "github.com/gavink97/gav-ink/internal/layouts"
+	c "github.com/gavink97/gav-ink/internal/components"
+	m "github.com/gavink97/gav-ink/internal/middleware"
+)
+
+templ Nav() {
+	<nav id="nav" aria-label="navigation">
+		@l.Logo()
+		@Menu()
+		@ContactUs()
+		@c.BurgerMenu()
+	</nav>
+}
+
+templ Menu() {
+	<nav-menu>
+		<a
+			href="/?nogl=true#"
+			aria-label="home"
+			class="nav-menu-item"
+			hx-on:click="
+        const options = {
+				immediate: false,
+                offset: -90
+			}
+
+	    window.lenis.scrollTo(0, options)
+        "
+		>
+			<p class="nav-menu-item-text primary-text">
+				home
+			</p>
+		</a>
+		@dropDownServices()
+		<a
+			href="/?nogl=true#tech"
+			aria-label="technology"
+			class="nav-menu-item"
+			hx-on:click="
+        const options = {
+				immediate: false,
+                offset: -100
+			}
+
+	    window.lenis.scrollTo('#tech', options)
+        "
+		>
+			<p class="nav-menu-item-text primary-text">
+				tech
+			</p>
+		</a>
+		<a
+			href="/?nogl=true#story"
+			aria-label="studio story"
+			class="nav-menu-item"
+			hx-on:click="
+        const options = {
+				immediate: false,
+                offset: -90
+			}
+
+	    window.lenis.scrollTo('#story', options)
+        "
+		>
+			<p class="nav-menu-item-text primary-text">
+				studio
+			</p>
+		</a>
+	</nav-menu>
+}
+
+templ ContactUs() {
+	<div
+		aria-label="mailing list"
+		class="contact-us-button"
+		hx-on:click="
+	    window.lenis.scrollTo(prefooter, {
+                offset: 110
+            })
+    "
+	>
+		<p class="nav-menu-item-text">
+			contact us
+		</p>
+	</div>
+}
+
+templ dropDownServices() {
+	<drop-down-services>
+		<a
+			href="/?nogl=true#services"
+			aria-label="services"
+			class="nav-menu-item"
+			id="services-menu"
+			hx-on:click="
+			const options = {
+				immediate: false,
+                offset: -100
+			}
+
+			window.lenis.scrollTo('#services', options)
+        "
+		>
+			<p class="nav-menu-item-text primary-text">
+				services
+			</p>
+			@c.DropDownMenuIcon()
+			@dropDownItems()
+		</a>
+	</drop-down-services>
+	<script src="/public/components/navbar.js" type="module" nonce={ m.GetNonce(ctx) } defer></script>
+}
+
+templ dropDownItems() {
+	<div id="dropdownmenu">
+		<a
+			href="/?nogl=true#ux"
+			aria-label="ux design"
+			class="drop-down-item"
+			hx-on:click="
+			const options = {
+				immediate: false,
+                offset: -100
+			}
+
+			window.lenis.scrollTo('#ux', options)
+        "
+		>
+			<p class="nav-menu-item-text drop-down-text-offset primary-text">
+				design
+			</p>
+		</a>
+		<a
+			href="/?nogl=true#software"
+			aria-label="software development"
+			class="drop-down-item"
+			hx-on:click="
+			const options = {
+				immediate: false,
+                offset: -100
+			}
+
+			window.lenis.scrollTo('#software', options)
+        "
+		>
+			<p class="nav-menu-item-text drop-down-text-offset primary-text">
+				software
+			</p>
+		</a>
+		<a
+			href="/?nogl=true#webapp"
+			aria-label="web app development"
+			class="drop-down-item"
+			hx-on:click="
+			const options = {
+				immediate: false,
+                offset: -100
+			}
+
+			window.lenis.scrollTo('#webapp', options)
+        "
+		>
+			<p class="nav-menu-item-text drop-down-text-offset primary-text">
+				web
+			</p>
+		</a>
+	</div>
+}

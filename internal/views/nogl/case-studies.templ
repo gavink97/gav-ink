@@ -1,4 +1,4 @@
-package views
+package views_nogl
 
 import (
 	c "github.com/gavink97/gav-ink/internal/components"
@@ -14,6 +14,6 @@ templ CaseStudies() {
 			intention, collaborate with humility, and leave a lighter footprint
 			on the planet.
 		</p>
-		@c.CaseStudiesPanel(globals.Posts, true)
+		@c.CaseStudiesPanel(globals.Posts, false)
 	</section>
 }

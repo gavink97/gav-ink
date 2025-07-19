@@ -430,3 +430,10 @@ img.emojione {
 		width: 2rem;
 	}
 }
+
+footer-socials {
+	line-height: 1.31;
+    & li:not(:first-of-type) {
+        margin-top: 0.5rem;
+    }
+}

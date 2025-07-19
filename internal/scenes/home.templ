@@ -30,7 +30,7 @@ func getModelSize() string {
 
 templ HomeScene() {
 	<section aria-label="hero">
-		<h1 class="relative top-[8.75rem] w-full text-center text-sm min-[950px]:top-24">Crafting Digital Experiences with Purpose & Sustainability</h1>
+		<h1 class="absolute top-[8.75rem] w-full text-center text-sm min-[950px]:top-24">Crafting Digital Experiences with Purpose & Sustainability</h1>
 		<home-scene>
 			<div id="suspense">Loading Progress 0.0%</div>
 			<span id="scroll-progress" progress=""></span>
@@ -39,5 +39,5 @@ templ HomeScene() {
 			<div id="three-home-space"></div>
 		</home-scene>
 	</section>
-	<script src="/public/three/scenes/hero/index.js" type="module" nonce={ m.GetNonce(ctx) } defer></script>
+	<script src="/public/three/scenes/home/index.js" type="module" nonce={ m.GetNonce(ctx) } defer></script>
 }

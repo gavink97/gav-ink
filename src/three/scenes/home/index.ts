@@ -1,8 +1,17 @@
 import WebGL from 'three/addons/capabilities/WebGL.js';
-//import { Scene } from './macbook.ts';
+import { Scene2 } from './main.ts';
 
-if (WebGL.isWebGL2Available()) {
-	//Scene();
-} else {
-	window.location.replace('/?nogl=true');
+async function init() {
+	if (WebGL.isWebGL2Available()) {
+		try {
+			await Scene2();
+		} catch (error) {
+			console.error('An error occured loading the scene:', error);
+			window.location.replace('/?nogl=true');
+		}
+	} else {
+		window.location.replace('/?nogl=true');
+	}
 }
+
+init();
