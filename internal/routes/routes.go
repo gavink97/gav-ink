@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"encoding/json"
 	"fmt"
 	"log/slog"
 	"net/http"
@@ -16,6 +15,7 @@ import (
 	m "github.com/gavink97/gav-ink/internal/middleware"
 	"github.com/gavink97/gav-ink/internal/store/db"
 	"github.com/gavink97/gav-ink/internal/store/dbstore"
+	"github.com/gavink97/gav-ink/internal/utils"
 	"github.com/justinas/alice"
 	"github.com/patrickmn/go-cache"
 )
@@ -56,18 +56,7 @@ func newRouter() http.Handler {
 		Limiter:      lmt,
 	})
 
-	pkg, err := os.ReadFile("./package.json")
-	if err != nil {
-		slog.Error(err.Error())
-	}
-
-	var payload map[string]any
-	err = json.Unmarshal(pkg, &payload)
-	if err != nil {
-		slog.Error(err.Error())
-	}
-
-	verString := payload["version"]
+	verString := utils.PrintVersion()
 
 	publicFiles := http.FileServer(http.Dir("./dist"))
 	mux.Handle("/public/", http.StripPrefix("/public/",
@@ -107,7 +96,7 @@ func newRouter() http.Handler {
 
 	authChain := alice.New(
 		middleware.Recovery,
-		loggingMiddleware(),
+		middleware.LoggingMiddleware,
 		middleware.RemoveTrailingSlash,
 		middleware.Caching,
 		middleware.Limiting,
@@ -125,6 +114,8 @@ func newRouter() http.Handler {
 
 	mux.Handle("GET /component/burger-modal", authChain.Then(http.HandlerFunc(h.NewComponentHandler().GetBurgerModal)))
 
+	mux.Handle("GET /component/burger-modal-nogl", authChain.Then(http.HandlerFunc(h.NewComponentHandler().GetBurgerModalNoGL)))
+
 	mux.Handle("GET /component/open-source-table", authChain.Then(http.HandlerFunc(h.NewComponentHandler().GetOpenSourceTable)))
 
 	mux.Handle("POST /subscribe", authChain.Then(http.HandlerFunc(h.NewSubscribeHandler(h.SubscribeHandlerParams{
@@ -141,6 +132,7 @@ func newRouter() http.Handler {
 			notFound.ServeHTTP(w, r)
 			return
 		}
+
 		h.NewHomeHandler().ServeHTTP(w, r)
 	})))
 

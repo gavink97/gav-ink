@@ -1,14 +1,16 @@
 package views_nogl
 
 templ sustainability() {
-	@whatSustainable()
-	@virtualLCA()
-	@whySustainable()
+	<section id="sustainable-grid" class="p-4" aria-label="sustainability">
+		<h2 id="sustainability" class="section-header sustainable-grid-title">Sustainability</h2>
+		@whatSustainable()
+		@virtualLCA()
+		@whySustainable()
+	</section>
 }
 
 templ whatSustainable() {
-	<section class="p-4" aria-label="what is sustainable development?">
-		<h2 id="sustainability" class="section-header">Sustainability</h2>
+	<section class="p-4 sustainable-grid-item" aria-label="what is sustainable development?">
 		<h3 class="section-subheader">
 			What is Sustainable Software Development?
 		</h3>
@@ -28,7 +30,7 @@ templ whatSustainable() {
 }
 
 templ virtualLCA() {
-	<section class="p-4" aria-label="life cycle assessment of software">
+	<section class="p-4 sustainable-grid-item" aria-label="life cycle assessment of software">
 		<h3 class="section-subheader">
 			What is the Life Cycle Assessment of a software product?
 		</h3>
@@ -64,7 +66,7 @@ templ virtualLCA() {
 }
 
 templ whySustainable() {
-	<section class="p-4" aria-label="why sustainable development is important">
+	<section class="p-4 sustainable-grid-item" aria-label="why sustainable development is important">
 		<h3 class="section-subheader">
 			Why Sustainable Software Development is important for stakeholders
 			and our planet

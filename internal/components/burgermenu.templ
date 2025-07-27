@@ -2,16 +2,25 @@ package components
 
 import m "github.com/gavink97/gav-ink/internal/middleware"
 
-templ BurgerMenu() {
+templ BurgerMenu(gl bool) {
 	<burger-menu>
-		@burgerMenuIconSuspense()
+		@burgerMenuIconSuspense(gl)
 		<div id="burger-menu-icon"></div>
 		<script src="/public/svgs/burgermenuicon.js" type="module" nonce={ m.GetNonce(ctx) } defer></script>
 	</burger-menu>
 }
 
-templ burgerMenuIconSuspense() {
-	<div id="placeholder" hx-get="/component/burger-modal" preload="preload:init">
+templ burgerMenuIconSuspense(gl bool) {
+	{{
+	href := ""
+
+	if gl {
+		href = "/component/burger-modal"
+	} else {
+		href = "/component/burger-modal-nogl"
+	}
+	}}
+	<div id="placeholder" hx-get={ href } preload="preload:init">
 		<svg width="36" height="36" xmlns="http://www.w3.org/2000/svg">
 			<line x1="0" y1="11" x2="36" y2="11"></line>
 			<line x1="0" y1="18" x2="36" y2="18"></line>
@@ -31,6 +40,24 @@ templ BurgerModal() {
 			<a href="/#story" aria-label="studio story" class="modal-item">Studio Story</a>
 			<a href="/#studies" aria-label="insights" class="modal-item">Insights</a>
 			<p href="/contact?component=true" aria-label="contact us" class="modal-item" preload>Contact Us</p>
+			// socials
+			<a href="https://github.com/gavink97" aria-label="github" class="modal-item-social">Github</a>
+			<a href="https://www.instagram.com/gavin_kondrath/" aria-label="instagram" class="modal-item-social">Instagram</a>
+			<a href="https://www.linkedin.com/in/gavin-kondrath/" aria-label="linkedin" class="modal-item-social">LinkedIn</a>
+		</div>
+	</burger-modal>
+}
+
+templ BurgerModalNoGL() {
+	<burger-modal id="burger-modal">
+		<div class="modal-content">
+			<a href="/?nogl=true#" aria-label="home" class="modal-item">Home</a>
+			<a href="/?nogl=true#sustainable-grid" aria-label="sustainability" class="modal-item">Sustainability</a>
+			<a href="/?nogl=true#services" aria-label="services" class="modal-item">Services</a>
+			<a href="/?nogl=true#tech" aria-label="technology" class="modal-item">Technology</a>
+			<a href="/?nogl=true#story" aria-label="studio story" class="modal-item">Studio Story</a>
+			<a href="/?nogl=true#studies" aria-label="insights" class="modal-item">Insights</a>
+			<a href="/contact" aria-label="contact us" class="modal-item">Contact Us</a>
 			// socials
 			<a href="https://github.com/gavink97" aria-label="github" class="modal-item-social">Github</a>
 			<a href="https://www.instagram.com/gavin_kondrath/" aria-label="instagram" class="modal-item-social">Instagram</a>

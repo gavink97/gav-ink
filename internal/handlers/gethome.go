@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/gavink97/gav-ink/internal/globals"
 	l "github.com/gavink97/gav-ink/internal/layouts"
 	l_nogl "github.com/gavink97/gav-ink/internal/layouts/nogl"
 	v "github.com/gavink97/gav-ink/internal/views"
@@ -29,6 +30,18 @@ func (h *HomeHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method != http.MethodGet {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+		return
+	}
+
+	if !globals.WebGLMode {
+		c := v_nogl.Index()
+		err := l_nogl.Layout(c, "gav.ink • where design meets innovation").Render(r.Context(), w)
+
+		if err != nil {
+			http.Error(w, "Error rendering template", http.StatusInternalServerError)
+			return
+		}
+
 		return
 	}
 

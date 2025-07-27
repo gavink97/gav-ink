@@ -3,7 +3,7 @@ tmp_dir = ".tmp"
 
 [build]
 args_bin = []
-bin = "./.tmp/gav-ink"
+bin = "./.tmp/gav-ink --airplane"
 post_cmd = []
 pre_cmd = ["templ generate", "make converter", "make build"]
 cmd = "go build -o .tmp/gav-ink ./cmd/gav-ink"

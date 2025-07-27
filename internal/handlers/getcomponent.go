@@ -24,3 +24,16 @@ func (h *ComponentHandler) GetBurgerModal(w http.ResponseWriter, r *http.Request
 		return
 	}
 }
+
+func (h *ComponentHandler) GetBurgerModalNoGL(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+		return
+	}
+
+	err := c.BurgerModalNoGL().Render(r.Context(), w)
+	if err != nil {
+		http.Error(w, "Error rendering template", http.StatusInternalServerError)
+		return
+	}
+}

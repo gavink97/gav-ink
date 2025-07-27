@@ -1,0 +1,36 @@
+#sustainable-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    color: token("color.text.accent");
+    background-color: token("color.background.accent");
+    border-radius: 1rem;
+    padding-top: 8rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+
+    @media (min-width: token("viewport.md")) {
+        grid-template-columns: repeat(5,1fr);
+        grid-template-rows: repeat(2,1fr);
+    }
+}
+
+.sustainable-grid-title {
+    grid-column: 1 / span 2;
+
+    @media (min-width: token("viewport.md")) {
+        position: sticky;
+        top: 14rem;
+    }
+}
+
+.sustainable-grid-item {
+    grid-column: 1 / span 2;
+
+    @media (min-width: token("viewport.md")) {
+        grid-column: 3 / span 5;
+        position: sticky;
+        top: 14rem;
+        background-color: token("color.background.accent");
+    }
+}

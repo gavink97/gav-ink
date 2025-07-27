@@ -111,88 +111,123 @@ function burgerIcon(content: HTMLDivElement): void {
 	};
 
 	window.addEventListener('resize', resizeHandler);
-}
 
-function openBurgerModal(pressed: boolean): void {
-	fetch('/component/burger-modal')
-		.then((res) => {
-			if (!res.ok) {
-				throw new Error(`HTTP error! status: ${res.status}`);
-			}
-			return res.text();
-		})
-		.then((html) => {
-			const temp = document.createElement('div');
-			temp.innerHTML = html;
-			const content = temp.firstElementChild;
-			if (content) {
-				document.body.appendChild(content);
-			}
-		})
-		.then(() => {
-			opening();
-			handleLinks();
-		})
-		.catch((err) => {
-			console.error('Error fetching modal:', err);
-		});
+	function openBurgerModal(pressed: boolean): void {
+		const location = document.location;
+		let href = '';
+		if (String(location).includes('?nogl=true')) {
+			href = '/component/burger-modal-nogl';
+		} else {
+			href = '/component/burger-modal';
+		}
 
-	function handleLinks(): void {
-		const modalitems = document.querySelectorAll('.modal-item');
+		fetch(href)
+			.then((res) => {
+				if (!res.ok) {
+					throw new Error(`HTTP error! status: ${res.status}`);
+				}
+				return res.text();
+			})
+			.then((html) => {
+				const temp = document.createElement('div');
+				temp.innerHTML = html;
+				const content = temp.firstElementChild;
+				if (content) {
+					document.body.appendChild(content);
+				}
+			})
+			.then(() => {
+				opening();
+				handleLinks();
+			})
+			.catch((err) => {
+				console.error('Error fetching modal:', err);
+			});
 
-		for (const modal of modalitems) {
-			const link = modal.getAttribute('href');
+		function handleLinks(): void {
+			const modalitems = document.querySelectorAll('.modal-item');
 
-			if (!link.startsWith('/')) {
-				return;
-			}
+			for (const modal of modalitems) {
+				const link = modal.getAttribute('href');
 
-			press(modal, () => {
-				closeBurgerModal();
-				pressed === false;
-
-				const lenis = window.lenis;
-
-				const options = {
-					immediate: true,
-					offset: -100,
-				};
-
-				if (link.startsWith('/#')) {
-					document.getElementById('home').style.display = 'unset';
-					document.getElementById('swap').innerHTML = '';
-
-					const active = document.getElementById('swap').getAttribute('swap-active').toLowerCase() === 'true';
-					document.getElementById('swap').setAttribute('swap-active', 'false');
-
-					if (link === '/#') {
-						if (active) {
-							lenis.scrollTo(0, options);
-						} else {
-							lenis.scrollTo(0);
-						}
-					} else {
-						if (active) {
-							lenis.scrollTo(link.substring(1), options);
-						} else {
-							const ele = document.getElementById(link.substring(2));
-							ele.scrollIntoView();
-						}
-					}
-				} else {
-					document.getElementById('swap').setAttribute('swap-active', 'true');
-					htmx.ajax('GET', link, { target: '#swap', swap: 'innerHTML' });
-					lenis.scrollTo(0, options);
+				if (!link.startsWith('/')) {
+					return;
 				}
 
+				press(modal, () => {
+					closeBurgerModal();
+					pressed === false;
+
+					const lenis = window.lenis;
+					const swap = document.getElementById('swap');
+
+					const options = {
+						immediate: true,
+						offset: -100,
+					};
+
+					if (!swap) {
+						console.log(link);
+						if (link === '/#') {
+							lenis.scrollTo(0);
+						} else {
+							document.getElementById(link.substring(2)).scrollIntoView();
+						}
+						return;
+					}
+
+					if (link.startsWith('/#')) {
+						document.getElementById('home').style.display = 'unset';
+						swap.innerHTML = '';
+
+						const active = swap.getAttribute('swap-active').toLowerCase() === 'true';
+						swap.setAttribute('swap-active', 'false');
+
+						if (link === '/#') {
+							if (active) {
+								lenis.scrollTo(0, options);
+							} else {
+								lenis.scrollTo(0);
+							}
+						} else {
+							if (active) {
+								lenis.scrollTo(link.substring(1), options);
+							} else {
+								document.getElementById(link.substring(2)).scrollIntoView();
+							}
+						}
+					} else {
+						swap.setAttribute('swap-active', 'true');
+						htmx.ajax('GET', link, { target: '#swap', swap: 'innerHTML' });
+						lenis.scrollTo(0, options);
+					}
+
+					return;
+				});
+			}
+		}
+
+		function opening(): void {
+			const modal = document.getElementById('burger-modal');
+			if (!modal) {
 				return;
-			});
+			}
+
+			const nav = document.getElementById('nav');
+			if (!nav) {
+				console.log('expected there to be a nav.');
+				return;
+			}
+
+			modal.classList.add('opening');
+			nav.classList.add('opening');
 		}
 	}
 
-	function opening(): void {
+	function closeBurgerModal(): void {
 		const modal = document.getElementById('burger-modal');
 		if (!modal) {
+			console.log('expected there to be a modal to close');
 			return;
 		}
 
@@ -202,49 +237,32 @@ function openBurgerModal(pressed: boolean): void {
 			return;
 		}
 
-		modal.classList.add('opening');
-		nav.classList.add('opening');
+		modal.classList.add('closing');
+		modal.style.touchAction = 'none !important';
+
+		nav.classList.add('closing');
+
+		// call these early if closeBurgerModal is called early
+		modal.addEventListener(
+			'animationstart',
+			() => {
+				modal.classList.remove('opening');
+				nav.classList.remove('opening');
+			},
+			{ once: true },
+		);
+
+		modal.addEventListener(
+			'animationend',
+			() => {
+				modal.classList.remove('closing');
+				modal.style.touchAction = 'unset';
+
+				nav.classList.remove('closing');
+
+				modal.remove();
+			},
+			{ once: true },
+		);
 	}
-}
-
-export function closeBurgerModal(): void {
-	const modal = document.getElementById('burger-modal');
-	if (!modal) {
-		console.log('expected there to be a modal to close');
-		return;
-	}
-
-	const nav = document.getElementById('nav');
-	if (!nav) {
-		console.log('expected there to be a nav.');
-		return;
-	}
-
-	modal.classList.add('closing');
-	modal.style.touchAction = 'none !important';
-
-	nav.classList.add('closing');
-
-	// call these early if closeBurgerModal is called early
-	modal.addEventListener(
-		'animationstart',
-		() => {
-			modal.classList.remove('opening');
-			nav.classList.remove('opening');
-		},
-		{ once: true },
-	);
-
-	modal.addEventListener(
-		'animationend',
-		() => {
-			modal.classList.remove('closing');
-			modal.style.touchAction = 'unset';
-
-			nav.classList.remove('closing');
-
-			modal.remove();
-		},
-		{ once: true },
-	);
 }

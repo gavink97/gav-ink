@@ -1,7 +1,11 @@
 package handlers
 
 import (
+	"encoding/json"
+	"fmt"
+	"log/slog"
 	"net/http"
+	"os"
 	"sort"
 
 	"github.com/gavink97/gav-ink/internal/views"
@@ -16,6 +20,21 @@ func (h *ComponentHandler) GetOpenSourceTable(w http.ResponseWriter, r *http.Req
 	}
 
 	stats := gh.Stats
+	if stats == nil {
+		statsDump := "github-stats.json"
+		file, err := os.ReadFile(statsDump)
+		if err != nil {
+			slog.Error(fmt.Sprintf("An Error occured reading: %s", statsDump), "Error", err)
+		}
+
+		var r []gh.Repository
+		err = json.Unmarshal(file, &r)
+		if err != nil {
+			slog.Error(fmt.Sprintf("An Error occured unmarshalling: %s", statsDump), "Error", err)
+		}
+
+		stats = r
+	}
 
 	key := r.URL.Query().Get("primary")
 

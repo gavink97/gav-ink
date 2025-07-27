@@ -52,6 +52,8 @@ type GitHubResponse struct {
 var Access = ""
 var Base = "https://api.github.com"
 
+// return dummy data
+
 func GetGithubRepo(name string) (Repository, error) {
 	uri := fmt.Sprintf("%s/repos/%s", Base, name)
 	req, err := http.NewRequest("GET", uri, nil)
@@ -239,6 +241,25 @@ func GenerateGithubStats() {
 		}()
 
 		Stats = <-c
+
+		/*
+			out, err := os.Create("github-stats.json")
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			defer out.Close()
+
+			stat, err := json.MarshalIndent(Stats, "", "  ")
+			if err != nil {
+				log.Fatal(err)
+			}
+			_, err = out.Write(stat)
+			if err != nil {
+				log.Fatal(err)
+			}
+		*/
+
 		slog.Debug("Updated GitHub Stats")
 
 		time.Sleep(6 * time.Hour)

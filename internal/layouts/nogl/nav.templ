@@ -1,18 +1,27 @@
 package layouts_nogl
 
 import (
-	l "github.com/gavink97/gav-ink/internal/layouts"
 	c "github.com/gavink97/gav-ink/internal/components"
 	m "github.com/gavink97/gav-ink/internal/middleware"
 )
 
 templ Nav() {
 	<nav id="nav" aria-label="navigation">
-		@l.Logo()
+		@Logo()
 		@Menu()
 		@ContactUs()
-		@c.BurgerMenu()
+		@c.BurgerMenu(false)
 	</nav>
+}
+
+templ Logo() {
+	<logo aria-label="gavink">
+		// make it where onhover the text shows a smiley face
+		// <p>gavink</p>
+		<a href="/?nogl=true" aria-label="home">
+			<img src="/public/images/gavink.svg" alt="gavink logo"/>
+		</a>
+	</logo>
 }
 
 templ Menu() {

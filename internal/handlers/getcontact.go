@@ -58,7 +58,7 @@ func crmInsertLead(data []byte) error {
 	reqBody := bytes.NewReader(data)
 	req, err := http.NewRequest("POST", uri, reqBody)
 	if err != nil {
-		slog.Error(err.Error())
+		slog.Error(fmt.Sprintf("An error occured when making a request to: %s", uri), "Error", err)
 		return err
 	}
 
@@ -69,7 +69,7 @@ func crmInsertLead(data []byte) error {
 
 	resp, err := client.Do(req)
 	if err != nil {
-		slog.Error(err.Error())
+		slog.Error(fmt.Sprintf("An error occured when making a request to: %s", uri), "Error", err)
 		return err
 	}
 
@@ -77,17 +77,17 @@ func crmInsertLead(data []byte) error {
 		err := resp.Body.Close()
 
 		if err != nil {
-			slog.Error(err.Error())
+			slog.Error("An error occured when closing the response body", "Error", err)
 		}
 	}()
 
 	respBody, err := io.ReadAll(resp.Body)
 	if err != nil {
-		slog.Error(err.Error())
+		slog.Error("An error occured when reading the response body", "Error", err)
 		return err
 	}
 
-	fmt.Println(string(respBody))
+	slog.Debug("Successfully read the response body", "Output", respBody)
 
 	return nil
 }

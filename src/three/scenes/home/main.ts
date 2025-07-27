@@ -2,7 +2,7 @@ import Stats from 'stats.js';
 import * as THREE from 'three';
 import { OrganicSphereObject } from '../../objects/sphere.ts';
 import type { SceneParameters } from '../../types/object.ts';
-import { PlayScrollAnimations, StartOffset, type AnimationTimeline } from '../../utils/timeline.ts';
+import { PlayScrollAnimations, StartOffset, type AnimationTimeline } from '../../../utils/timeline.ts';
 import { MacbookObject } from '../../objects/macbook.ts';
 import { adjCanvas, resizeRenderer } from '../../utils/resize.ts';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
