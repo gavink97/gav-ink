@@ -2,6 +2,7 @@ package layouts_nogl
 
 import (
 	c "github.com/gavink97/gav-ink/internal/components"
+	i "github.com/gavink97/gav-ink/internal/images"
 	m "github.com/gavink97/gav-ink/internal/middleware"
 )
 
@@ -19,7 +20,7 @@ templ Logo() {
 		// make it where onhover the text shows a smiley face
 		// <p>gavink</p>
 		<a href="/?nogl=true" aria-label="home">
-			<img src="/public/images/gavink.svg" alt="gavink logo"/>
+			@i.GavinkSVG()
 		</a>
 	</logo>
 }

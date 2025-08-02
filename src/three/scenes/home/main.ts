@@ -2,7 +2,7 @@ import Stats from 'stats.js';
 import * as THREE from 'three';
 import { OrganicSphereObject } from '../../objects/sphere.ts';
 import type { SceneParameters } from '../../types/object.ts';
-import { PlayScrollAnimations, StartOffset, type AnimationTimeline } from '../../../utils/timeline.ts';
+import { PlayTimeline, type AnimationTimeline } from '../../../utils/timeline.ts';
 import { MacbookObject } from '../../objects/macbook.ts';
 import { adjCanvas, resizeRenderer } from '../../utils/resize.ts';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
@@ -126,23 +126,10 @@ export async function Scene2() {
 
 	scene.add(macbook.gltf.scene);
 
-	/*
-	timeline.push({
-		start: 0,
-		end: 100,
-		func: (start) => {
-			const toScale = StartOffset(scrollPercent, start, macbook.action.getClip().duration);
-
-			macbook.action.time = toScale;
-			macbook.mixer.update(toScale);
-		},
-	});
-    */
-
 	timeline.push({
 		start: 15,
 		end: 100,
-		func: (progress) => {
+		animate: (progress) => {
 			const action = macbook.action;
 			const offset = 2;
 			const duration = action.getClip().duration - offset;
@@ -157,7 +144,7 @@ export async function Scene2() {
 		start: 0,
 		end: 15,
 		easing: 'easeInOutSine',
-		func: (progress) => {
+		animate: (progress) => {
 			const startPos = new THREE.Vector3(0, 12.2, 8);
 			const newPos = new THREE.Vector3(0, 10, 60);
 			camera.position.lerpVectors(startPos, newPos, progress);
@@ -222,7 +209,7 @@ export async function Scene2() {
 		}
 
 		requestAnimationFrame(animate);
-		PlayScrollAnimations(timeline, scrollPercent);
+		PlayTimeline(timeline, scrollPercent);
 
 		sphere.animationHook();
 

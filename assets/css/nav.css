@@ -10,6 +10,16 @@ nav {
 	touch-action: none !important;
 
 	font-family: token("font.family.ui");
+
+    /*
+    &:hover nav-menu {
+        opacity: 100%;
+    }
+
+    &:active {
+        pointer-events: none;
+    }
+    */
 }
 
 /* biome-ignore lint/nursery/noUnknownTypeSelector: real type */
@@ -164,4 +174,8 @@ drop-down-menu-icon-placeholder {
 			stroke: black;
 		}
 	}
+}
+
+#gavink-logo {
+    fill: token("color.text.primary");
 }

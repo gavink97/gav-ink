@@ -52,8 +52,6 @@ type GitHubResponse struct {
 var Access = ""
 var Base = "https://api.github.com"
 
-// return dummy data
-
 func GetGithubRepo(name string) (Repository, error) {
 	uri := fmt.Sprintf("%s/repos/%s", Base, name)
 	req, err := http.NewRequest("GET", uri, nil)

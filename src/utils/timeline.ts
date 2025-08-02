@@ -4,28 +4,31 @@ export interface AnimationTimeline {
 	start: number;
 	easing?: keyof typeof Easings;
 	end: number;
-	func: (progress: number) => void;
+	animate: (progress: number) => void;
+	postAnimation?: (progress: number) => void;
+	preAnimation?: (progress: number) => void;
 }
 
-export function PlayScrollAnimations(timeline: AnimationTimeline[], scrollPercent: number): void {
-	for (const animation of timeline) {
-		if (scrollPercent >= animation.start && scrollPercent < animation.end) {
-			const segmentProgress = (scrollPercent - animation.start) / (animation.end - animation.start);
+export function PlayTimeline(timeline: AnimationTimeline[], scrollPercent: number): void {
+	for (const segment of timeline) {
+		if (scrollPercent < segment.start) {
+			const segmentProgress = scrollPercent / segment.start;
+			segment.preAnimation(segmentProgress);
+		} else if (scrollPercent >= segment.start && scrollPercent <= segment.end) {
+			const segmentProgress = (scrollPercent - segment.start) / (segment.end - segment.start);
 
 			let progress: number;
 
-			if (animation.easing) {
-				progress = Easings[animation.easing](segmentProgress);
+			if (segment.easing) {
+				progress = Easings[segment.easing](segmentProgress);
 			} else {
 				progress = segmentProgress;
 			}
 
-			animation.func(progress);
+			segment.animate(progress);
+		} else if (scrollPercent > segment.end) {
+			const segmentProgress = (scrollPercent - segment.end) / (1 - segment.end);
+			segment.postAnimation(segmentProgress);
 		}
 	}
-}
-
-export function StartOffset(current: number, start: number, end: number, duration: number): number {
-	const progress = Math.min(1, Math.max(0, (current - start) / (end - start)));
-	return duration * progress;
 }

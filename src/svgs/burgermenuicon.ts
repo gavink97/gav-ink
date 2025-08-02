@@ -51,21 +51,21 @@ function burgerIcon(content: HTMLDivElement): void {
 	line1.setAttribute('x2', '36');
 	line1.setAttribute('y1', '11');
 	line1.setAttribute('y2', '11');
-	line1.style.stroke = token.color.background.accent.value;
+	//line1.style.stroke = token.color.background.accent.value;
 	line1.style.strokeWidth = '5';
 
 	line2.setAttribute('x1', '0');
 	line2.setAttribute('x2', '36');
 	line2.setAttribute('y1', '18');
 	line2.setAttribute('y2', '18');
-	line2.style.stroke = token.color.background.accent.value;
+	//line2.style.stroke = token.color.background.accent.value;
 	line2.style.strokeWidth = '5';
 
 	line3.setAttribute('x1', '0');
 	line3.setAttribute('x2', '36');
 	line3.setAttribute('y1', '25');
 	line3.setAttribute('y2', '25');
-	line3.style.stroke = token.color.background.accent.value;
+	//line3.style.stroke = token.color.background.accent.value;
 	line3.style.strokeWidth = '5';
 
 	svg.appendChild(title);
@@ -86,11 +86,23 @@ function burgerIcon(content: HTMLDivElement): void {
 		};
 	});
 
+	let colorChanged = false;
+	let originalColor = '#4F804F';
+
 	press(button, () => {
+		if (colorChanged) {
+			button.style.stroke = originalColor;
+		}
+
 		if (pressed) {
 			closeBurgerModal();
 			pressed = false;
 		} else {
+			if (button.style.stroke !== token.color.background.accent.value) {
+				originalColor = button.style.stroke;
+				colorChanged = true;
+				button.style.stroke = token.color.background.accent.value;
+			}
 			openBurgerModal(pressed);
 			pressed = true;
 		}

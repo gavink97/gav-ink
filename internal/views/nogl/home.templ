@@ -15,7 +15,7 @@ templ Index() {
 	@About()
 	@OpenSource([]gh.Repository{})
 	<script src="/public/effects/splittext.js" nonce={ m.GetNonce(ctx) } defer></script>
-	<script src="/public/components/actiontimeline.js" nonce={ m.GetNonce(ctx) } defer></script>
+	<script src="/public/components/observer.js" nonce={ m.GetNonce(ctx) } defer></script>
 	<script type="text/javascript" nonce={ m.GetNonce(ctx) } defer>
         if (!String(window.location).includes("/?nogl=true")) {
             window.location.replace('/?nogl=true');
@@ -24,10 +24,10 @@ templ Index() {
 }
 
 templ Hero() {
-	<section class="full-section text-center primary-text" aria-label="hero">
+	<section class="full-section text-center primary-text" aria-label="hero" data-animation-trigger="hero">
 		<h1 class="text-3xl md:text-8xl font-bold">Crafting Digital</h1>
 		<h1 class="text-3xl md:text-8xl font-bold">Experiences</h1>
-		<h2 class="text-2xl md:text-6xl">with Purpose</h2>Element
+		<h2 class="text-2xl md:text-6xl">with Purpose</h2>
 		<h1 class="text-3xl md:text-8xl font-bold">&</h1>
 		<h2 class="text-2xl md:text-6xl">Sustainability</h2>
 	</section>

@@ -6,7 +6,7 @@ import (
 )
 
 templ preFooter() {
-	<pre-footer aria-label="prefooter" id="prefooter" class="content">
+	<pre-footer aria-label="prefooter" id="prefooter" class="content" data-animation-trigger="prefooter">
 		<p>
 			Let's get in touch
 		</p>
@@ -360,7 +360,7 @@ templ Footer() {
 templ FooterWrapper(footer templ.Component) {
 	<section aria-label="footer">
 		@preFooter()
-		<footer-wrapper>
+		<footer-wrapper data-animation-trigger="footer">
 			<footer-position>
 				<footer-view>
 					@footer
