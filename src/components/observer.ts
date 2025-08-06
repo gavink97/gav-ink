@@ -8,13 +8,6 @@ window.addEventListener('resize', Observer);
 document.addEventListener('DOMContentLoaded', Observer);
 
 function Observer(): void {
-	const sustainable = document.getElementById('sustainable-grid');
-	const contactButton = document.getElementsByClassName('contact-us-button')[0] as HTMLDivElement;
-	const logo = document.getElementById('gavink-logo');
-	const mobileMenu = document.getElementById('burger-menu-icon');
-
-	const DURATION = 0.25;
-
 	const observerOptions = {
 		root: null,
 		rootMargin: '0px 0px -95% 0px',
@@ -30,7 +23,7 @@ function Observer(): void {
 
 			if (entry.isIntersecting) {
 				console.log(trigger);
-				handleAnimationTrigger(trigger);
+				HandleAnimationTrigger(trigger);
 			}
 		}
 	}, observerOptions);
@@ -40,61 +33,68 @@ function Observer(): void {
 	for (const el of elems) {
 		observer.observe(el);
 	}
+}
 
-	function handleAnimationTrigger(trigger: string | null): void {
-		switch (trigger) {
-			case 'hero':
-				motion(sustainable, { marginLeft: '1rem', marginRight: '1rem' }, { duration: DURATION });
-				motion(logo, { fill: token.color.text.primary.value }, { duration: DURATION });
-				motion(
-					contactButton,
-					{
-						color: token.color.text.accent.value,
-						backgroundColor: token.color.background.accent.value,
-					},
-					{ duration: DURATION },
-				);
-				motion(mobileMenu, { stroke: token.color.background.accent.value }, { duration: DURATION });
-				break;
+export function HandleAnimationTrigger(trigger: string | null): void {
+	const sustainable = document.getElementById('sustainable-grid');
+	const contactButton = document.getElementsByClassName('contact-us-button')[0] as HTMLDivElement;
+	const logo = document.getElementById('gavink-logo');
+	const mobileMenu = document.getElementById('burger-menu-icon');
 
-			case 'sustainability':
-				motion(sustainable, { marginLeft: 0, marginRight: 0 }, { duration: DURATION });
-				motion(logo, { fill: token.color.text.accent.value }, { duration: DURATION });
-				motion(
-					contactButton,
-					{
-						color: token.color.text.primary.value,
-						backgroundColor: token.color.background.primary.value,
-					},
-					{ duration: DURATION },
-				);
-				motion(mobileMenu, { stroke: token.color.background.primary.value }, { duration: DURATION });
-				break;
+	const DURATION = 0.25;
 
-			case 'footer':
-				motion(logo, { fill: token.color.text.accent.value }, { duration: DURATION });
-				motion(
-					contactButton,
-					{
-						color: token.color.text.primary.value,
-						backgroundColor: token.color.background.primary.value,
-					},
-					{ duration: DURATION },
-				);
-				motion(mobileMenu, { stroke: token.color.background.primary.value }, { duration: DURATION });
-				break;
+	switch (trigger) {
+		case 'hero':
+			motion(sustainable, { marginLeft: '1rem', marginRight: '1rem' }, { duration: DURATION });
+			motion(logo, { fill: token.color.text.primary.value }, { duration: DURATION });
+			motion(
+				contactButton,
+				{
+					color: token.color.text.accent.value,
+					backgroundColor: token.color.background.accent.value,
+				},
+				{ duration: DURATION },
+			);
+			motion(mobileMenu, { stroke: token.color.background.accent.value }, { duration: DURATION });
+			break;
 
-			default:
-				motion(logo, { fill: token.color.text.primary.value }, { duration: DURATION });
-				motion(
-					contactButton,
-					{
-						color: token.color.text.accent.value,
-						backgroundColor: token.color.background.accent.value,
-					},
-					{ duration: DURATION },
-				);
-				motion(mobileMenu, { stroke: token.color.background.accent.value }, { duration: DURATION });
-		}
+		case 'sustainability':
+			motion(sustainable, { marginLeft: 0, marginRight: 0 }, { duration: DURATION });
+			motion(logo, { fill: token.color.text.accent.value }, { duration: DURATION });
+			motion(
+				contactButton,
+				{
+					color: token.color.text.primary.value,
+					backgroundColor: token.color.background.primary.value,
+				},
+				{ duration: DURATION },
+			);
+			motion(mobileMenu, { stroke: token.color.background.primary.value }, { duration: DURATION });
+			break;
+
+		case 'footer':
+			motion(logo, { fill: token.color.text.accent.value }, { duration: DURATION });
+			motion(
+				contactButton,
+				{
+					color: token.color.text.primary.value,
+					backgroundColor: token.color.background.primary.value,
+				},
+				{ duration: DURATION },
+			);
+			motion(mobileMenu, { stroke: token.color.background.primary.value }, { duration: DURATION });
+			break;
+
+		default:
+			motion(logo, { fill: token.color.text.primary.value }, { duration: DURATION });
+			motion(
+				contactButton,
+				{
+					color: token.color.text.accent.value,
+					backgroundColor: token.color.background.accent.value,
+				},
+				{ duration: DURATION },
+			);
+			motion(mobileMenu, { stroke: token.color.background.accent.value }, { duration: DURATION });
 	}
 }

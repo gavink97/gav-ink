@@ -2,15 +2,15 @@ package components
 
 import m "github.com/gavink97/gav-ink/internal/middleware"
 
-templ BurgerMenu(gl bool) {
+templ MobileMenu(gl bool) {
 	<burger-menu>
-		@burgerMenuIconSuspense(gl)
+		@mobileMenuIconSuspense(gl)
 		<div id="burger-menu-icon"></div>
-		<script src="/public/svgs/burgermenuicon.js" type="module" nonce={ m.GetNonce(ctx) } defer></script>
+		<script src="/public/svgs/mobilemenuicon.js" type="module" nonce={ m.GetNonce(ctx) } defer></script>
 	</burger-menu>
 }
 
-templ burgerMenuIconSuspense(gl bool) {
+templ mobileMenuIconSuspense(gl bool) {
 	{{
 	href := ""
 
@@ -30,15 +30,15 @@ templ burgerMenuIconSuspense(gl bool) {
 }
 
 // make on click animation / page exit animation
-templ BurgerModal() {
+templ MobileMenuModal() {
 	<burger-modal id="burger-modal">
 		<div class="modal-content">
-			<a href="/#" aria-label="home" class="modal-item">Home</a>
-			<a href="/#sustainability" aria-label="sustainability" class="modal-item">Sustainability</a>
-			<a href="/#services" aria-label="services" class="modal-item">Services</a>
-			<a href="/#tech" aria-label="technology" class="modal-item">Technology</a>
-			<a href="/#story" aria-label="studio story" class="modal-item">Studio Story</a>
-			<a href="/#studies" aria-label="insights" class="modal-item">Insights</a>
+			<a href="/#" aria-label="home" class="modal-item" data-section-hook="hero">Home</a>
+			<a href="/#sustainability" aria-label="sustainability" class="modal-item" data-section-hook="sustainability">Sustainability</a>
+			<a href="/#services" aria-label="services" class="modal-item" data-section-hook="services">Services</a>
+			<a href="/#tech" aria-label="technology" class="modal-item" data-section-hook="tech">Technology</a>
+			<a href="/#story" aria-label="studio story" class="modal-item" data-section-hook="studio">Studio Story</a>
+			<a href="/#studies" aria-label="insights" class="modal-item" data-section-hook="insights">Insights</a>
 			<p href="/contact?component=true" aria-label="contact us" class="modal-item" preload>Contact Us</p>
 			// socials
 			<a href="https://github.com/gavink97" aria-label="github" class="modal-item-social">Github</a>
@@ -48,15 +48,15 @@ templ BurgerModal() {
 	</burger-modal>
 }
 
-templ BurgerModalNoGL() {
+templ MobileMenuModalNoGL() {
 	<burger-modal id="burger-modal">
 		<div class="modal-content">
-			<a href="/?nogl=true#" aria-label="home" class="modal-item">Home</a>
-			<a href="/?nogl=true#sustainable-grid" aria-label="sustainability" class="modal-item">Sustainability</a>
-			<a href="/?nogl=true#services" aria-label="services" class="modal-item">Services</a>
-			<a href="/?nogl=true#tech" aria-label="technology" class="modal-item">Technology</a>
-			<a href="/?nogl=true#story" aria-label="studio story" class="modal-item">Studio Story</a>
-			<a href="/?nogl=true#studies" aria-label="insights" class="modal-item">Insights</a>
+			<a href="/?nogl=true#" aria-label="home" class="modal-item" data-section-hook="hero">Home</a>
+			<a href="/?nogl=true#sustainable-grid" aria-label="sustainability" class="modal-item" data-section-hook="sustainability">Sustainability</a>
+			<a href="/?nogl=true#services" aria-label="services" class="modal-item" data-section-hook="services">Services</a>
+			<a href="/?nogl=true#tech" aria-label="technology" class="modal-item" data-section-hook="tech">Technology</a>
+			<a href="/?nogl=true#story" aria-label="studio story" class="modal-item" data-section-hook="studio">Studio Story</a>
+			<a href="/?nogl=true#studies" aria-label="insights" class="modal-item" data-section-hook="insights">Insights</a>
 			<a href="/contact" aria-label="contact us" class="modal-item">Contact Us</a>
 			// socials
 			<a href="https://github.com/gavink97" aria-label="github" class="modal-item-social">Github</a>

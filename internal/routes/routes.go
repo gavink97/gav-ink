@@ -112,9 +112,9 @@ func newRouter() http.Handler {
 
 	mux.Handle("POST /contact", authChain.Then(http.HandlerFunc(h.NewContactHandler().ServeHTTP)))
 
-	mux.Handle("GET /component/burger-modal", authChain.Then(http.HandlerFunc(h.NewComponentHandler().GetBurgerModal)))
+	mux.Handle("GET /component/burger-modal", authChain.Then(http.HandlerFunc(h.NewComponentHandler().GetMobileMenuModal)))
 
-	mux.Handle("GET /component/burger-modal-nogl", authChain.Then(http.HandlerFunc(h.NewComponentHandler().GetBurgerModalNoGL)))
+	mux.Handle("GET /component/burger-modal-nogl", authChain.Then(http.HandlerFunc(h.NewComponentHandler().GetMobileMenuModalNoGL)))
 
 	mux.Handle("GET /component/open-source-table", authChain.Then(http.HandlerFunc(h.NewComponentHandler().GetOpenSourceTable)))
 
