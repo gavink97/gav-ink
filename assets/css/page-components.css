@@ -17,7 +17,7 @@
 .full-section {
 	--min-height: calc(var(--vh, 1vh) * 1px * 100);
 	min-height: max(var(--min-height), 640px);
-	min-height: -webkit-fill-available;
+	/*min-height: -webkit-fill-available; */
 	width: 100%;
 	display: flex;
 	flex-direction: column;
@@ -30,7 +30,7 @@
 .full-section-grid {
 	--min-height: calc(var(--vh, 1vh) * 1px * 100);
 	min-height: max(var(--min-height), 640px);
-	min-height: -webkit-fill-available;
+	/*min-height: -webkit-fill-available; */
 	width: 100%;
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(min(360px, 100%), 1fr));
@@ -48,7 +48,6 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	scroll-margin-top: 9rem;
 
 	background-color: token("color.background.primary");
 }
@@ -137,10 +136,6 @@
 	}
 }
 
-.section-scroll {
-	scroll-margin-top: 7rem;
-}
-
 #case-studies-panel {
 	display: flex;
 	flex-direction: column;
@@ -224,7 +219,6 @@
 #studies,
 #tech,
 #services {
-	scroll-margin-top: 6rem;
 	font-weight: bold;
 	padding-bottom: 1.5rem;
 
@@ -247,7 +241,6 @@
 	line-height: token("text-size.4xl.line-height");
 	padding-bottom: 1rem;
 	padding-top: 1rem;
-	scroll-margin-top: 9rem;
 	text-align: center;
 
 	@media (min-width: token("viewport.md")) {
@@ -261,7 +254,6 @@
 	font-size: token("text-size.2xl.size");
 	line-height: token("text-size.2xl.line-height");
 	padding-bottom: 1rem;
-	scroll-margin-top: 9rem;
 	text-align: center;
 
 	@media (min-width: token("viewport.md")) {

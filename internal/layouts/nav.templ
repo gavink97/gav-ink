@@ -3,6 +3,7 @@ package layouts
 import (
 	c "github.com/gavink97/gav-ink/internal/components"
 	m "github.com/gavink97/gav-ink/internal/middleware"
+	i "github.com/gavink97/gav-ink/internal/images"
 )
 
 templ Nav() {
@@ -10,7 +11,7 @@ templ Nav() {
 		@Logo()
 		@Menu()
 		@ContactUs()
-		@c.MobileMenu(true)
+		@c.MobileMenu()
 	</nav>
 }
 
@@ -20,7 +21,7 @@ templ Logo() {
 		// make it where onhover the text shows a smiley face
 		// <p>gavink</p>
 		<a href="/" aria-label="home">
-			<img src="/public/images/gavink.svg" alt="gavink logo"/>
+			@i.GavinkSVG()
 		</a>
 	</logo>
 }
@@ -31,21 +32,9 @@ templ Menu() {
 			href="/#"
 			aria-label="home"
 			class="nav-menu-item"
-			hx-on:click="
-            document.getElementById('home').style.display = 'unset'
-            document.getElementById('swap').innerHTML = ''
-            const active = document.getElementById('swap').getAttribute('swap-active')
-
-            const state = (active === 'true')
-
-			const options = {
-				immediate: true,
-                offset: -100
-			}
-
-            document.getElementById('swap').setAttribute('swap-active', 'false')
-			window.lenis.scrollTo(0, options)
-        "
+			onclick="
+                window.LenisAnchor('top')
+            "
 		>
 			<p class="nav-menu-item-text primary-text">
 				home
@@ -64,21 +53,9 @@ templ Menu() {
 			href="/#tech"
 			aria-label="technology"
 			class="nav-menu-item"
-			hx-on:click="
-            document.getElementById('home').style.display = 'unset'
-            document.getElementById('swap').innerHTML = ''
-            const active = document.getElementById('swap').getAttribute('swap-active')
-
-            const state = (active === 'true')
-
-			const options = {
-				immediate: state,
-                offset: -100
-			}
-
-            document.getElementById('swap').setAttribute('swap-active', 'false')
-			window.lenis.scrollTo('#tech', options)
-        "
+			onclick="
+                window.LenisAnchor('#tech')
+            "
 		>
 			<p class="nav-menu-item-text primary-text">
 				tech
@@ -88,21 +65,9 @@ templ Menu() {
 			href="/#story"
 			aria-label="studio story"
 			class="nav-menu-item"
-			hx-on:click="
-        document.getElementById('home').style.display = 'unset'
-        document.getElementById('swap').innerHTML = ''
-        const active = document.getElementById('swap').getAttribute('swap-active')
-
-        const state = (active === 'true')
-
-        const options = {
-				immediate: state,
-                offset: -90
-			}
-
-        document.getElementById('swap').setAttribute('swap-active', 'false')
-	    window.lenis.scrollTo('#story', options)
-        "
+			onclick="
+                window.LenisAnchor('#story')
+            "
 		>
 			<p class="nav-menu-item-text primary-text">
 				studio
@@ -115,11 +80,11 @@ templ ContactUs() {
 	<div
 		aria-label="mailing list"
 		class="contact-us-button"
-		hx-on:click="
-	    window.lenis.scrollTo(prefooter, {
+		onclick="
+	        window.Lenis.scrollTo(prefooter, {
                 offset: 110
             })
-    "
+        "
 	>
 		<p class="nav-menu-item-text">
 			contact us
@@ -134,21 +99,9 @@ templ dropDownServices() {
 			aria-label="services"
 			class="nav-menu-item"
 			id="services-menu"
-			hx-on:click="
-            document.getElementById('home').style.display = 'unset'
-            document.getElementById('swap').innerHTML = ''
-            const active = document.getElementById('swap').getAttribute('swap-active')
-
-            const state = (active === 'true')
-
-			const options = {
-				immediate: state,
-                offset: -100
-			}
-
-            document.getElementById('swap').setAttribute('swap-active', 'false')
-			window.lenis.scrollTo('#services', options)
-        "
+			onclick="
+                window.LenisAnchor('#services')
+            "
 		>
 			<p class="nav-menu-item-text primary-text">
 				services
@@ -166,21 +119,9 @@ templ dropDownItems() {
 			href="/#ux"
 			aria-label="ux design"
 			class="drop-down-item"
-			hx-on:click="
-            document.getElementById('home').style.display = 'unset'
-            document.getElementById('swap').innerHTML = ''
-            const active = document.getElementById('swap').getAttribute('swap-active')
-
-            const state = (active === 'true')
-
-			const options = {
-				immediate: state,
-                offset: -100
-			}
-
-            document.getElementById('swap').setAttribute('swap-active', 'false')
-			window.lenis.scrollTo('#ux', options)
-        "
+			onclick="
+                window.LenisAnchor('#ux')
+            "
 		>
 			<p class="nav-menu-item-text drop-down-text-offset primary-text">
 				design
@@ -190,21 +131,9 @@ templ dropDownItems() {
 			href="/#software"
 			aria-label="software development"
 			class="drop-down-item"
-			hx-on:click="
-            document.getElementById('home').style.display = 'unset'
-            document.getElementById('swap').innerHTML = ''
-            const active = document.getElementById('swap').getAttribute('swap-active')
-
-            const state = (active === 'true')
-
-			const options = {
-				immediate: state,
-                offset: -100
-			}
-
-            document.getElementById('swap').setAttribute('swap-active', 'false')
-			window.lenis.scrollTo('#software', options)
-        "
+			onclick="
+                window.LenisAnchor('#software')
+            "
 		>
 			<p class="nav-menu-item-text drop-down-text-offset primary-text">
 				software
@@ -214,21 +143,9 @@ templ dropDownItems() {
 			href="/#webapp"
 			aria-label="web app development"
 			class="drop-down-item"
-			hx-on:click="
-            document.getElementById('home').style.display = 'unset'
-            document.getElementById('swap').innerHTML = ''
-            const active = document.getElementById('swap').getAttribute('swap-active')
-
-            const state = (active === 'true')
-
-			const options = {
-				immediate: state,
-                offset: -100
-			}
-
-            document.getElementById('swap').setAttribute('swap-active', 'false')
-			window.lenis.scrollTo('#webapp', options)
-        "
+			onclick="
+                window.LenisAnchor('#webapp')
+            "
 		>
 			<p class="nav-menu-item-text drop-down-text-offset primary-text">
 				web

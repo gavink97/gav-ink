@@ -2,7 +2,6 @@
 	margin: 0;
 	display: flex;
 	flex-direction: column;
-	scroll-margin-top: -8rem;
 
 	background-color: token("color.background.primary");
 	border-bottom-color: token("color.background.primary");

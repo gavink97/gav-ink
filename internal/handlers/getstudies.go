@@ -8,9 +8,9 @@ import (
 	"path"
 	"strconv"
 
-	"github.com/gavink97/gav-ink/internal/blog"
 	c "github.com/gavink97/gav-ink/internal/components"
-	l_nogl "github.com/gavink97/gav-ink/internal/layouts/nogl"
+	"github.com/gavink97/gav-ink/internal/layouts"
+	"github.com/gavink97/gav-ink/internal/studies"
 	v "github.com/gavink97/gav-ink/internal/views"
 )
 
@@ -26,11 +26,11 @@ func (h *StudyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	dist := "dist"
-	studies := "studies"
+	public := "dist"
+	dirName := "studies"
 
 	// use posts instead of routes
-	routes, err := os.ReadDir(path.Join(dist, studies))
+	routes, err := os.ReadDir(path.Join(public, dirName))
 	if err != nil {
 		http.Error(w, "An Internal Server Error Occured", http.StatusMethodNotAllowed)
 		return
@@ -39,30 +39,30 @@ func (h *StudyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var connect bool
 
 	for _, route := range routes {
-		rt := path.Join("/", studies, route.Name())
+		rt := path.Join("/", dirName, route.Name())
 
 		if r.URL.Path == rt {
-			post, err := blog.GetPostByTitle(route.Name())
+			post, err := studies.GetPostByTitle(route.Name())
 			if err != nil {
 				slog.Error(fmt.Sprintf("An error occured: %s", err))
 				return
 			}
 
-			file := path.Join(dist, studies, route.Name(), "index.html")
+			file := path.Join(public, dirName, route.Name(), "index.html")
 			html, err := os.ReadFile(file)
 			if err != nil {
 				slog.Error(fmt.Sprintf("An error occured: %v", err))
 				return
 			}
 
-			content := blog.Unsafe(string(html))
+			content := studies.Unsafe(string(html))
 
 			component := r.URL.Query().Get("component")
 			if component != "" {
 				cbool, err := strconv.ParseBool(component)
 				if err != nil {
 					c := c.ContentComponent(content, *post, false)
-					err = l_nogl.Layout(c, post.Title).Render(r.Context(), w)
+					err = layouts.Layout(c, post.Title).Render(r.Context(), w)
 					if err != nil {
 						http.Error(w, "Error rendering template", http.StatusInternalServerError)
 						return
@@ -83,7 +83,7 @@ func (h *StudyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			}
 
 			c := c.ContentComponent(content, *post, false)
-			err = l_nogl.Layout(c, post.Title).Render(r.Context(), w)
+			err = layouts.Layout(c, post.Title).Render(r.Context(), w)
 			if err != nil {
 				http.Error(w, "Error rendering template", http.StatusInternalServerError)
 			}
@@ -94,7 +94,7 @@ func (h *StudyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	if !connect {
 		c := v.NotFound()
-		err = l_nogl.Layout(c, "Not Found").Render(r.Context(), w)
+		err = layouts.Layout(c, "Not Found").Render(r.Context(), w)
 		if err != nil {
 			slog.Error(fmt.Sprintf("An error occured: %v", err))
 		}

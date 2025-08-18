@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	c "github.com/gavink97/gav-ink/internal/components"
+	"github.com/gavink97/gav-ink/internal/utils"
 )
 
 type ComponentHandler struct{}
@@ -18,20 +19,9 @@ func (h *ComponentHandler) GetMobileMenuModal(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	err := c.MobileMenuModal().Render(r.Context(), w)
-	if err != nil {
-		http.Error(w, "Error rendering template", http.StatusInternalServerError)
-		return
-	}
-}
+	gl := utils.CheckGLCookie(w, r)
 
-func (h *ComponentHandler) GetMobileMenuModalNoGL(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
-		return
-	}
-
-	err := c.MobileMenuModalNoGL().Render(r.Context(), w)
+	err := c.MobileMenuModal(gl).Render(r.Context(), w)
 	if err != nil {
 		http.Error(w, "Error rendering template", http.StatusInternalServerError)
 		return

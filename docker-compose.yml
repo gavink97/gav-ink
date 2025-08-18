@@ -25,6 +25,9 @@ services:
     expose:
       - 8080
     command:
+      - '--global.sendAnonymousUsage=false'
+      - "--api=true"
+      - "--api.dashboard=true"
       - "--api.insecure=false"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
@@ -38,12 +41,11 @@ services:
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.traefik.rule=Host(`traefik.gav.ink`)"
-      - "traefik.http.routers.traefik.entrypoints=websecure"
-      - "traefik.http.routers.traefik.tls.certresolver=myresolver"
-      - "traefik.http.routers.traefik.service=api@internal"
-      #- "traefik.http.routers.traefik.middlewares=auth"
-      #- "traefik.http.middlewares.auth.basicauth.users="
+      - "traefik.http.routers.api.rule=Host(`traefik.gav.ink`)"
+      - "traefik.http.routers.api.entrypoints=websecure"
+      - "traefik.http.routers.api.tls.certresolver=myresolver"
+      - "traefik.http.routers.api.service=api@internal"
+      - "traefik.http.routers.api.middlewares=authelia@docker"
     ports:
       - 80:80
       - 443:443
@@ -58,33 +60,55 @@ services:
       - 8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - dozzle:/data
     environment:
       TZ: ${TZ}
       DOZZLE_NO_ANALYTICS: "true"
-      DOZZLE_AUTH_PROVIDER: "simple"
-    secrets:
-      - source: users
-        target: /data/users.yml
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.dozzle.rule=Host(`dozzle.gav.ink`)"
       - "traefik.http.routers.dozzle.entrypoints=websecure"
       - "traefik.http.routers.dozzle.tls.certresolver=myresolver"
+      - "traefik.http.routers.api.middlewares=authelia@docker"
   watchtower:
-    image: containrrr/watchtower
+    image: nickfedor/watchtower:latest
     container_name: watchtower
     restart: always
     environment:
       TZ: ${TZ}
-      REPO_USER: ${DOCKER_USERNAME}
-      REPO_PASS: ${DOCKER_ACCESS_TOKEN}
+      #REPO_USER: ${DOCKER_USERNAME}
+      #REPO_PASS: ${DOCKER_ACCESS_TOKEN}
     volumes:
       - $HOME/.docker/config.json:/config.json:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
     command: --interval 30
+  authelia:
+    image: authelia/authelia:latest
+    container_name: authelia
+    restart: always
+    expose:
+      - 9091
+    environment:
+      TZ: ${TZ}
+      AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET_FILE: '/run/secrets/JWT_SECRET'
+      AUTHELIA_SESSION_SECRET_FILE: '/run/secrets/SESSION_SECRET'
+      AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE: '/run/secrets/STORAGE_ENCRYPTION_KEY'
+    volumes:
+      - '${PWD}/data/authelia/config:/config'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.gavink.rule=Host(`auth.gav.ink`)"
+      - "traefik.http.routers.gavink.entrypoints=websecure"
+      - "traefik.http.routers.gavink.tls.certresolver=myresolver"
+      - "traefik.http.middlewares.authelia.forwardAuth.address='http://authelia:9091/api/authz/forward-auth'"
+      - "traefik.http.middlewares.authelia.forwardAuth.trustForwardHeader=true"
+      - "traefik.http.middlewares.authelia.forwardAuth.authResponseHeaders='Remote-User,Remote-Groups,Remote-Email,Remote-Name'"
+    secrets: ['JWT_SECRET', 'SESSION_SECRET', 'STORAGE_PASSWORD', 'STORAGE_ENCRYPTION_KEY']
 secrets:
-  users:
-    file: ./data/users.yml
+  JWT_SECRET:
+    file: '${PWD}/data/authelia/secrets/JWT_SECRET'
+  SESSION_SECRET:
+    file: '${PWD}/data/authelia/secrets/SESSION_SECRET'
+  STORAGE_ENCRYPTION_KEY:
+    file: '${PWD}/data/authelia/secrets/STORAGE_ENCRYPTION_KEY'
 volumes:
   dozzle:

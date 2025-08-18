@@ -20,20 +20,8 @@ templ Links() {
 				<a
 					href="/#"
 					aria-label="home"
-					hx-on:click="
-                        document.getElementById('home').style.display = 'unset'
-                        document.getElementById('swap').innerHTML = ''
-                        const active = document.getElementById('swap').getAttribute('swap-active')
-
-                        const state = (active === 'true')
-
-                        const options = {
-                            immediate: state,
-                            offset: -100
-                        }
-
-                        document.getElementById('swap').setAttribute('swap-active', 'false')
-                        window.lenis.scrollTo(0, options)
+					onclick="
+                        window.LenisAnchor('top')
                     "
 				>
 					@c.StaggerText("Home")
@@ -41,27 +29,10 @@ templ Links() {
 			</li>
 			<li>
 				<a
-					href="/#sustainability"
+					href="/#sustainable-grid"
 					aria-label="sustainability"
-					hx-on:click="
-                        document.getElementById('home').style.display = 'unset'
-                        document.getElementById('swap').innerHTML = ''
-                        const active = document.getElementById('swap').getAttribute('swap-active')
-
-                        const state = (active === 'true')
-
-			            const options = {
-				            immediate: state,
-                            offset: -100
-			            }
-
-                        document.getElementById('swap').setAttribute('swap-active', 'false')
-
-                        if (state) {
-			                window.lenis.scrollTo(0, options)
-                        }
-
-                        window.lenis.scrollTo('#sustainability', options)
+					onclick="
+                        window.LenisAnchor('#sustainable-grid')
                     "
 				>
 					@c.StaggerText("Sustainability")
@@ -71,25 +42,8 @@ templ Links() {
 				<a
 					href="/#ux"
 					aria-label="ux design"
-					hx-on:click="
-                        document.getElementById('home').style.display = 'unset'
-                        document.getElementById('swap').innerHTML = ''
-                        const active = document.getElementById('swap').getAttribute('swap-active')
-
-                        const state = (active === 'true')
-
-			            const options = {
-				            immediate: state,
-                            offset: -100
-			            }
-
-                        document.getElementById('swap').setAttribute('swap-active', 'false')
-
-                        if (state) {
-			                window.lenis.scrollTo(0, options)
-                        }
-
-                        window.lenis.scrollTo('#ux', options)
+					onclick="
+                        window.LenisAnchor('#ux')
                     "
 				>
 					@c.StaggerText("Design")
@@ -99,25 +53,8 @@ templ Links() {
 				<a
 					href="/#software"
 					aria-label="software development"
-					hx-on:click="
-                        document.getElementById('home').style.display = 'unset'
-                        document.getElementById('swap').innerHTML = ''
-                        const active = document.getElementById('swap').getAttribute('swap-active')
-
-                        const state = (active === 'true')
-
-			            const options = {
-				            immediate: state,
-                            offset: -100
-			            }
-
-                        document.getElementById('swap').setAttribute('swap-active', 'false')
-
-                        if (state) {
-			                window.lenis.scrollTo(0, options)
-                        }
-
-			            window.lenis.scrollTo('#software', options)
+					onclick="
+                        window.LenisAnchor('#software')
                     "
 				>
 					@c.StaggerText("Software")
@@ -127,25 +64,8 @@ templ Links() {
 				<a
 					href="/#webapp"
 					aria-label="web app development"
-					hx-on:click="
-                        document.getElementById('home').style.display = 'unset'
-                        document.getElementById('swap').innerHTML = ''
-                        const active = document.getElementById('swap').getAttribute('swap-active')
-
-                        const state = (active === 'true')
-
-			            const options = {
-				            immediate: state,
-                            offset: -100
-			            }
-
-                        document.getElementById('swap').setAttribute('swap-active', 'false')
-
-                        if (state) {
-			                window.lenis.scrollTo(0, options)
-                        }
-
-			            window.lenis.scrollTo('#webapp', options)
+					onclick="
+                        window.LenisAnchor('#webapp')
                     "
 				>
 					@c.StaggerText("Web")
@@ -155,25 +75,8 @@ templ Links() {
 				<a
 					href="/#tech"
 					aria-label="technology"
-					hx-on:click="
-                        document.getElementById('home').style.display = 'unset'
-                        document.getElementById('swap').innerHTML = ''
-                        const active = document.getElementById('swap').getAttribute('swap-active')
-
-                        const state = (active === 'true')
-
-			            const options = {
-				            immediate: state,
-                            offset: -100
-			            }
-
-                        document.getElementById('swap').setAttribute('swap-active', 'false')
-
-                        if (state) {
-			                window.lenis.scrollTo(0, options)
-                        }
-
-			            window.lenis.scrollTo('#tech', options)
+					onclick="
+                        window.LenisAnchor('#tech')
                     "
 				>
 					@c.StaggerText("Technology")
@@ -183,25 +86,8 @@ templ Links() {
 				<a
 					href="/#story"
 					aria-label="studio story"
-					hx-on:click="
-                        document.getElementById('home').style.display = 'unset'
-                        document.getElementById('swap').innerHTML = ''
-                        const active = document.getElementById('swap').getAttribute('swap-active')
-
-                        const state = (active === 'true')
-
-			            const options = {
-				            immediate: state,
-                            offset: -90
-			            }
-
-                        document.getElementById('swap').setAttribute('swap-active', 'false')
-
-                        if (state) {
-			                window.lenis.scrollTo(0, options)
-                        }
-
-			            window.lenis.scrollTo('#story', options)
+					onclick="
+                        window.LenisAnchor('#story')
                     "
 				>
 					@c.StaggerText("Studio Story")
@@ -211,25 +97,8 @@ templ Links() {
 				<a
 					href="/#projects"
 					aria-label="open source projects"
-					hx-on:click="
-                        document.getElementById('home').style.display = 'unset'
-                        document.getElementById('swap').innerHTML = ''
-                        const active = document.getElementById('swap').getAttribute('swap-active')
-
-                        const state = (active === 'true')
-
-			            const options = {
-				            immediate: state,
-                            offset: -100
-			            }
-
-                        document.getElementById('swap').setAttribute('swap-active', 'false')
-
-                        if (state) {
-			                window.lenis.scrollTo(0, options)
-                        }
-
-			            window.lenis.scrollTo('#projects', options)
+					onclick="
+                        window.LenisAnchor('#projects')
                     "
 				>
 					@c.StaggerText("Open Source")
@@ -239,25 +108,8 @@ templ Links() {
 				<a
 					href="/#studies"
 					aria-label="our insights"
-					hx-on:click="
-                        document.getElementById('home').style.display = 'unset'
-                        document.getElementById('swap').innerHTML = ''
-                        const active = document.getElementById('swap').getAttribute('swap-active')
-
-                        const state = (active === 'true')
-
-                        const options = {
-                            immediate: state,
-                            offset: -100
-                        }
-
-                        document.getElementById('swap').setAttribute('swap-active', 'false')
-
-                        if (state) {
-			                window.lenis.scrollTo(0, options)
-                        }
-
-                        window.lenis.scrollTo('#studies', options)
+					onclick="
+                        window.LenisAnchor('#studies')
                     "
 				>
 					@c.StaggerText("Case Studies")

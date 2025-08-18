@@ -1,6 +1,9 @@
 package layouts
 
-import m "github.com/gavink97/gav-ink/internal/middleware"
+import (
+	m "github.com/gavink97/gav-ink/internal/middleware"
+	"github.com/gavink97/gav-ink/internal/globals"
+)
 
 templ Head(title string) {
 	<!DOCTYPE html>
@@ -11,9 +14,11 @@ templ Head(title string) {
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 			<link rel="icon" type="image/png" href="/public/gav.png"/>
 			<link rel="icon" type="image/svg" href="/public/gav.svg"/>
-			// <link rel="preconnect" href="https://fonts.googleapis.com" nonce={ middleware.GetNonce(ctx) }>
-			// <link rel="preconnect" href="https://fonts.gstatic.com" nonce={ middleware.GetNonce(ctx) } crossorigin>
-			// <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet" nonce={ middleware.GetNonce(ctx)}>
+			if !globals.AirplaneMode {
+				<link rel="preconnect" href="https://fonts.googleapis.com" nonce={ m.GetNonce(ctx) }/>
+				<link rel="preconnect" href="https://fonts.gstatic.com" nonce={ m.GetNonce(ctx) } crossorigin/>
+				<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet" nonce={ m.GetNonce(ctx) }/>
+			}
 			<link rel="stylesheet" href="/public/css/main.css" nonce={ m.GetNonce(ctx) }/>
 			<link rel="stylesheet" href="/public/effects/smoothscroll.css" nonce={ m.GetNonce(ctx) }/>
 			<!-- Preload the LCP image with a high fetchpriority so it starts loading with the stylesheet. -->

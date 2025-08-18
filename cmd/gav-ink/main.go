@@ -5,17 +5,17 @@ import (
 	"log"
 	"os"
 
-	"github.com/gavink97/gav-ink/internal/blog"
 	"github.com/gavink97/gav-ink/internal/github"
 	"github.com/gavink97/gav-ink/internal/globals"
 	"github.com/gavink97/gav-ink/internal/routes"
+	"github.com/gavink97/gav-ink/internal/studies"
 	"github.com/gavink97/gav-ink/internal/utils"
 	"github.com/gavink97/gav-ink/internal/zoho"
 	"github.com/joho/godotenv"
 )
 
 func main() {
-	airplanePtr := flag.Bool("airplane", false, "Disables use of external APIs")
+	flag.BoolVar(&globals.AirplaneMode, "airplane", false, "Disables use of external APIs")
 	verbosePtr := flag.Bool("verbose", false, "Verbose output")
 	versionPtr := flag.Bool("version", false, "Prints version")
 	flag.BoolVar(&globals.WebGLMode, "webgl", false, "Enables WebGL")
@@ -38,11 +38,13 @@ func main() {
 
 	utils.SetDefaultLogger(*verbosePtr)
 
-	if !*airplanePtr {
+	if !globals.AirplaneMode {
 		zoho.RotatingAccessToken()
 		github.OpenSourceStats()
 	}
 
-	blog.GetPosts()
+	utils.LoadDesignToken()
+
+	studies.GetPosts()
 	routes.Serve()
 }

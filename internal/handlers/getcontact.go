@@ -10,7 +10,7 @@ import (
 	"strconv"
 
 	"github.com/gavink97/gav-ink/internal/components"
-	l_nogl "github.com/gavink97/gav-ink/internal/layouts/nogl"
+	"github.com/gavink97/gav-ink/internal/layouts"
 	v "github.com/gavink97/gav-ink/internal/views"
 	z "github.com/gavink97/gav-ink/internal/zoho"
 )
@@ -115,12 +115,14 @@ func getContact(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	title := "Contact Us"
+
 	component := r.URL.Query().Get("component")
 	if component != "" {
 		cbool, err := strconv.ParseBool(component)
 		if err != nil {
 			c := v.Contact2()
-			err := l_nogl.Layout(c, "Contact Us").Render(r.Context(), w)
+			err := layouts.Layout(c, title).Render(r.Context(), w)
 			if err != nil {
 				http.Error(w, "Error rendering template", http.StatusInternalServerError)
 				return
@@ -140,7 +142,7 @@ func getContact(w http.ResponseWriter, r *http.Request) {
 	}
 
 	c := v.Contact2()
-	err := l_nogl.Layout(c, "Contact Us").Render(r.Context(), w)
+	err := layouts.Layout(c, title).Render(r.Context(), w)
 	if err != nil {
 		http.Error(w, "Error rendering template", http.StatusInternalServerError)
 		return

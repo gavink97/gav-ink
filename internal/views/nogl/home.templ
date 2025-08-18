@@ -15,12 +15,6 @@ templ Index() {
 	@About()
 	@OpenSource([]gh.Repository{})
 	<script src="/public/effects/splittext.js" nonce={ m.GetNonce(ctx) } defer></script>
-	<script src="/public/components/observer.js" nonce={ m.GetNonce(ctx) } defer></script>
-	<script type="text/javascript" nonce={ m.GetNonce(ctx) } defer>
-        if (!String(window.location).includes("/?nogl=true")) {
-            window.location.replace('/?nogl=true');
-        }
-    </script>
 }
 
 templ Hero() {

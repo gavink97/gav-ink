@@ -6,7 +6,7 @@ import (
 )
 
 templ ContentComponent(body templ.Component, post types.Post, gl bool) {
-	<section class="full-section content-post">
+	<section class="full-section content-post" data-animation-trigger="study">
 		<h1 class="content-title">{ post.Title }</h1>
 		<div class="flex self-start">
 			for _, tag := range post.Tags {

@@ -2,6 +2,7 @@ package layouts
 
 import (
 	c "github.com/gavink97/gav-ink/internal/components"
+	m "github.com/gavink97/gav-ink/internal/middleware"
 	"os"
 )
 
@@ -17,4 +18,5 @@ templ Layout(contents templ.Component, title string) {
 		</main>
 		@FooterWrapper(Footer())
 	</body>
+	<script src="/public/components/observer.js" nonce={ m.GetNonce(ctx) } defer></script>
 }

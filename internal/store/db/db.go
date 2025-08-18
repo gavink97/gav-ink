@@ -1,7 +1,12 @@
 package db
 
 import (
+	"errors"
+	"fmt"
+	"io/fs"
+	"log/slog"
 	"os"
+	"path"
 
 	"github.com/gavink97/gav-ink/internal/store"
 
@@ -22,9 +27,15 @@ func open(dbName string) (*gorm.DB, error) {
 }
 
 func MustOpen(dbName string) *gorm.DB {
-
 	if dbName == "" {
-		dbName = "data/users.db"
+		dbName = "data/gavink/users.db"
+	}
+
+	_, err := os.Stat(dbName)
+	if errors.Is(err, fs.ErrNotExist) {
+		if err := os.MkdirAll(path.Dir(dbName), os.ModePerm); err != nil {
+			slog.Error(fmt.Sprintf("An unexpected error occured when creating %s directory", path.Dir(dbName)), "Error", err)
+		}
 	}
 
 	db, err := open(dbName)

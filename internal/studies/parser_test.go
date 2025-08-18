@@ -1,9 +1,9 @@
-package blog_test
+package studies_test
 
 import (
 	"testing"
 
-	"github.com/gavink97/gav-ink/internal/blog"
+	"github.com/gavink97/gav-ink/internal/studies"
 )
 
 var documentHeader = `
@@ -18,7 +18,7 @@ var documentHeader = `
 
 func TestParseTitle(t *testing.T) {
 	expected := "Gridt"
-	result := blog.ParseTitle(documentHeader)
+	result := studies.ParseTitle(documentHeader)
 
 	if expected != result {
 		t.Errorf("Bad Result: result: %s expected: %s", result, expected)
@@ -27,7 +27,7 @@ func TestParseTitle(t *testing.T) {
 
 func TestParseRevisionDate(t *testing.T) {
 	expected := "2025-03-23"
-	result := blog.ParseRevisionDate(documentHeader)
+	result := studies.ParseRevisionDate(documentHeader)
 
 	if expected != result.Format("2006-01-02") {
 		t.Errorf("Bad Result: result: %s expected: %s", result, expected)
@@ -36,7 +36,7 @@ func TestParseRevisionDate(t *testing.T) {
 
 func TestParseEmail(t *testing.T) {
 	expected := "gavin@gav.ink"
-	result := blog.ParseEmail(documentHeader)
+	result := studies.ParseEmail(documentHeader)
 
 	if expected != result {
 		t.Errorf("Bad Result: result: %s expected: %s", result, expected)
@@ -45,7 +45,7 @@ func TestParseEmail(t *testing.T) {
 
 func TestParseId(t *testing.T) {
 	expected := 2
-	result := blog.ParseId(documentHeader)
+	result := studies.ParseId(documentHeader)
 
 	if expected != result {
 		t.Errorf("Bad Result: result: %d expected: %d", result, expected)
@@ -54,7 +54,7 @@ func TestParseId(t *testing.T) {
 
 func TestParseKeywords(t *testing.T) {
 	expected := []string{"Browser Extension", "CSS Grid", "Developer Tool"}
-	result := blog.ParseKeywords(documentHeader)
+	result := studies.ParseKeywords(documentHeader)
 
 	for index := range result {
 		if result[index] != expected[index] {

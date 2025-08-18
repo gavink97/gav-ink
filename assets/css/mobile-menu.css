@@ -81,27 +81,3 @@ burger-menu {
 	background-color: token("color.background.primary");
 	padding: 20px;
 }
-
-#burger-modal.opening {
-	animation-name: fadeIn;
-	animation-duration: 1s;
-	animation-timing-function: ease;
-}
-
-#burger-modal.opening > .modal-content {
-	animation-name: zoomIn;
-	animation-duration: 1s;
-	animation-timing-function: ease;
-}
-
-#burger-modal.closing {
-	animation-name: fadeOut;
-	animation-duration: 1s;
-	animation-timing-function: ease;
-}
-
-#burger-modal.closing > .modal-content {
-	animation-name: zoomOut;
-	animation-duration: 1s;
-	animation-timing-function: ease;
-}

@@ -21,7 +21,8 @@ exclude_dir = [
     "images",
     "assets/modals",
     "dist",
-    "backup model"
+    "backup model",
+    "data"
 ]
 exclude_file = [
     "assets/converter.js",

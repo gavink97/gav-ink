@@ -2,6 +2,23 @@ import htmx from 'htmx.org';
 import { animate, hover, press } from 'motion';
 import token from '../../tokens.json';
 import { HandleAnimationTrigger } from '../components/observer.ts';
+import { CheckGLCookie } from '../utils/cookies.ts';
+
+let isAnimating = false;
+const animationQueue: Array<() => void> = [];
+const animationStates = new WeakMap<
+	HTMLElement,
+	{
+		animation: Animation;
+		isOpening: boolean;
+	}
+>();
+
+const lenis = window.Lenis;
+
+const durationSM = Number.parseFloat(token.animation.duration.sm.sec.value);
+const durationMD = Number.parseFloat(token.animation.duration.md.sec.value);
+const durationLG = Number.parseInt(token.animation.duration.lg.ms.value);
 
 const container = document.querySelector('burger-menu');
 if (!container) {
@@ -23,7 +40,7 @@ mobileMenu(content);
 setTimeout(() => {
 	content.style.display = 'block';
 	suspense.style.display = 'none';
-}, 10);
+}, 70);
 
 function menuIcon(): HTMLButtonElement {
 	const button = document.createElement('button');
@@ -32,8 +49,6 @@ function menuIcon(): HTMLButtonElement {
 	const line1 = document.createElementNS('http://www.w3.org/2000/svg', 'line') as HTMLElement & SVGLineElement;
 	const line2 = document.createElementNS('http://www.w3.org/2000/svg', 'line') as HTMLElement & SVGLineElement;
 	const line3 = document.createElementNS('http://www.w3.org/2000/svg', 'line') as HTMLElement & SVGLineElement;
-
-	const DURATION = 0.5;
 
 	button.type = 'button';
 	button.ariaLabel = 'mobile menu';
@@ -50,21 +65,18 @@ function menuIcon(): HTMLButtonElement {
 	line1.setAttribute('x2', '36');
 	line1.setAttribute('y1', '11');
 	line1.setAttribute('y2', '11');
-	//line1.style.stroke = token.color.background.accent.value;
 	line1.style.strokeWidth = '5';
 
 	line2.setAttribute('x1', '0');
 	line2.setAttribute('x2', '36');
 	line2.setAttribute('y1', '18');
 	line2.setAttribute('y2', '18');
-	//line2.style.stroke = token.color.background.accent.value;
 	line2.style.strokeWidth = '5';
 
 	line3.setAttribute('x1', '0');
 	line3.setAttribute('x2', '36');
 	line3.setAttribute('y1', '25');
 	line3.setAttribute('y2', '25');
-	//line3.style.stroke = token.color.background.accent.value;
 	line3.style.strokeWidth = '5';
 
 	svg.appendChild(title);
@@ -76,10 +88,10 @@ function menuIcon(): HTMLButtonElement {
 	animate(button, { rotateX: 0 }, { duration: 0 });
 
 	hover(button, () => {
-		//animate(button, { rotateX: 180 }, { duration: DURATION });
+		//animate(button, { rotateX: 180 }, { duration: durationMD });
 
 		return () => {
-			animate(button, { rotateX: 0 }, { duration: DURATION });
+			animate(button, { rotateX: 0 }, { duration: durationMD });
 		};
 	});
 
@@ -90,18 +102,35 @@ function mobileMenu(content: HTMLDivElement): void {
 	const button = menuIcon();
 	content.appendChild(button);
 
+	const duration = Number.parseFloat(token.animation.duration.lg.sec.value);
+
+	const logo = document.getElementById('gavink-logo') as HTMLOrSVGImageElement;
+	if (!logo) return;
+
 	let pressed = false;
 
 	press(button, () => {
-		button.style.stroke = 'unset';
+		if (isAnimating) {
+			return;
+		}
+
+		if (content.style.stroke === token.color.background.accent.value) {
+			animate(logo, { fill: token.color.text.primary.value }, { duration: duration, ease: 'easeOut' });
+			animate(button, { stroke: token.color.background.accent.value }, { duration: duration, ease: 'easeOut' });
+		} else {
+			animate(logo, { fill: token.color.background.primary.value }, { duration: duration, ease: 'easeOut' });
+			animate(button, { stroke: token.color.background.primary.value }, { duration: duration, ease: 'easeOut' });
+		}
 
 		if (pressed) {
 			pressed = false;
 			closeMenuModal();
 		} else {
-			button.style.stroke = token.color.background.accent.value;
+			animate(logo, { fill: token.color.text.primary.value }, { duration: duration, ease: 'easeIn' });
+			animate(button, { stroke: token.color.background.accent.value }, { duration: duration, ease: 'easeIn' });
 			pressed = true;
 
+			lenis.stop();
 			openMenuModal(() => {
 				pressed = false;
 			});
@@ -116,6 +145,7 @@ function mobileMenu(content: HTMLDivElement): void {
 		}
 
 		if (width >= Number.parseInt(token.viewport.md.value)) {
+			lenis.start();
 			modal.remove();
 			pressed = false;
 		}
@@ -124,16 +154,28 @@ function mobileMenu(content: HTMLDivElement): void {
 	window.addEventListener('resize', resizeHandler);
 }
 
-function openMenuModal(onLinkPressed: () => void): void {
-	const location = document.location;
-	let href = '';
-	if (checkGL(String(location))) {
-		href = '/component/burger-modal-nogl';
-	} else {
-		href = '/component/burger-modal';
+function processAnimation(action: () => void): void {
+	if (isAnimating) {
+		animationQueue.push(action);
+		return;
 	}
 
-	fetch(href)
+	isAnimating = true;
+	action();
+}
+
+function animationComplete(): void {
+	isAnimating = false;
+	if (animationQueue.length > 0) {
+		const nextAction = animationQueue.shift();
+		if (nextAction) {
+			processAnimation(nextAction);
+		}
+	}
+}
+
+function openMenuModal(onLinkPressed: () => void): void {
+	fetch('/component/burger-modal')
 		.then((res) => {
 			if (!res.ok) {
 				throw new Error(`HTTP error! status: ${res.status}`);
@@ -143,34 +185,62 @@ function openMenuModal(onLinkPressed: () => void): void {
 		.then((html) => {
 			const temp = document.createElement('div');
 			temp.innerHTML = html;
-			const content = temp.firstElementChild;
+			const modal = temp.firstElementChild as HTMLElement;
 
-			if (content) {
-				document.body.appendChild(content);
+			if (!modal) return;
+
+			const existingModal = document.getElementById('burger-modal');
+			if (existingModal) {
+				existingModal.remove();
+				cancelActiveAnimations(existingModal);
 			}
 
-			opening();
+			document.body.appendChild(modal);
+
+			const content = modal.querySelector('.modal-content') as HTMLElement;
+
+			modal.style.opacity = '0';
+
+			if (content) {
+				content.style.transform = 'scale(0.9)';
+			}
+
+			const timing: KeyframeAnimationOptions = {
+				duration: durationLG,
+				easing: 'ease-in',
+				fill: 'forwards',
+			};
+
+			const existingState = animationStates.get(modal);
+			if (existingState && !existingState.isOpening) {
+				existingState.animation.reverse();
+				existingState.isOpening = true;
+
+				if (content) {
+					const contentState = animationStates.get(content);
+					if (contentState) contentState.animation.reverse();
+				}
+
+				existingState.animation.onfinish = animationComplete;
+				return;
+			}
+
+			const modalAnimation = modal.animate(fadeInKeyframes, timing);
+			animationStates.set(modal, { animation: modalAnimation, isOpening: true });
+
+			if (content) {
+				const contentAnimation = content.animate(zoomInKeyframes, timing);
+				animationStates.set(content, { animation: contentAnimation, isOpening: true });
+			}
+
 			handleLinks(onLinkPressed);
+
+			modalAnimation.onfinish = animationComplete;
+			modalAnimation.oncancel = animationComplete;
 		})
 		.catch((err) => {
 			console.error('Error fetching modal:', err);
 		});
-}
-
-function opening(): void {
-	const modal = document.getElementById('burger-modal');
-	if (!modal) {
-		return;
-	}
-
-	const nav = document.getElementById('nav');
-	if (!nav) {
-		console.log('expected there to be a nav.');
-		return;
-	}
-
-	modal.classList.add('opening');
-	nav.classList.add('opening');
 }
 
 function handleLinks(onLinkPressed: () => void): void {
@@ -178,6 +248,7 @@ function handleLinks(onLinkPressed: () => void): void {
 	const button = document.querySelector('#burger-menu-icon > button') as HTMLButtonElement;
 
 	for (const modal of modalitems) {
+		// use something else than href
 		const link = modal.getAttribute('href');
 		const hook = modal.getAttribute('data-section-hook');
 
@@ -192,21 +263,28 @@ function handleLinks(onLinkPressed: () => void): void {
 
 			button.style.stroke = 'unset';
 
-			const lenis = window.lenis;
-
+			// see why this isn't setting the offset
 			const options = {
 				immediate: true,
 				offset: -100,
 			};
 
-			const swap = document.getElementById('swap');
-			if (!swap) {
-				if (link === '/?nogl=true#') {
+			const gl = CheckGLCookie();
+
+			if (!gl) {
+				if (link === '/#') {
 					lenis.scrollTo(0);
 				} else {
-					//lenis.scrollTo(link.substring(12), options);
-					document.getElementById(link.substring(12)).scrollIntoView();
+					lenis.scrollTo(link.substring(1), options);
+					//document.getElementById(link.substring(2)).scrollIntoView();
 				}
+
+				return;
+			}
+
+			const swap = document.getElementById('swap');
+			if (!swap) {
+				console.error('Expected a swap element but not present');
 				return;
 			}
 
@@ -246,41 +324,61 @@ function closeMenuModal(): void {
 		return;
 	}
 
-	const nav = document.getElementById('nav');
-	if (!nav) {
-		console.log('expected there to be a nav.');
+	const content = modal.querySelector('.modal-content') as HTMLElement;
+
+	const timing: KeyframeAnimationOptions = {
+		duration: durationLG,
+		easing: 'ease-out',
+		fill: 'forwards',
+	};
+
+	lenis.start();
+
+	const existingState = animationStates.get(modal);
+
+	if (existingState.isOpening) {
+		existingState.animation.reverse();
+		existingState.isOpening = false;
+
+		if (content) {
+			const contentState = animationStates.get(content);
+			if (contentState) contentState.animation.reverse();
+		}
+
+		existingState.animation.onfinish = () => {
+			modal.remove();
+			animationComplete();
+		};
 		return;
 	}
 
-	modal.classList.add('closing');
-	modal.style.touchAction = 'none !important';
+	const modalAnimation = modal.animate(fadeOutKeyframes, timing);
+	animationStates.set(modal, { animation: modalAnimation, isOpening: false });
 
-	nav.classList.add('closing');
+	if (content) {
+		const contentAnimation = content.animate(zoomOutKeyframes, timing);
+		animationStates.set(content, { animation: contentAnimation, isOpening: false });
+	}
 
-	// call these early if closeBurgerModal is called early
-	modal.addEventListener(
-		'animationstart',
-		() => {
-			modal.classList.remove('opening');
-			nav.classList.remove('opening');
-		},
-		{ once: true },
-	);
-
-	modal.addEventListener(
-		'animationend',
-		() => {
-			modal.classList.remove('closing');
-			modal.style.touchAction = 'unset';
-
-			nav.classList.remove('closing');
-
-			modal.remove();
-		},
-		{ once: true },
-	);
+	modalAnimation.onfinish = () => {
+		modal.remove();
+		animationComplete();
+	};
+	modalAnimation.oncancel = animationComplete;
 }
 
-function checkGL(text: string): boolean {
-	return text.includes('?nogl=true');
+function cancelActiveAnimations(element: HTMLElement): void {
+	const state = animationStates.get(element);
+	if (state) {
+		state.animation.cancel();
+		animationStates.delete(element);
+	}
 }
+
+const fadeInKeyframes = [{ opacity: 0 }, { opacity: 1 }];
+
+const fadeOutKeyframes = [{ opacity: 1 }, { opacity: 0 }];
+
+const zoomInKeyframes = [{ transform: 'scale(0.9)' }, { transform: 'scale(1)' }];
+
+const zoomOutKeyframes = [{ transform: 'scale(1)' }, { transform: 'scale(0.9)' }];

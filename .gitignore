@@ -16,7 +16,7 @@ dist
 backup model
 tmp
 .npmrc
-data
+data/*/secrets
 *_templ.go
 .devenv
 .devenv.*

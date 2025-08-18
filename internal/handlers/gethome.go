@@ -4,12 +4,10 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"strconv"
 	"time"
 
-	"github.com/gavink97/gav-ink/internal/globals"
 	l "github.com/gavink97/gav-ink/internal/layouts"
-	l_nogl "github.com/gavink97/gav-ink/internal/layouts/nogl"
+	"github.com/gavink97/gav-ink/internal/utils"
 	v "github.com/gavink97/gav-ink/internal/views"
 	v_nogl "github.com/gavink97/gav-ink/internal/views/nogl"
 )
@@ -33,46 +31,22 @@ func (h *HomeHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if !globals.WebGLMode {
-		c := v_nogl.Index()
-		err := l_nogl.Layout(c, "gav.ink • where design meets innovation").Render(r.Context(), w)
+	title := "gav.ink • where design meets sustainable innovation"
 
-		if err != nil {
-			http.Error(w, "Error rendering template", http.StatusInternalServerError)
-			return
-		}
+	gl := utils.CheckGLCookie(w, r)
 
-		return
-	}
-
-	gl := r.URL.Query().Get("nogl")
-	if gl != "" {
-		nogl, err := strconv.ParseBool(gl)
-		if err != nil {
-			http.Error(w, "Error rendering template", http.StatusInternalServerError)
-			return
-		}
-
-		if nogl {
-			c := v_nogl.Index()
-			err := l_nogl.Layout(c, "gav.ink • where design meets innovation").Render(r.Context(), w)
-
-			if err != nil {
-				http.Error(w, "Error rendering template", http.StatusInternalServerError)
-				return
-			}
-		} else {
-			c := v.Index()
-			err := l.Layout(c, "gav.ink • where design meets innovation").Render(r.Context(), w)
-
-			if err != nil {
-				http.Error(w, "Error rendering template", http.StatusInternalServerError)
-				return
-			}
-		}
-	} else {
+	if gl {
 		c := v.Index()
-		err := l.Layout(c, "gav.ink • where design meets innovation").Render(r.Context(), w)
+		err := l.Layout(c, title).Render(r.Context(), w)
+
+		if err != nil {
+			http.Error(w, "Error rendering template", http.StatusInternalServerError)
+			return
+		}
+
+	} else {
+		c := v_nogl.Index()
+		err := l.Layout(c, title).Render(r.Context(), w)
 
 		if err != nil {
 			http.Error(w, "Error rendering template", http.StatusInternalServerError)

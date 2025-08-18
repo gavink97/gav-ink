@@ -7,6 +7,18 @@
 	color: token("color.text.primary");
 }
 
+.accent-text {
+	color: token("color.text.accent");
+}
+
+.primary-bg {
+    background-color: token("color.background.primary")
+}
+
+.accent-bg {
+    background-color: token("color.background.accent")
+}
+
 .grid-col-1 {
     grid-column: 1;
 }

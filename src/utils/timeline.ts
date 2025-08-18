@@ -11,7 +11,7 @@ export interface AnimationTimeline {
 
 export function PlayTimeline(timeline: AnimationTimeline[], scrollPercent: number): void {
 	for (const segment of timeline) {
-		if (scrollPercent < segment.start) {
+		if (scrollPercent < segment.start && segment.preAnimation) {
 			const segmentProgress = scrollPercent / segment.start;
 			segment.preAnimation(segmentProgress);
 		} else if (scrollPercent >= segment.start && scrollPercent <= segment.end) {
@@ -26,7 +26,7 @@ export function PlayTimeline(timeline: AnimationTimeline[], scrollPercent: numbe
 			}
 
 			segment.animate(progress);
-		} else if (scrollPercent > segment.end) {
+		} else if (scrollPercent > segment.end && segment.postAnimation) {
 			const segmentProgress = (scrollPercent - segment.end) / (1 - segment.end);
 			segment.postAnimation(segmentProgress);
 		}

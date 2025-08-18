@@ -142,6 +142,8 @@ func (m *Middleware) Caching(next http.Handler) http.Handler {
 			return
 		}
 
+		// define cache breaking conditions here
+
 		if strings.Contains(r.URL.String(), "/component/open-source-table") && len(github.Stats) == 0 {
 			slog.Debug("skipping chacing because conditions are met")
 			next.ServeHTTP(w, r)
