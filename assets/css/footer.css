@@ -142,6 +142,9 @@ footer-links {
 	font-size: token("text-size.2xl.size");
 	line-height: token("text-size.2xl.line-height");
 
+    /* This is to make up there being no case studies li*/
+    margin-bottom: 2rem;
+
 	@media (min-width: token("viewport.lg")) {
 		grid-column: 1 / span 3;
 		grid-row: 3 / span 5;

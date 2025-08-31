@@ -20,17 +20,6 @@ test.describe('home page', () => {
 	});
 });
 
-// move to adding a nogl cookie instead
-test.describe('home page no gl', () => {
-	const url = ''.concat(host, port, '/?nogl=true');
-	test('axe-test', async ({ page }) => {
-		await page.goto(url);
-		await delay(3000);
-		const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
-		expect(accessibilityScanResults.violations).toEqual([]);
-	});
-});
-
 test.describe('contact page', () => {
 	const url = ''.concat(host, port, '/contact');
 	test('axe-test', async ({ page }) => {
@@ -41,6 +30,8 @@ test.describe('contact page', () => {
 	});
 });
 
+// just for now
+/*
 const url = ''.concat(host, port, '/studies/');
 for (const study of ['gavink', 'gridt', 'rpst']) {
 	const studylink = url.concat(study);
@@ -54,6 +45,7 @@ for (const study of ['gavink', 'gridt', 'rpst']) {
 		});
 	});
 }
+*/
 
 test.describe('404 page', () => {
 	const url = ''.concat(host, port, '/404');

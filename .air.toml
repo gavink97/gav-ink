@@ -2,8 +2,8 @@ root = "."
 tmp_dir = ".tmp"
 
 [build]
-args_bin = []
-bin = "./.tmp/gav-ink --airplane"
+args_bin = ["--airplane"]
+bin = "./.tmp/gav-ink"
 post_cmd = []
 pre_cmd = ["templ generate", "make converter", "make build"]
 cmd = "go build -o .tmp/gav-ink ./cmd/gav-ink"

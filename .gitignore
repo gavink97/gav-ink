@@ -20,3 +20,5 @@ data/*/secrets
 *_templ.go
 .devenv
 .devenv.*
+users_database.yml
+go.sum

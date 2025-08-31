@@ -275,7 +275,8 @@ function handleLinks(onLinkPressed: () => void): void {
 				if (link === '/#') {
 					lenis.scrollTo(0);
 				} else {
-					lenis.scrollTo(link.substring(1), options);
+                    document.getElementById(link.substring(2)).scrollIntoView()
+					//lenis.scrollTo(link.substring(1), options);
 					//document.getElementById(link.substring(2)).scrollIntoView();
 				}
 

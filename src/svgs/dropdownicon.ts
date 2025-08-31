@@ -45,7 +45,7 @@ function dropDownIcon(content: HTMLDivElement): void {
 	svg.setAttribute('aria-label', 'services drop down icon');
 	svg.style.position = 'relative';
 	svg.style.top = `${1.5 / 16}rem`;
-	svg.style.left = `${39 / 16}rem`;
+	svg.style.left = `${40 / 16}rem`;
 	svg.style.scale = String(scale);
 
 	title.textContent = 'services drop down icon';

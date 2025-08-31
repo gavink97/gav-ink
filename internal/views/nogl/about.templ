@@ -1,16 +1,16 @@
 package views_nogl
 
 templ About() {
-	//<section class="half-section">
-	@studioStory()
-	@corebeliefs()
-	//</section>
+	<section class="full-section-grid px-16">
+		@studioStory()
+		@corebeliefs()
+	</section>
 }
 
 templ studioStory() {
-	<section aria-label="our story" class="p-4 pt-8" data-animation-trigger="studio">
-		<h2 id="story" class="section-header">Studio Story</h2>
-		<p class="section-paragraph">
+	<section aria-label="our story" class="grid" style="grid-row: 1/3; grid-column: 1/3;" data-animation-trigger="studio">
+		<h2 id="story" class="section-header self-end" style="grid-row: 1; grid-column: 1/3;">Studio Story</h2>
+		<p class="section-paragraph" style="grid-row: 2/3;">
 			We’re Gav.ink – an independent full service design and development
 			studio rooted in Jakarta and Austin, driven by a belief that
 			technology should serve humanity and the Earth. We are a remote
@@ -20,9 +20,9 @@ templ studioStory() {
 }
 
 templ corebeliefs() {
-	<section aria-label="core beliefs" class="p-4 section-scroll pb-6 pt-0" id="core-beliefs">
+	<section aria-label="core beliefs" class="section-scroll grid" style="grid-row: 3/6; grid-column: 1/3;" id="core-beliefs">
 		<h2 class="section-subheader">Core Beliefs</h2>
-		<p class="section-paragraph">
+		<div>
 			Our core beliefs follow the
 			<a
 				href="https://www.sustainablewebmanifesto.com"
@@ -39,8 +39,8 @@ templ corebeliefs() {
 			>
 				here
 			</a>
-		</p>
-		<p class="section-paragraph">
+		</div>
+		<p class="section-paragraph" style="grid-row: 4/6;">
 			Clean: The services we provide and services we use will be powered
 			by renewable energy.
 			<br/>

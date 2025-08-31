@@ -1,5 +1,4 @@
 import { animate, hover } from 'motion';
-import token from '../../tokens.json';
 
 const container = document.querySelectorAll('underline-text');
 if (!container) {
@@ -26,7 +25,7 @@ for (const element of container) {
 }
 
 function drawLine(content: HTMLDivElement): void {
-	const DURATION = 0.85;
+	const DURATION = 1.85;
 	const root = document.querySelector('html') as HTMLElement;
 	const scale = Number.parseFloat(getComputedStyle(root).fontSize) / 16;
 
@@ -52,8 +51,8 @@ function drawLine(content: HTMLDivElement): void {
 	line.setAttribute('y2', scale.toString());
 	line.setAttribute('pathLength', '0');
 
+	line.style.stroke = getComputedStyle(content).color;
 	line.style.display = 'block';
-	line.style.stroke = token.color.text.accent.value;
 	line.style.strokeWidth = String(3 * scale);
 
 	svg.appendChild(title);

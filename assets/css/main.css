@@ -12,8 +12,9 @@
 	--breakpoint-xl: token("viewport.xl");
 	--breakpoint-2xl: token("viewport.2xl");
 
-	--font-sans: token("font.family.ui");
+	--font-sans: token("font.family.body");
 	--font-serif: token("font.family.title");
+	--font-ui: token("font.family.ui");
 
 	--text-sm: token("text-size.sm.size");
 	--text-sm--line-height: token("text-size.sm.line-height");
@@ -66,9 +67,21 @@ html {
 	}
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: token("font.family.title");
+    font-variation-settings:
+    "opsz" 06,
+    "wght" 800;
+}
+
 body {
 	background-color: token("color.background.accent");
-	font-family: token("font.family.title");
+	font-family: token("font.family.body");
 }
 
 main {

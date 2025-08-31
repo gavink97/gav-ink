@@ -1,8 +1,9 @@
 package views_nogl
 
+import c "github.com/gavink97/gav-ink/internal/components"
+
 templ Services() {
-	<section aria-label="services" class="p-4 pt-36" data-animation-trigger="services">
-		<h2 id="services" class="section-header">Our Services</h2>
+	<section aria-label="services" data-animation-trigger="services" class="px-16">
 		@spitch()
 		@ux()
 		@software()
@@ -18,33 +19,36 @@ templ cta(text string) {
 		aria-label="contact us"
 		href="/contact"
 	>
-		{ text }
+		@c.UnderlineText(text)
 	</a>
 }
 
 templ spitch() {
-	<section aria-label="our commitment to sustainability">
-		<h3 class="section-subheader">
+	<section aria-label="our commitment to sustainability" class="full-section-grid">
+		<h2 id="services" class="section-header" style="grid-row: 1; align-content: end;">Our Services</h2>
+		<h3 class="section-subheader" style="grid-row: 2; grid-column: 1/3;">
 			Handcrafted Sustainable Digital Solutions
 		</h3>
-		<p class="section-paragraph">
+		<p class="section-paragraph" style="grid-row: 3; align-content: end;">
 			At Gavink, we craft bespoke software that
 			aligns with your business’ goals while reducing environmental harm. We
 			dismiss bloated, one size fits all frameworks in favor of hand rolled,
 			made to last tools, built with the Virtual LCA in consideration.
 		</p>
-		<p class="section-paragraph">
+		<p class="section-paragraph" style="grid-row: 4; align-content: end;">
 			So whether you need a modern web app for
-			your startup, a scalable backend service, or an accessible design, we
+			your startup, a scalable backend service, or an accessibcontentle design, we
 			stand committed to building a solution that's environmentally
 			conscious.
 		</p>
-		@cta("Let's collaborate towards a sustainable future")
+		<div style="grid-row: 5; justify-self: start; grid-column: 1/3;">
+			@cta("Let's collaborate towards a sustainable future")
+		</div>
 	</section>
 }
 
 templ ux() {
-	<section aria-label="ux design">
+	<section aria-label="ux design" class="full-section-grid">
 		<h2 id="ux" class="section-header">
 			UX / UI Design Services
 		</h2>
@@ -87,7 +91,7 @@ templ ux() {
 }
 
 templ software() {
-	<section aria-label="software development">
+	<section aria-label="software development" class="full-section-grid">
 		<h2 id="software" class="section-header">
 			Software Services
 		</h2>
@@ -100,7 +104,7 @@ templ software() {
 			and simple enough for future maintainers to understand, that is
 			longevity to us.
 		</p>
-		<ol class="section-paragraph">
+		<ol class="section-paragraph" style="grid-row: 3/5;">
 			<li>
 				<strong>
 					Open Source First
@@ -136,7 +140,7 @@ templ software() {
 }
 
 templ webapp() {
-	<section aria-label="web app development">
+	<section aria-label="web app development" class="full-section-grid">
 		<h2 id="webapp" class="section-header">
 			Web App Services
 		</h2>
@@ -149,7 +153,7 @@ templ webapp() {
 			less data from server to client, and leave a lighter footprint on
 			the planet without compromising on performance.
 		</p>
-		<ol class="section-paragraph">
+		<ol class="section-paragraph" style="grid-row: 2/4; grid-column: 1;">
 			<li>
 				<strong>
 					Transfer Budget
@@ -177,7 +181,7 @@ templ webapp() {
 }
 
 templ ourProcess() {
-	<section aria-label="our development process">
+	<section aria-label="our development process" class="half-section">
 		<h2 id="collab" class="section-header">
 			Collaborative by Nature
 		</h2>
@@ -213,7 +217,7 @@ templ ourProcess() {
 }
 
 templ why() {
-	<section aria-label="why collaborate with us">
+	<section aria-label="why collaborate with us" class="half-section">
 		<h2 id="why" class="section-header">
 			Why gavink?
 		</h2>

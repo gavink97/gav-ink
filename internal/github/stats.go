@@ -191,7 +191,17 @@ func GetGithubStats() ([]Repository, error) {
 
 	myRepos := []Repository{}
 
+	ignore, err := os.ReadFile(".repositoryignore")
+	if err != nil {
+		slog.Error(err.Error())
+		return []Repository{}, err
+	}
+
 	for _, repo := range r {
+		if strings.Contains(string(ignore), repo.Name) {
+			continue
+		}
+
 		if !repo.Fork {
 			myRepos = append(myRepos, repo)
 			continue
@@ -203,11 +213,14 @@ func GetGithubStats() ([]Repository, error) {
 			return []Repository{}, err
 		}
 
-		contributed, err := GetRepoCollaborators(fork.Parent.FullName)
-		if err != nil {
-			slog.Error(err.Error())
-			return []Repository{}, err
-		}
+		/*
+			contributed, err := GetRepoCollaborators(fork.Parent.FullName)
+			if err != nil {
+				slog.Error(err.Error())
+				return []Repository{}, err
+			}
+		*/
+		contributed := true
 
 		if contributed {
 			params := NewRepositoryParams{

@@ -1,0 +1,44 @@
+package components
+
+import (
+	"fmt"
+	"strings"
+	gh "github.com/gavink97/gav-ink/internal/github"
+)
+
+templ row(index int, repo gh.Repository) {
+	if repo.Contribution {
+		<li class="row section-paragraph project" style={ fmt.Sprintf("grid-row: %d;", index+2) } data-project-name={ strings.ToLower(repo.Name) }>
+			<a class="row" href={ templ.SafeURL(repo.Parent.Url) } target="_blank">
+				<p class="col-1">{ repo.Parent.Name }<span>*</span></p>
+				<p class="col-2">{ fmt.Sprint(repo.TimeCreated.Local().Year()) }</p>
+				<p class="col-3">
+					{ fmt.Sprintf("%d", repo.Parent.StargazersCount) }
+					<span>
+						<img src={ Image("star.avif") } alt="star" loading="lazy"/>
+					</span>
+				</p>
+			</a>
+		</li>
+	} else {
+		<li class="row section-paragraph project" style={ fmt.Sprintf("grid-row: %d;", index+2) } data-project-name={ strings.ToLower(repo.Name) }>
+			<a class="row" href={ templ.SafeURL(repo.Url) } target="_blank">
+				<p class="col-1">{ repo.Name }</p>
+				<p class="col-2">{ fmt.Sprint(repo.TimeCreated.Local().Year()) }</p>
+				<p class="col-3">
+					{ fmt.Sprintf("%d", repo.StargazersCount) }
+					<span>
+						<img src={ Image("star.avif") } alt="star" loading="lazy"/>
+					</span>
+				</p>
+			</a>
+		</li>
+	}
+}
+
+// 3500 > 3.5k
+templ OpenSourceTable(stats []gh.Repository) {
+	for index, repo := range stats {
+		@row(index, repo)
+	}
+}

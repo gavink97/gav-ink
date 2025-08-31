@@ -8,7 +8,7 @@ import (
 	"os"
 	"sort"
 
-	"github.com/gavink97/gav-ink/internal/views"
+	"github.com/gavink97/gav-ink/internal/components"
 
 	gh "github.com/gavink97/gav-ink/internal/github"
 )
@@ -46,13 +46,18 @@ func (h *ComponentHandler) GetOpenSourceTable(w http.ResponseWriter, r *http.Req
 	if order == "asc" || order == "dsc" {
 		sort.Slice(stats, func(i, j int) bool {
 			var asc bool
+
 			switch key {
 			case "stargazers":
-				asc = stats[i].StargazersCount < stats[j].StargazersCount
+				if stats[i].Fork && stats[j].Fork {
+					asc = stats[i].Parent.StargazersCount < stats[j].Parent.StargazersCount
+				} else {
+					asc = stats[i].StargazersCount < stats[j].StargazersCount
+				}
 			case "date":
 				asc = stats[i].TimeCreated.Before(stats[j].TimeCreated)
 			case "name":
-				asc = stats[i].Name < stats[j].Name
+				asc = stats[i].Name > stats[j].Name
 			default:
 				asc = stats[i].TimeCreated.Before(stats[j].TimeCreated)
 			}
@@ -65,7 +70,7 @@ func (h *ComponentHandler) GetOpenSourceTable(w http.ResponseWriter, r *http.Req
 		})
 	}
 
-	err := views.PortfolioTable(stats).Render(r.Context(), w)
+	err := components.OpenSourceTable(stats).Render(r.Context(), w)
 	if err != nil {
 		http.Error(w, "Error rendering template", http.StatusInternalServerError)
 		return

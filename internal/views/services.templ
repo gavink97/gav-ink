@@ -24,7 +24,7 @@ templ cta(text string) {
 		hx-target="#swap"
 		hx-on:click={ c.SwapInStyle() }
 	>
-		{ text }
+		@c.UnderlineText(text)
 	</p>
 }
 
