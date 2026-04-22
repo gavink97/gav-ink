@@ -2,10 +2,11 @@ package components
 
 import (
 	"fmt"
-	"strings"
 	gh "github.com/gavink97/gav-ink/internal/github"
+	"strings"
 )
 
+// 3500 > 3.5k
 templ row(index int, repo gh.Repository) {
 	if repo.Contribution {
 		<li class="row section-paragraph project" style={ fmt.Sprintf("grid-row: %d;", index+2) } data-project-name={ strings.ToLower(repo.Name) }>
@@ -36,9 +37,11 @@ templ row(index int, repo gh.Repository) {
 	}
 }
 
-// 3500 > 3.5k
 templ OpenSourceTable(stats []gh.Repository) {
+	//ghUser := os.Getenv("GITHUB_USERNAME") || "gavink97"
 	for index, repo := range stats {
-		@row(index, repo)
+		if strings.Contains(repo.FullName, strings.ToLower("gavink97")) {
+			@row(index, repo)
+		}
 	}
 }

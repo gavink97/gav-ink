@@ -11,6 +11,8 @@ services:
       - ./.env:/.env
       - ./data:/data
       - ./logs:/logs
+      - ./tokens.json:/tokens.json
+      - ./.repositoryignore:/.repositoryignore
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.gavink.rule=Host(`dev.${DOMAIN}`)"

@@ -42,6 +42,7 @@
 	--text-9xl--line-height: token("text-size.9xl.line-height");
 }
 
+@import "./hero.css";
 @import "./footer.css";
 @import "./nav.css";
 @import "./mobile-menu.css";
@@ -76,7 +77,7 @@ h6 {
 	font-family: token("font.family.title");
     font-variation-settings:
     "opsz" 06,
-    "wght" 800;
+    "wght" 400;
 }
 
 body {

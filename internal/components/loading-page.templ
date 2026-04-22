@@ -11,30 +11,29 @@ templ LoadingPage() {
 	// make loader dynamic to length of time it takes to load the content
 	@loadHandle.Once() {
 		<script type="text/javascript" nonce={ m.GetNonce(ctx) } defer>
+			function load() {
+				const loader = document.getElementById("loader-wrapper");
+				loader.style.transition = "0.8s";
+				loader.style.opacity = "0";
 
-    function load() {
-        const loader = document.getElementById('loader-wrapper');
-        loader.style.transition = '0.8s';
-        loader.style.opacity = '0';
+				setTimeout(() => {
+					document.body.style.overflow = "auto";
+					loader.style.display = "none";
+				}, 800);
+			}
 
-        setTimeout(() => {
-            document.body.style.overflow = 'auto';
-            loader.style.display = 'none';
-        }, 800);
-    }
-
-
-    document.onreadystatechange = function () {
-        if (document.readyState === "complete") {
-            load()
-        }
-    };
-</script>
+			document.onreadystatechange = function () {
+				if (document.readyState === "complete") {
+					load();
+				}
+			};
+		</script>
 	}
 }
 
 // make load animation + website info
 // show an error message if this takes longer than 15 seconds
+// use a default serif font to avoid fouc
 templ Loader() {
 	<div id="loader-wrapper">
 		<div id="loader" class="full-section-grid p-4">
