@@ -1,6 +1,6 @@
 import htmx from 'htmx.org';
 import { animate, hover, press } from 'motion';
-import token from '../../tokens.json';
+import token from '../../tokens.json' with {type: "json"};
 import { HandleAnimationTrigger } from '../components/observer.ts';
 import { CheckGLCookie } from '../utils/cookies.ts';
 

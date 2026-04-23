@@ -22,3 +22,6 @@ data/*/secrets
 .devenv.*
 users_database.yml
 go.sum
+data/letsencrypt
+*.sqlite3
+data/users.yml

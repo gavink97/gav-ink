@@ -66,8 +66,10 @@ function projectEffectListener(): void {
                 })
             }
 
+			// temporary
             Object.assign(img, {
-                src: `/public/images/${name}.avif`,
+                src: `/public/images/buledepok.avif`,
+                //src: `/public/images/${name}.avif`,
                 alt: `${name} preview`,
                 loading: "lazy",
                 id: id

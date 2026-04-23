@@ -65,7 +65,7 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - ./letsencrypt:/letsencrypt
+      - ${PWD}/data/letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock:ro
     depends_on:
       - authelia
@@ -119,6 +119,25 @@ services:
       - "traefik.http.routers.authelia.entrypoints=websecure"
       - "traefik.http.routers.authelia.tls.certresolver=myresolver"
     secrets: ['JWT_SECRET', 'SESSION_SECRET', 'STORAGE_ENCRYPTION_KEY']
+  search-ui:
+    image: gavink97/search-ui:latest
+    container_name: search-ui
+    restart: always
+    expose:
+      - 8080
+    environment:
+      TZ: ${TZ}
+      NODE_ENV: 'demo'
+    volumes:
+      - ${PWD}/data/search/public:/public
+      - ${PWD}/data/search/output.db:/app/output.db
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.search-ui.rule=Host(`search.${DOMAIN}`)"
+      - "traefik.http.routers.search-ui.entrypoints=websecure"
+      - "traefik.http.routers.search-ui.tls.certresolver=myresolver"
+    depends_on:
+      - traefik
 secrets:
   JWT_SECRET:
     file: '${PWD}/data/authelia/secrets/JWT_SECRET'

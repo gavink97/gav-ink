@@ -1,70 +1,48 @@
 {
-    "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-    "vcs": {
-        "enabled": false,
-        "clientKind": "git",
-        "useIgnoreFile": false
-    },
-    "files": {
-        "ignoreUnknown": false,
-        "ignore": []
-    },
-    "organizeImports": {
-        "enabled": true
-    },
-    "formatter": {
-        "enabled": true,
-        "formatWithErrors": true,
-        "ignore": [
-            "**/*.min.js",
-            "assets/*.js"
-        ],
-        "attributePosition": "auto",
-        "indentStyle": "tab",
-        "indentWidth": 4,
-        "lineWidth": 120,
-        "lineEnding": "lf"
-    },
-    "linter": {
-        "enabled": true,
-        "rules": {
-            "recommended": true,
-            "a11y": {
-                "useGenericFontNames": "off"
-            },
-            "correctness": {
-                "noInvalidPositionAtImportRule": "off",
-                "useExhaustiveDependencies": "error",
-                "useHookAtTopLevel": "error",
-                "noUnusedImports": "error",
-                "noUnknownFunction": "off"
-            },
-            "nursery": {
-                "noSecrets": "error",
-                "noCommonJs": "error",
-                "useStrictMode": "error",
-                "noDescendingSpecificity": "off",
-                "noMissingVarFunction": "error",
-                "noUnknownTypeSelector": "warn"
-            }
-        }
-    },
-    "javascript": {
-        "formatter": {
-            "enabled": true,
-            "arrowParentheses": "always",
-            "bracketSameLine": false,
-            "bracketSpacing": true,
-            "quoteStyle": "single",
-            "jsxQuoteStyle": "single",
-            "quoteProperties": "asNeeded",
-            "semicolons": "always",
-            "trailingCommas": "all"
-        },
-        "linter": {
-            "enabled": true
-        }
-    },
+	"$schema": "https://biomejs.dev/schemas/2.4.12/schema.json",
+	"formatter": {
+		"enabled": true,
+		"formatWithErrors": true,
+		"includes": ["src/**"],
+		"attributePosition": "auto",
+		"indentStyle": "tab",
+		"indentWidth": 4,
+		"lineWidth": 120,
+		"lineEnding": "lf"
+	},
+	"javascript": {
+		"formatter": {
+			"enabled": true,
+			"arrowParentheses": "always",
+			"bracketSameLine": false,
+			"bracketSpacing": true,
+			"quoteStyle": "single",
+			"jsxQuoteStyle": "single",
+			"quoteProperties": "asNeeded",
+			"semicolons": "always",
+			"trailingCommas": "all"
+		}
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"style": {
+				"noCommonJs": "error"
+			},
+			"suspicious": {
+				"useStrictMode": "error"
+			}
+		}
+	},
+	"assist": {
+		"enabled": true
+	},
+	"css": {
+		"parser": {
+			"tailwindDirectives": true
+		}
+	},
     "json": {
         "formatter": {
             "enabled": false,
